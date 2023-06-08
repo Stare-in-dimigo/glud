@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'dart:io' show Platform;
 import 'index/glud_index.dart';
 import 'index/profile.dart';
 import 'widgets.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (!kIsWeb) {
+  if (Platform.isAndroid || Platform.isIOS) {
     await FlutterDisplayMode.setHighRefreshRate();
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
   }
   runApp(const GludApp());
 }
@@ -123,6 +127,7 @@ class CustomNavigationBar extends StatelessWidget {
         topRight: Radius.circular(25),
       ),
       child: Container(
+        height: 70,
         decoration: const BoxDecoration(
           boxShadow: [
             BoxShadow(
