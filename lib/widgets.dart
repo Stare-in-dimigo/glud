@@ -21,12 +21,14 @@ class CustomContainer extends StatelessWidget {
   final Widget child;
   final double? height;
   final Color? backgroundColor;
+  final EdgeInsetsGeometry? padding;
 
   const CustomContainer(
       {Key? key,
         required this.child,
         this.height,
-        this.backgroundColor})
+        this.backgroundColor,
+        this.padding})
       : super(key: key);
 
   @override
@@ -34,10 +36,10 @@ class CustomContainer extends StatelessWidget {
     return Container(
       height: height,
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: padding ?? const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: backgroundColor ?? const Color(0xFFF5F5F5),
-        borderRadius: BorderRadius.circular(25),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: child,
     );
@@ -51,24 +53,3 @@ class MyBehavior extends ScrollBehavior {
     return child;
   }
 }
-
-class FadeRoute extends PageRouteBuilder {
-  final Widget page;
-  FadeRoute({required this.page})
-      : super(
-    pageBuilder: (BuildContext context, Animation<double> animation,
-        Animation<double> secondaryAnimation) {
-      return page;
-    },
-    transitionsBuilder: (BuildContext context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,
-        Widget child) {
-      return FadeTransition(
-        opacity: animation,
-        child: child,
-      );
-    },
-  );
-}
-

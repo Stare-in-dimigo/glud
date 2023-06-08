@@ -1,215 +1,243 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import '../widgets.dart';
-import 'resultpage.dart';
 
-class ReportPage extends StatelessWidget {
+class ReportPage extends StatefulWidget {
   ReportPage({Key? key}) : super(key: key);
 
-  final dateController = TextEditingController();
-  final placeController = TextEditingController();
-  final mainContentController = TextEditingController();
-  final quoteController = TextEditingController();
+  @override
+  _ReportPageState createState() => _ReportPageState();
+}
 
-  Future<void> generatePressRelease(BuildContext context) async {
+class _ReportPageState extends State<ReportPage> {
+  TextEditingController _dateTimeController = TextEditingController();
+  TextEditingController _placeController = TextEditingController();
+  TextEditingController _contentController = TextEditingController();
+  TextEditingController _quoteController = TextEditingController();
 
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return const AlertDialog(
-          title: Center(
-            child: Text(
-            '로딩중..',
-            style: titleTextStyle,
-            ),
-          ),
-        );
-      },
-    );
+  bool _isDateTimeFocused = false;
+  bool _isPlaceFocused = false;
+  bool _isContentFocused = false;
+  bool _isQuoteFocused = false;
 
-    final response = await http.post(
-      Uri.parse('http://0.0.0.0:5000/generate'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'date': dateController.text,
-        'place': placeController.text,
-        'main_content': mainContentController.text,
-        'quote': quoteController.text,
-      }),
-    );
-
-    Navigator.of(context).pop();
-
-    if (response.statusCode == 200) {
-      // If the server returns a 200 OK response, then parse the JSON.
-      final result = jsonDecode(response.body);
-      Navigator.push(
-          context,
-          Navigator.of(context).push(FadeRoute(page: ResultPage(generated_text: result['generated_text']))) as Route<Object?>
-      );
-    } else {
-      // If the server did not return a 200 OK response, then throw an exception.
-      throw Exception('Failed to generate press release');
-    }
+  @override
+  void dispose() {
+    _dateTimeController.dispose();
+    _placeController.dispose();
+    _contentController.dispose();
+    _quoteController.dispose();
+    super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFFF2F4F6),
-        appBar: buildAppBar(context),
-        body: ScrollConfiguration(
-          behavior: MyBehavior(),
-          child: ListView(
-            children: [
-              CustomContainer(
-                child: Center(
-                  child: CustomTextField(
-                      controller: dateController,
-                      hintText: '일시'
-                  ),
+      backgroundColor: Colors.white,
+      appBar: buildAppBar(context),
+      body: GestureDetector(
+        onTap: () {
+          // 배경 터치 시 포커스 해제 및 입력 상태 종료
+          FocusScope.of(context).unfocus();
+          setState(() {
+            _isDateTimeFocused = false;
+            _isPlaceFocused = false;
+            _isContentFocused = false;
+            _isQuoteFocused = false;
+          });
+        },
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+          child: ScrollConfiguration(
+            behavior: MyBehavior(),
+            child: ListView(
+              children: [
+                buildCustomContainer(
+                  Icons.calendar_today,
+                  '일시',
+                  _dateTimeController,
+                      (bool focused) {
+                    setState(() {
+                      _isDateTimeFocused = focused;
+                    });
+                  },
                 ),
-              ),
-              const SizedBox(height: 10),
-              CustomContainer(
-                child: Center(
-                  child: CustomTextField(
-                    controller: placeController,
-                    hintText: '장소'
-                  ),
+                const SizedBox(height: 15),
+                buildCustomContainer(
+                  Icons.place_outlined,
+                  '장소',
+                  _placeController,
+                      (bool focused) {
+                    setState(() {
+                      _isPlaceFocused = focused;
+                    });
+                  },
                 ),
-              ),
-              const SizedBox(height: 10),
-              CustomContainer(
-                child: Center(
-                  child: CustomTextField(
-                    controller: mainContentController,
-                    hintText: '주요 내용'
-                  ),
+                const SizedBox(height: 15),
+                buildCustomContainer(
+                  null,
+                  '주요 내용',
+                  _contentController,
+                      (bool focused) {
+                    setState(() {
+                      _isContentFocused = focused;
+                    });
+                  },
+                  centerAlign: true,
                 ),
-              ),
-              const SizedBox(height: 10),
-              CustomContainer(
-                child: Center(
-                  child: CustomTextField(
-                    controller: quoteController,
-                    hintText: '인용문'
-                  ),
+                const SizedBox(height: 15),
+                buildCustomContainer(
+                  Icons.format_quote_outlined,
+                  '인용문',
+                  _quoteController,
+                      (bool focused) {
+                    setState(() {
+                      _isQuoteFocused = focused;
+                    });
+                  },
                 ),
-              ),
-              const SizedBox(height: 10),
-              const CustomContainer(
-                child: Center(
-                  child: Text(
-                    '이미지 업로드',
-                    style: regularTextStyle,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              GestureDetector(
-                onTap: () {
-                  generatePressRelease(context);
-                },
-                child: const CustomContainer(
-                  backgroundColor: Color(0xFFB1B8C0),
-                  child: Center(
-                    child: Text(
-                      '보도자료 만들기',
-                      style: buttonTextStyle,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-            ],
+              ],
+            ),
           ),
-        ));
+        ),
+      ),
+      floatingActionButton: AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        margin: EdgeInsets.only(
+          top: _isDateTimeFocused || _isPlaceFocused || _isContentFocused || _isQuoteFocused ? MediaQuery.of(context).size.height : 0,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+          child: CustomFloatingButton(text: '보도자료 생성하기'),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    );
+  }
+
+  CustomContainer buildCustomContainer(
+      IconData? icon,
+      String hintText,
+      TextEditingController controller,
+      Function(bool) onFocusChange, {
+        bool centerAlign = false,
+      }) {
+    return CustomContainer(
+      padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+      child: Row(
+        children: [
+          if (icon != null)
+            Icon(icon, color: const Color(0xFFC0CFDB), size: 30.0),
+          if (icon != null) const SizedBox(width: 15),
+          Expanded(
+            child: CustomTextField(
+              hintText: hintText,
+              centerAlign: centerAlign,
+              textEditingController: controller,
+              onFocusChange: onFocusChange,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      automaticallyImplyLeading: false,
       systemOverlayStyle: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Color(0xFFF2F4F6),
+        systemNavigationBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark,
+      ),
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
+        iconSize: 20,
+        onPressed: () => Navigator.of(context).pop(),
       ),
       backgroundColor: Colors.transparent,
       elevation: 0.0,
-      title: const Text('보도자료', style: titleTextStyle),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.lightbulb),
-          color: const Color(0xFFB1B8C0),
-          iconSize: 25.0,
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text(
-                    '팁',
-                    style: titleTextStyle,
-                  ),
-                  content: const Text(
-                    '팁 내용',
-                    style: regularTextStyle,
-                  ),
-                  actions: <Widget>[
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: const Color(0xFFB1B8C0),
-                      ),
-                      child: const Text('확인'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          },
+      title: const Text(
+        '보도자료',
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 25.0,
+          fontWeight: FontWeight.bold,
         ),
-        IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          color: const Color(0xFFB1B8C0),
-          iconSize: 25.0,
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ],
+      ),
+      titleSpacing: -10,
+      toolbarHeight: 100,
     );
   }
+
+  Size get preferredSize => const Size.fromHeight(100.0);
 }
 
 class CustomTextField extends StatelessWidget {
   final String hintText;
-  final TextEditingController controller;
+  final bool centerAlign;
+  final TextEditingController textEditingController;
+  final Function(bool) onFocusChange;
 
   const CustomTextField({
     Key? key,
     this.hintText = '',
-    required this.controller,
+    this.centerAlign = false,
+    required this.textEditingController,
+    required this.onFocusChange,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: controller,
       maxLines: null,
+      controller: textEditingController,
+      onChanged: (text) {},
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: regularTextStyle,
+        hintStyle: const TextStyle(
+          color: Color(0xFF5E5E5E),
+          fontSize: 20.0,
+        ),
         border: InputBorder.none,
         alignLabelWithHint: true,
       ),
-      style: regularTextStyle,
-      textAlign: TextAlign.center,
+      style: const TextStyle(
+        color: Color(0xFF5E5E5E),
+        fontSize: 20.0,
+      ),
+      textAlign: centerAlign ? TextAlign.center : TextAlign.left,
+      onTap: () {
+        onFocusChange(true);
+      },
+      onEditingComplete: () {
+        onFocusChange(false);
+      },
+      onSubmitted: (text) {
+        onFocusChange(false);
+      },
+    );
+  }
+}
+
+class CustomFloatingButton extends StatelessWidget {
+  final String text;
+
+  const CustomFloatingButton({Key? key, required this.text}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomContainer(
+      height: 70,
+      backgroundColor: const Color(0xFF7EAAC9),
+      child: Center(
+        child: Text(
+          text,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
     );
   }
 }

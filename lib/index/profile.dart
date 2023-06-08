@@ -57,10 +57,12 @@ class Profile extends StatelessWidget {
                 ),
                 IconButton(
                   iconSize: 40.0,
-                  onPressed: () {
-                    Navigator.of(context).push(FadeRoute(page: SettingsPage()));
-                  },
-                  icon: const Icon(Icons.settings),
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => SettingsPage(),
+                    ),
+                  ),
+                  icon: const Icon(Icons.settings_rounded),
                   color: Colors.grey,
                 ),
               ],
@@ -73,7 +75,11 @@ class Profile extends StatelessWidget {
               children: List.generate(totalItems, (index) {
                 if (index < _items.length) {
                   return GestureDetector(
-                    onTap: () => Navigator.of(context).push(FadeRoute(page: _items[index].page)),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => _items[index].page,
+                      ),
+                    ),
                     child: Container(
                       alignment: Alignment.center,
                       decoration: BoxDecoration(

@@ -23,7 +23,11 @@ class GludIndex extends StatelessWidget {
         mainAxisSpacing: 20,
         children: _items.map((item) {
           return GestureDetector(
-            onTap: () => Navigator.of(context).push(FadeRoute(page: item.page)),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => item.page,
+              ),
+            ),
             child: CustomContainer(
               child: Padding(
                 padding: const EdgeInsets.only(top: 10.0, left: 5),
