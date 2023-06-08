@@ -100,14 +100,18 @@ class _ReportPageState extends State<ReportPage> {
           ),
         ),
       ),
-      floatingActionButton: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        margin: EdgeInsets.only(
-          top: _isDateTimeFocused || _isPlaceFocused || _isContentFocused || _isQuoteFocused ? MediaQuery.of(context).size.height : 0,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-          child: CustomFloatingButton(text: '보도자료 생성하기'),
+      floatingActionButton: AnimatedOpacity(
+        duration: const Duration(milliseconds: 300),
+        opacity: _isDateTimeFocused || _isPlaceFocused || _isContentFocused || _isQuoteFocused ? 0.0 : 1.0,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          margin: EdgeInsets.only(
+            top: _isDateTimeFocused || _isPlaceFocused || _isContentFocused || _isQuoteFocused ? MediaQuery.of(context).size.height : 0,
+          ),
+          child: const Padding(
+            padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+            child: CustomFloatingButton(text: '보도자료 생성하기'),
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
