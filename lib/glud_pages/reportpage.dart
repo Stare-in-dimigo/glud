@@ -15,10 +15,7 @@ class _ReportPageState extends State<ReportPage> {
   TextEditingController _contentController = TextEditingController();
   TextEditingController _quoteController = TextEditingController();
 
-  bool _isDateTimeFocused = false;
-  bool _isPlaceFocused = false;
-  bool _isContentFocused = false;
-  bool _isQuoteFocused = false;
+  bool _isFocused = false;
 
   @override
   void dispose() {
@@ -31,98 +28,61 @@ class _ReportPageState extends State<ReportPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: buildAppBar(context),
-      body: GestureDetector(
-        onTap: () {
-          // 배경 터치 시 포커스 해제 및 입력 상태 종료
-          FocusScope.of(context).unfocus();
-          setState(() {
-            _isDateTimeFocused = false;
-            _isPlaceFocused = false;
-            _isContentFocused = false;
-            _isQuoteFocused = false;
-          });
-        },
-        child: Padding(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+        setState(() {
+          _isFocused = false;
+        });
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: buildAppBar(context),
+        body: Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
           child: ScrollConfiguration(
             behavior: MyBehavior(),
             child: ListView(
               children: [
-                buildCustomContainer(
+                _buildCustomContainer(
                   Icons.calendar_today,
                   '일시',
                   _dateTimeController,
-                      (bool focused) {
-                    setState(() {
-                      _isDateTimeFocused = focused;
-                    });
-                  },
                 ),
                 const SizedBox(height: 15),
-                buildCustomContainer(
+                _buildCustomContainer(
                   Icons.place_outlined,
                   '장소',
                   _placeController,
-                      (bool focused) {
-                    setState(() {
-                      _isPlaceFocused = focused;
-                    });
-                  },
                 ),
                 const SizedBox(height: 15),
-                buildCustomContainer(
+                _buildCustomContainer(
                   null,
                   '주요 내용',
                   _contentController,
-                      (bool focused) {
-                    setState(() {
-                      _isContentFocused = focused;
-                    });
-                  },
                   centerAlign: true,
                 ),
                 const SizedBox(height: 15),
-                buildCustomContainer(
+                _buildCustomContainer(
                   Icons.format_quote_outlined,
                   '인용문',
                   _quoteController,
-                      (bool focused) {
-                    setState(() {
-                      _isQuoteFocused = focused;
-                    });
-                  },
                 ),
+                const SizedBox(height: 85),
               ],
             ),
           ),
         ),
+        floatingActionButton: _buildFloatingButton(context),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
-      floatingActionButton: AnimatedOpacity(
-        duration: const Duration(milliseconds: 300),
-        opacity: _isDateTimeFocused || _isPlaceFocused || _isContentFocused || _isQuoteFocused ? 0.0 : 1.0,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          margin: EdgeInsets.only(
-            top: _isDateTimeFocused || _isPlaceFocused || _isContentFocused || _isQuoteFocused ? MediaQuery.of(context).size.height : 0,
-          ),
-          child: const Padding(
-            padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-            child: CustomFloatingButton(text: '보도자료 생성하기'),
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
-  CustomContainer buildCustomContainer(
+  CustomContainer _buildCustomContainer(
       IconData? icon,
       String hintText,
-      TextEditingController controller,
-      Function(bool) onFocusChange, {
+      TextEditingController controller, {
         bool centerAlign = false,
       }) {
     return CustomContainer(
@@ -137,10 +97,31 @@ class _ReportPageState extends State<ReportPage> {
               hintText: hintText,
               centerAlign: centerAlign,
               textEditingController: controller,
-              onFocusChange: onFocusChange,
+              onFocusChange: (bool focused) {
+                setState(() {
+                  _isFocused = focused;
+                });
+              },
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  AnimatedOpacity _buildFloatingButton(BuildContext context) {
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 300),
+      opacity: _isFocused ? 0.0 : 1.0,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        margin: EdgeInsets.only(
+          top: _isFocused ? MediaQuery.of(context).size.height : 0,
+        ),
+        child: const Padding(
+          padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+          child: CustomFloatingButton(text: '보도자료 생성하기'),
+        ),
       ),
     );
   }
@@ -171,8 +152,6 @@ class _ReportPageState extends State<ReportPage> {
       toolbarHeight: 100,
     );
   }
-
-  Size get preferredSize => const Size.fromHeight(100.0);
 }
 
 class CustomTextField extends StatelessWidget {
