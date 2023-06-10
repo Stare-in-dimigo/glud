@@ -114,15 +114,9 @@ class _ReportPageState extends State<ReportPage> {
     return AnimatedOpacity(
       duration: const Duration(milliseconds: 300),
       opacity: _isFocused ? 0.0 : 1.0,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        margin: EdgeInsets.only(
-          top: _isFocused ? MediaQuery.of(context).size.height : 0,
-        ),
-        child: const Padding(
+      child: const Padding(
           padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
           child: CustomFloatingButton(text: '보도자료 생성하기'),
-        ),
       ),
     );
   }
