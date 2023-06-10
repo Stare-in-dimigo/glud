@@ -5,12 +5,12 @@ import '../widgets.dart';
 class SettingsPage extends StatelessWidget {
   SettingsPage({Key? key}) : super(key: key);
 
-  final settingsItems = ['index0', 'index1', 'index2'];
+  final settingsItems = ['푸시 알림', '색약 모드', '다크 모드'];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF2F4F6),
+      backgroundColor: Colors.white,
       appBar: buildAppBar(context),
       body: ScrollConfiguration(
         behavior: MyBehavior(),
@@ -24,30 +24,28 @@ class SettingsPage extends StatelessWidget {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      automaticallyImplyLeading: false,
       systemOverlayStyle: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Color(0xFFF2F4F6),
+        systemNavigationBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark,
+      ),
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
+        iconSize: 20,
+        onPressed: () => Navigator.of(context).pop(),
       ),
       backgroundColor: Colors.transparent,
       elevation: 0.0,
       title: const Text(
-          '설정',
-          style: TextStyle(
-            fontSize: 30.0,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          )
-      ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          color: const Color(0xFFB1B8C0),
-          iconSize: 25.0,
-          onPressed: () => Navigator.of(context).pop(),
+        '설정',
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 25.0,
+          fontWeight: FontWeight.bold,
         ),
-      ],
+      ),
+      titleSpacing: -10,
+      toolbarHeight: 100,
     );
   }
 
@@ -78,27 +76,31 @@ class _SettingsItemState extends State<SettingsItem> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomContainer(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-              widget.text,
-              style: const TextStyle(
-                fontSize: 20.0,
-                color: Color(0xFFB1B8C0),
-              )
-          ),
-          Switch(
-            value: _isSwitched,
-            activeColor: const Color(0xFF6685F2),
-            onChanged: (value) {
-              setState(() {
-                _isSwitched = value;
-              });
-            },
-          ),
-        ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20), // Add this line
+      child: CustomContainer(
+        padding: const EdgeInsets.fromLTRB(15, 5, 5, 5),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+                widget.text,
+                style: const TextStyle(
+                  fontSize: 20.0,
+                  color: Color(0xFF5E5E5E),
+                )
+            ),
+            Switch(
+              value: _isSwitched,
+              activeColor: const Color(0xFF7EAAC9),
+              onChanged: (value) {
+                setState(() {
+                  _isSwitched = value;
+                });
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

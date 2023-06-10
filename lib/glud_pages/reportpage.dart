@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:glud/glud_pages/finishpage.dart';
 import '../widgets.dart';
-import 'resultpage.dart';
 
 class ReportPage extends StatefulWidget {
   ReportPage({Key? key}) : super(key: key);
@@ -211,9 +211,9 @@ class CustomFloatingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => ResultPage()),
+          MaterialPageRoute(builder: (context) => FinishPage()),
         );
       },
       child: CustomContainer(

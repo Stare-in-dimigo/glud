@@ -1,24 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
-import 'dart:io' show Platform;
 import 'index/gludindex.dart';
 import 'index/profile.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (Platform.isAndroid || Platform.isIOS) {
-    await FlutterDisplayMode.setHighRefreshRate();
-    await SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-    WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-    FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-    await Future.delayed(const Duration(seconds: 2));
-    FlutterNativeSplash.remove();
-  }
+  await FlutterDisplayMode.setHighRefreshRate();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
   runApp(const GludApp());
 }
 
