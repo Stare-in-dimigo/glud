@@ -1,22 +1,5 @@
 import 'package:flutter/material.dart';
 
-const titleTextStyle = TextStyle(
-  fontSize: 30.0,
-  fontWeight: FontWeight.bold,
-  color: Colors.black,
-);
-
-const regularTextStyle = TextStyle(
-  fontSize: 20.0,
-  color: Color(0xFFB1B8C0),
-);
-
-const buttonTextStyle = TextStyle(
-  fontSize: 20.0,
-  fontWeight: FontWeight.bold,
-  color: Colors.white,
-);
-
 class CustomContainer extends StatelessWidget {
   final Widget child;
   final double? height;

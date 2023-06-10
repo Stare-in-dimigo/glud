@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../glud_pages/reportpage.dart';
+import '../glud_pages/glud_list.dart';
 import '../widgets.dart';
 import 'settings.dart';
 
@@ -7,11 +7,11 @@ class Profile extends StatelessWidget {
   Profile({Key? key}) : super(key: key);
 
   final List<_MypageItem> _items = [
-    _MypageItem('최근 작성한 글', 'assets/images/mypage/recent.png', ReportPage()),
-    _MypageItem('자주 찾는 질문', 'assets/images/mypage/faq.png', ReportPage()),
-    _MypageItem('고객센터', 'assets/images/mypage/contact.png', ReportPage()),
-    _MypageItem('실험실', 'assets/images/mypage/laboratory.png', ReportPage()),
-    _MypageItem('공지사항', 'assets/images/mypage/notice.png', ReportPage()),
+    _MypageItem('최근 작성한 글', 'assets/images/mypage/recent.png', GludListPage()),
+    _MypageItem('자주 찾는 질문', 'assets/images/mypage/faq.png', GludListPage()),
+    _MypageItem('고객센터', 'assets/images/mypage/contact.png', GludListPage()),
+    _MypageItem('실험실', 'assets/images/mypage/laboratory.png', GludListPage()),
+    _MypageItem('공지사항', 'assets/images/mypage/notice.png', GludListPage()),
   ];
 
   @override

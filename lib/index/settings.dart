@@ -32,7 +32,14 @@ class SettingsPage extends StatelessWidget {
       ),
       backgroundColor: Colors.transparent,
       elevation: 0.0,
-      title: const Text('설정', style: titleTextStyle),
+      title: const Text(
+          '설정',
+          style: TextStyle(
+            fontSize: 30.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          )
+      ),
       actions: [
         IconButton(
           icon: const Icon(Icons.arrow_back_ios),
@@ -75,7 +82,13 @@ class _SettingsItemState extends State<SettingsItem> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(widget.text, style: regularTextStyle),
+          Text(
+              widget.text,
+              style: const TextStyle(
+                fontSize: 20.0,
+                color: Color(0xFFB1B8C0),
+              )
+          ),
           Switch(
             value: _isSwitched,
             activeColor: const Color(0xFF6685F2),
