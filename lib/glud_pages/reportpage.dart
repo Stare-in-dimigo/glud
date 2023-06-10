@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../widgets.dart';
+import 'resultpage.dart';
 
 class ReportPage extends StatefulWidget {
   ReportPage({Key? key}) : super(key: key);
@@ -58,7 +59,7 @@ class _ReportPageState extends State<ReportPage> {
                 const SizedBox(height: 15),
                 _buildCustomContainer(
                   null,
-                  '주요 내용',
+                  '\n\n주요 내용\n\n',
                   _contentController,
                   centerAlign: true,
                 ),
@@ -208,16 +209,24 @@ class CustomFloatingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomContainer(
-      height: 70,
-      backgroundColor: const Color(0xFF7EAAC9),
-      child: Center(
-        child: Text(
-          text,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ResultPage()),
+        );
+      },
+      child: CustomContainer(
+        height: 70,
+        backgroundColor: const Color(0xFF7EAAC9),
+        child: Center(
+          child: Text(
+            text,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),

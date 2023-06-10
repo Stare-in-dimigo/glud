@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'dart:io' show Platform;
-import 'index/glud_index.dart';
+import 'index/gludindex.dart';
 import 'index/profile.dart';
-import 'widgets.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +14,10 @@ void main() async {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+    WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+    FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+    await Future.delayed(const Duration(seconds: 2));
+    FlutterNativeSplash.remove();
   }
   runApp(const GludApp());
 }
@@ -143,11 +147,11 @@ class CustomNavigationBar extends StatelessWidget {
           backgroundColor: const Color(0xFF92B4CD),
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.note_alt_rounded),
+              icon: Icon(Icons.border_color_rounded),
               label: '글루드',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
+              icon: Icon(Icons.person_rounded),
               label: '마이페이지',
             ),
           ],

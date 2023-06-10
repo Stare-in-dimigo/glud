@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../glud_pages/glud_list.dart';
+import '../glud_pages/gludlist.dart';
 import '../widgets.dart';
 import 'settings.dart';
 
