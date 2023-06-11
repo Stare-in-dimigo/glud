@@ -42,7 +42,7 @@ class GludIndex extends StatelessWidget {
                         color: Color(0xFF5E5E5E),
                       ),
                     ),
-                    const SizedBox(height: 2.0),
+                    const SizedBox(height: 5.0),
                     Text(
                       '글루드가 쓰는\n${item.explain} ${item.title}',
                       style: const TextStyle(

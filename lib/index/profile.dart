@@ -49,7 +49,7 @@ class Profile extends StatelessWidget {
                         "hello@glud.com",
                         style: TextStyle(
                           fontSize: 15.0,
-                          color: Colors.grey,
+                          color: Color(0xFF9D9D9D),
                         ),
                       ),
                     ],
@@ -63,7 +63,7 @@ class Profile extends StatelessWidget {
                     ),
                   ),
                   icon: const Icon(Icons.settings_rounded),
-                  color: Colors.grey,
+                  color: const Color(0xFF9D9D9D),
                 ),
               ],
             ),

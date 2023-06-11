@@ -48,6 +48,7 @@ class _GludAppState extends State<GludApp> {
       theme: ThemeData(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
+        fontFamily: 'Pretendard',
       ),
       home: Scaffold(
         backgroundColor: Colors.white,

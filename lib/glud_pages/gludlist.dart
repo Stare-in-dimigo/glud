@@ -95,7 +95,7 @@ class _GludListPageState extends State<GludListPage> {
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                               fontSize: 15,
-                              color: Color(0xFF1E1E1E)
+                              color: Color(0xFF5E5E5E)
                           ),
                         )
                       ],
