@@ -51,7 +51,7 @@ class SettingsPage extends StatelessWidget {
 
   Widget buildSettingsItem(String item) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10.0),
+      padding: const EdgeInsets.only(bottom: 15.0),
       child: SettingsItem(
         text: item,
       ),
@@ -79,7 +79,7 @@ class _SettingsItemState extends State<SettingsItem> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: CustomContainer(
-        padding: const EdgeInsets.fromLTRB(15, 5, 5, 5),
+        padding: const EdgeInsets.fromLTRB(20, 5, 5, 5),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
