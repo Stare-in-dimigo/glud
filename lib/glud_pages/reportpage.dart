@@ -81,11 +81,11 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   CustomContainer _buildCustomContainer(
-      IconData? icon,
-      String hintText,
-      TextEditingController controller, {
-        bool centerAlign = false,
-      }) {
+    IconData? icon,
+    String hintText,
+    TextEditingController controller, {
+    bool centerAlign = false,
+  }) {
     return CustomContainer(
       padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
       child: Row(
@@ -110,14 +110,16 @@ class _ReportPageState extends State<ReportPage> {
     );
   }
 
-  AnimatedOpacity _buildFloatingButton(BuildContext context) {
-    return AnimatedOpacity(
+  Widget _buildFloatingButton(BuildContext context) {
+    return AnimatedSwitcher(
       duration: const Duration(milliseconds: 300),
-      opacity: _isFocused ? 0.0 : 1.0,
-      child: const Padding(
-          padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-          child: CustomFloatingButton(text: '보도자료 생성하기'),
-      ),
+      child: !_isFocused
+          ? const Padding(
+        padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+        key: ValueKey<int>(1),
+        child: CustomFloatingButton(text: '보도자료 생성하기'),
+      )
+          : const SizedBox.shrink(key: ValueKey<int>(2)),
     );
   }
 

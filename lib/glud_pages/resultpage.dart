@@ -10,7 +10,6 @@ class ResultPage extends StatefulWidget {
 }
 
 class _ResultPageState extends State<ResultPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,10 +18,10 @@ class _ResultPageState extends State<ResultPage> {
       body: Padding(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         child: ScrollConfiguration(
-          behavior: MyBehavior(),
-          child: ListView(
-            children: const [
-              CustomContainer(
+            behavior: MyBehavior(),
+            child: ListView(
+              children: const [
+                CustomContainer(
                   child: Text(
                     '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
                     style: TextStyle(
@@ -30,41 +29,38 @@ class _ResultPageState extends State<ResultPage> {
                       color: Color(0xFF5E5E5E),
                     ),
                   ),
-              ),
-              SizedBox(height: 40),
-              CustomContainer(
-                  backgroundColor: Color(0xFF9D9D9D),
-                  child: Center(
-                    child: Text(
-                      '클립보드에 복사하기',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                ),
+                SizedBox(height: 40),
+                CustomContainer(
+                    backgroundColor: Color(0xFF9D9D9D),
+                    child: Center(
+                      child: Text(
+                        '클립보드에 복사하기',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                  )
-              ),
-              SizedBox(height: 15),
-              CustomContainer(
-                  backgroundColor: Color(0xFF7EAAC9),
-                  child: Center(
-                    child: Text(
-                      'Docx 파일로 다운받기',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                    )),
+                SizedBox(height: 15),
+                CustomContainer(
+                    backgroundColor: Color(0xFF7EAAC9),
+                    child: Center(
+                      child: Text(
+                        'Docx 파일로 다운받기',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                  )
-              ),
-              SizedBox(height: 20),
-            ],
-          )
-          ),
-        ),
-      );
+                    )),
+                SizedBox(height: 20),
+              ],
+            )),
+      ),
+    );
   }
 
   AppBar buildAppBar(BuildContext context) {

@@ -8,8 +8,10 @@ class GludIndex extends StatelessWidget {
   final List<_GludItem> _items = [
     _GludItem('보도자료', '생생한', 'assets/images/index/report.png', ReportPage()),
     _GludItem('독서록', '동화같은', 'assets/images/index/booklog.png', ReportPage()),
-    _GludItem('소송문', '백전백승', 'assets/images/index/litigation.png', ReportPage()),
-    _GludItem('반성문', '그럴듯한', 'assets/images/index/reflection.png', ReportPage()),
+    _GludItem(
+        '소송문', '백전백승', 'assets/images/index/litigation.png', ReportPage()),
+    _GludItem(
+        '반성문', '그럴듯한', 'assets/images/index/reflection.png', ReportPage()),
   ];
 
   @override

@@ -8,10 +8,10 @@ class CustomContainer extends StatelessWidget {
 
   const CustomContainer(
       {Key? key,
-        required this.child,
-        this.height,
-        this.backgroundColor,
-        this.padding})
+      required this.child,
+      this.height,
+      this.backgroundColor,
+      this.padding})
       : super(key: key);
 
   @override

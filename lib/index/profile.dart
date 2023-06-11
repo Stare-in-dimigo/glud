@@ -84,9 +84,15 @@ class Profile extends StatelessWidget {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         border: Border(
-                          top: (index < crossAxisCount) ? BorderSide.none : const BorderSide(color: Colors.black12, width: 1.5),
+                          top: (index < crossAxisCount)
+                              ? BorderSide.none
+                              : const BorderSide(
+                                  color: Colors.black12, width: 1.5),
                           bottom: BorderSide.none,
-                          left: (index % crossAxisCount == 0) ? BorderSide.none : const BorderSide(color: Colors.black12, width: 1.5),
+                          left: (index % crossAxisCount == 0)
+                              ? BorderSide.none
+                              : const BorderSide(
+                                  color: Colors.black12, width: 1.5),
                           right: BorderSide.none,
                         ),
                       ),
@@ -109,9 +115,15 @@ class Profile extends StatelessWidget {
                   return Container(
                     decoration: BoxDecoration(
                       border: Border(
-                        top: (index < crossAxisCount) ? BorderSide.none : const BorderSide(color: Colors.black12, width: 1.5),
+                        top: (index < crossAxisCount)
+                            ? BorderSide.none
+                            : const BorderSide(
+                                color: Colors.black12, width: 1.5),
                         bottom: BorderSide.none,
-                        left: (index % crossAxisCount == 0) ? BorderSide.none : const BorderSide(color: Colors.black12, width: 1.5),
+                        left: (index % crossAxisCount == 0)
+                            ? BorderSide.none
+                            : const BorderSide(
+                                color: Colors.black12, width: 1.5),
                         right: BorderSide.none,
                       ),
                     ),

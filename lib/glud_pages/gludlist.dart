@@ -12,10 +12,34 @@ class GludListPage extends StatefulWidget {
 
 class _GludListPageState extends State<GludListPage> {
   List<Glud> gludList = [
-    Glud(title: '보도자료 제목', date: '2023-06-10', imagePath: 'assets/images/index/report.png', content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용', completed: true, route: ResultPage()),
-    Glud(title: '독서록 제목', date: '2023-06-10', imagePath: 'assets/images/index/booklog.png', content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용', completed: false, route: ResultPage()),
-    Glud(title: '소송문 제목', date: '2023-06-10', imagePath: 'assets/images/index/litigation.png', content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용', completed: true, route: ResultPage()),
-    Glud(title: '반성문 제목', date: '2023-06-10', imagePath: 'assets/images/index/reflection.png', content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용', completed: true, route: ResultPage()),
+    Glud(
+        title: '보도자료 제목',
+        date: '2023-06-10',
+        imagePath: 'assets/images/index/report.png',
+        content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
+        completed: true,
+        route: ResultPage()),
+    Glud(
+        title: '독서록 제목',
+        date: '2023-06-10',
+        imagePath: 'assets/images/index/booklog.png',
+        content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
+        completed: false,
+        route: ResultPage()),
+    Glud(
+        title: '소송문 제목',
+        date: '2023-06-10',
+        imagePath: 'assets/images/index/litigation.png',
+        content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
+        completed: true,
+        route: ResultPage()),
+    Glud(
+        title: '반성문 제목',
+        date: '2023-06-10',
+        imagePath: 'assets/images/index/reflection.png',
+        content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
+        completed: true,
+        route: ResultPage()),
   ];
 
   @override
@@ -29,7 +53,8 @@ class _GludListPageState extends State<GludListPage> {
           behavior: MyBehavior(),
           child: ListView.builder(
             itemCount: gludList.length,
-            itemBuilder: (context, index) => buildGludContainer(context, gludList[index]),
+            itemBuilder: (context, index) =>
+                buildGludContainer(context, gludList[index]),
           ),
         ),
       ),
@@ -49,8 +74,8 @@ class _GludListPageState extends State<GludListPage> {
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                  content: Text('아직 완료되지 않았습니다.'),
-                  duration: Duration(seconds: 2),
+                content: Text('아직 완료되지 않았습니다.'),
+                duration: Duration(seconds: 2),
               ),
             );
           }
@@ -61,17 +86,18 @@ class _GludListPageState extends State<GludListPage> {
             children: [
               if (glud.completed)
                 Image.asset(glud.imagePath, height: 80)
-              else const SizedBox(
-                width: 80,
-                height: 80,
-                child: Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: CircularProgressIndicator(
-                    strokeWidth: 5,
-                    color: Color(0xFFC0CFDB),
+              else
+                const SizedBox(
+                  width: 80,
+                  height: 80,
+                  child: Padding(
+                    padding: EdgeInsets.all(15.0),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 5,
+                      color: Color(0xFFC0CFDB),
+                    ),
                   ),
                 ),
-              ),
               const SizedBox(width: 15),
               Expanded(
                 child: Stack(
@@ -84,9 +110,7 @@ class _GludListPageState extends State<GludListPage> {
                           glud.title,
                           maxLines: 1,
                           style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold
-                          ),
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 5),
                         Text(
@@ -94,9 +118,7 @@ class _GludListPageState extends State<GludListPage> {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                              fontSize: 15,
-                              color: Color(0xFF5E5E5E)
-                          ),
+                              fontSize: 15, color: Color(0xFF5E5E5E)),
                         )
                       ],
                     ),
@@ -106,9 +128,7 @@ class _GludListPageState extends State<GludListPage> {
                       child: Text(
                         glud.date,
                         style: const TextStyle(
-                            fontSize: 15,
-                            color: Color(0xFF9D9D9D)
-                        ),
+                            fontSize: 15, color: Color(0xFF9D9D9D)),
                       ),
                     ),
                   ],

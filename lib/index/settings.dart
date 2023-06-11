@@ -77,7 +77,7 @@ class _SettingsItemState extends State<SettingsItem> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20), // Add this line
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: CustomContainer(
         padding: const EdgeInsets.fromLTRB(15, 5, 5, 5),
         child: Row(
