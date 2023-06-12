@@ -205,6 +205,7 @@ flutter:
     - assets/images/
     - assets/images/index/
     - assets/images/mypage/
+    - assets/images/loginpage/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
