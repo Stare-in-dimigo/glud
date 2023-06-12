@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'index/gludindex.dart';
 import 'index/profile.dart';
+import 'login_pages/loginpage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,12 +27,20 @@ class _GludAppState extends State<GludApp> {
   int _selectedIndex = 0;
   final _pageController = PageController();
 
+  bool isLoggedIn = false;
+
   void _onItemTapped(int index) {
     _pageController.animateToPage(
       index,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
+  }
+
+  void login() {
+    setState(() {
+      isLoggedIn = true;
+    });
   }
 
   @override
@@ -42,6 +51,17 @@ class _GludAppState extends State<GludApp> {
 
   @override
   Widget build(BuildContext context) {
+    if (!isLoggedIn) {
+      return MaterialApp(
+        theme: ThemeData(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          fontFamily: 'Pretendard',
+        ),
+        home: LoginPage(onLogin: login),
+      );
+    }
+
     final appBarTitle = ['글루드', '마이페이지'][_selectedIndex];
 
     return MaterialApp(
