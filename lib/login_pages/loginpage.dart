@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'registerpage.dart';
 
 class LoginPage extends StatefulWidget {
   final VoidCallback onLogin;
@@ -27,6 +28,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     const Duration(seconds: 6),
     const Duration(seconds: 4),
   ];
+
+  bool switchValue = false;
 
   @override
   void initState() {
@@ -98,9 +101,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    const cloudImageWidth = 150.0;
-
     return Scaffold(
       backgroundColor: const Color(0xFF92B4CD),
       body: Stack(
@@ -128,12 +128,43 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                 child: Column(
                   children: [
                     InkWell(
-                      onTap: widget.onLogin,
+                      onTap: switchValue
+                          ? widget.onLogin
+                          : () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RegisterPage()),
+                              ).then((value) {
+                                if (value != null && value is bool && value) {
+                                  widget.onLogin();
+                                }
+                              });
+                            },
                       child: Image.asset(
                         'assets/images/loginpage/kakao_login_large_wide.png',
                       ),
                     ),
                     const SizedBox(height: 50),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('isRegistered',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold)),
+                        Switch(
+                          value: switchValue,
+                          activeColor: const Color(0xFF7EAAC9),
+                          onChanged: (value) {
+                            setState(() {
+                              switchValue = value;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

@@ -83,13 +83,11 @@ class _SettingsItemState extends State<SettingsItem> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-                widget.text,
+            Text(widget.text,
                 style: const TextStyle(
                   fontSize: 20.0,
                   color: Color(0xFF5E5E5E),
-                )
-            ),
+                )),
             Switch(
               value: _isSwitched,
               activeColor: const Color(0xFF7EAAC9),

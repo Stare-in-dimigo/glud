@@ -115,10 +115,10 @@ class _ReportPageState extends State<ReportPage> {
       duration: const Duration(milliseconds: 300),
       child: !_isFocused
           ? const Padding(
-        padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-        key: ValueKey<int>(1),
-        child: CustomFloatingButton(text: '보도자료 생성하기'),
-      )
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+              key: ValueKey<int>(1),
+              child: CustomFloatingButton(text: '보도자료 생성하기'),
+            )
           : const SizedBox.shrink(key: ValueKey<int>(2)),
     );
   }
