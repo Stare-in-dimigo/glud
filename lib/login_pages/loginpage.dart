@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     const Duration(seconds: 4),
   ];
 
-  bool switchValue = false;
+  bool isRegistered = false;
 
   @override
   void initState() {
@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                 child: Column(
                   children: [
                     InkWell(
-                      onTap: switchValue
+                      onTap: isRegistered
                           ? widget.onLogin
                           : () {
                               Navigator.push(
@@ -132,8 +132,13 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                 MaterialPageRoute(
                                     builder: (context) => RegisterPage()),
                               ).then((value) {
-                                if (value != null && value is bool && value) {
+                                if (value == true) {
                                   widget.onLogin();
+                                } else if (value == false) {
+                                  widget.onLogin();
+                                } else {
+                                  SystemChrome.setSystemUIOverlayStyle(
+                                      bluestyle);
                                 }
                               });
                             },
@@ -142,25 +147,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                       ),
                     ),
                     const SizedBox(height: 50),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text('isRegistered',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold)),
-                        Switch(
-                          value: switchValue,
-                          activeColor: const Color(0xFF7EAAC9),
-                          onChanged: (value) {
-                            setState(() {
-                              switchValue = value;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ),

@@ -76,7 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             Navigator.of(context).pop(true);
                           });
                         }
-                      : null, // If a button is already selected, this button cannot be tapped
+                      : null,
                   child: CustomContainer(
                     backgroundColor: selectedButtonIndex == 0
                         ? Color(0xFF7EAAC9)
@@ -100,10 +100,10 @@ class _RegisterPageState extends State<RegisterPage> {
                             selectedButtonIndex = 1;
                           });
                           Future.delayed(Duration(seconds: 1), () {
-                            Navigator.of(context).pop(true);
+                            Navigator.of(context).pop(false);
                           });
                         }
-                      : null, // If a button is already selected, this button cannot be tapped
+                      : null,
                   child: CustomContainer(
                     backgroundColor: selectedButtonIndex == 1
                         ? Color(0xFF7EAAC9)
