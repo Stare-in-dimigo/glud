@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomContainer extends StatelessWidget {
   final Widget child;
@@ -36,3 +37,15 @@ class MyBehavior extends ScrollBehavior {
     return child;
   }
 }
+
+const SystemUiOverlayStyle bluestyle = SystemUiOverlayStyle(
+  statusBarColor: Colors.transparent,
+  systemNavigationBarColor: Color(0xFF92B4CD),
+  statusBarIconBrightness: Brightness.dark,
+);
+
+const SystemUiOverlayStyle whitestyle = SystemUiOverlayStyle(
+  statusBarColor: Colors.transparent,
+  systemNavigationBarColor: Colors.white,
+  statusBarIconBrightness: Brightness.dark,
+);

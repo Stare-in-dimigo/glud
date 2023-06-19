@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
+import 'package:glud/widgets.dart';
 import 'index/gludindex.dart';
 import 'index/profile.dart';
 import 'login_pages/loginpage.dart';
@@ -105,11 +106,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      systemOverlayStyle: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Color(0xFF92B4CD),
-        statusBarIconBrightness: Brightness.dark,
-      ),
+      systemOverlayStyle: bluestyle,
       backgroundColor: Colors.transparent,
       elevation: 0.0,
       title: Padding(

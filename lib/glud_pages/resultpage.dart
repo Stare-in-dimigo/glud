@@ -65,11 +65,7 @@ class _ResultPageState extends State<ResultPage> {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      systemOverlayStyle: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.white,
-        statusBarIconBrightness: Brightness.dark,
-      ),
+      systemOverlayStyle: whitestyle,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
         iconSize: 20,
