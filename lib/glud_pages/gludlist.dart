@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../widgets.dart';
 import 'resultpage.dart';
 
 class GludListPage extends StatefulWidget {
-  GludListPage({Key? key}) : super(key: key);
+  const GludListPage({Key? key}) : super(key: key);
 
   @override
   _GludListPageState createState() => _GludListPageState();

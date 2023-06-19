@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import '../widgets.dart';
 
 class RegisterPage extends StatefulWidget {
-  RegisterPage({Key? key}) : super(key: key);
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -72,22 +72,22 @@ class _RegisterPageState extends State<RegisterPage> {
                           setState(() {
                             selectedButtonIndex = 0;
                           });
-                          Future.delayed(Duration(seconds: 1), () {
+                          Future.delayed(const Duration(seconds: 1), () {
                             Navigator.of(context).pop(true);
                           });
                         }
                       : null,
                   child: CustomContainer(
                     backgroundColor: selectedButtonIndex == 0
-                        ? Color(0xFF7EAAC9)
-                        : Color(0xFFF5F5F5),
+                        ? const Color(0xFF7EAAC9)
+                        : const Color(0xFFF5F5F5),
                     child: Text(
                       '네, 타자를 치기에 어려움이 있어요',
                       style: TextStyle(
                         fontSize: 20.0,
                         color: selectedButtonIndex == 0
                             ? Colors.white
-                            : Color(0xFF5E5E5E),
+                            : const Color(0xFF5E5E5E),
                       ),
                     ),
                   ),
@@ -99,22 +99,22 @@ class _RegisterPageState extends State<RegisterPage> {
                           setState(() {
                             selectedButtonIndex = 1;
                           });
-                          Future.delayed(Duration(seconds: 1), () {
+                          Future.delayed(const Duration(seconds: 1), () {
                             Navigator.of(context).pop(false);
                           });
                         }
                       : null,
                   child: CustomContainer(
                     backgroundColor: selectedButtonIndex == 1
-                        ? Color(0xFF7EAAC9)
-                        : Color(0xFFF5F5F5),
+                        ? const Color(0xFF7EAAC9)
+                        : const Color(0xFFF5F5F5),
                     child: Text(
                       '아니요, 타자를 치기에 어려움이 없어요',
                       style: TextStyle(
                         fontSize: 20.0,
                         color: selectedButtonIndex == 1
                             ? Colors.white
-                            : Color(0xFF5E5E5E),
+                            : const Color(0xFF5E5E5E),
                       ),
                     ),
                   ),

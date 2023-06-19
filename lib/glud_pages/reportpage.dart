@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:glud/glud_pages/finishpage.dart';
 import '../widgets.dart';
 
 class ReportPage extends StatefulWidget {
-  ReportPage({Key? key}) : super(key: key);
+  const ReportPage({Key? key}) : super(key: key);
 
   @override
   _ReportPageState createState() => _ReportPageState();
 }
 
 class _ReportPageState extends State<ReportPage> {
-  TextEditingController _dateTimeController = TextEditingController();
-  TextEditingController _placeController = TextEditingController();
-  TextEditingController _contentController = TextEditingController();
-  TextEditingController _quoteController = TextEditingController();
+  final TextEditingController _dateTimeController = TextEditingController();
+  final TextEditingController _placeController = TextEditingController();
+  final TextEditingController _contentController = TextEditingController();
+  final TextEditingController _quoteController = TextEditingController();
 
   bool _isFocused = false;
 

@@ -6,7 +6,7 @@ import '../widgets.dart';
 class LoginPage extends StatefulWidget {
   final VoidCallback onLogin;
 
-  LoginPage({Key? key, required this.onLogin}) : super(key: key);
+  const LoginPage({Key? key, required this.onLogin}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();

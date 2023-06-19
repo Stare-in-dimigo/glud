@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'gludlist.dart';
 import '../widgets.dart';
 
 class FinishPage extends StatefulWidget {
-  FinishPage({Key? key}) : super(key: key);
+  const FinishPage({Key? key}) : super(key: key);
 
   @override
   _FinishPageState createState() => _FinishPageState();

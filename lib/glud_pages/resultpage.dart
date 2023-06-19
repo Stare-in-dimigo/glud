@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../widgets.dart';
 
 class ResultPage extends StatefulWidget {
-  ResultPage({Key? key}) : super(key: key);
+  const ResultPage({Key? key}) : super(key: key);
 
   @override
   _ResultPageState createState() => _ResultPageState();
