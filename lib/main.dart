@@ -5,10 +5,15 @@ import 'package:glud/widgets.dart';
 import 'index/gludindex.dart';
 import 'index/profile.dart';
 import 'login_pages/loginpage.dart';
+import 'dart:io' show Platform;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await FlutterDisplayMode.setHighRefreshRate();
+
+  if (Platform.isAndroid) {
+    await FlutterDisplayMode.setHighRefreshRate();
+  }
+
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -109,14 +114,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       systemOverlayStyle: bluestyle,
       backgroundColor: Colors.transparent,
       elevation: 0.0,
-      title: Padding(
-        padding: const EdgeInsets.only(left: 10.0),
-        child: Text(text,
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-            )),
+      title: Align(
+        alignment: Alignment.centerLeft,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10.0),
+          child: Text(text,
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              )),
+        ),
       ),
       toolbarHeight: 100,
     );
@@ -125,6 +133,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(100.0);
 }
+
 
 class CustomNavigationBar extends StatelessWidget {
   final int selectedIndex;
@@ -144,7 +153,6 @@ class CustomNavigationBar extends StatelessWidget {
         topRight: Radius.circular(25),
       ),
       child: Container(
-        height: 70,
         decoration: const BoxDecoration(
           boxShadow: [
             BoxShadow(

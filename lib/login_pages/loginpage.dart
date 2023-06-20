@@ -17,7 +17,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   late AnimationController _controller2;
   late AnimationController _controller3;
   final cloudImageWidths = [150.0, 200.0, 100.0];
-  final cloudBottomOffsets = [600.0, 300.0, 200.0];
+  final cloudBottomOffsets = [650.0, 350.0, 200.0];
   final cloudOpacities = [0.5, 0.3, 0.2];
   final cloudImagePaths = [
     'assets/images/loginpage/cloud.png',
@@ -146,7 +146,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                         'assets/images/loginpage/kakao_login_large_wide.png',
                       ),
                     ),
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 100),
                   ],
                 ),
               ),

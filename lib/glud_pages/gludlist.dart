@@ -150,12 +150,15 @@ class _GludListPageState extends State<GludListPage> {
       ),
       backgroundColor: Colors.transparent,
       elevation: 0.0,
-      title: const Text(
-        '최근 작성한 글',
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 25.0,
-          fontWeight: FontWeight.bold,
+      title: const Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          '최근 작성한 글',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 25.0,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       titleSpacing: -10,

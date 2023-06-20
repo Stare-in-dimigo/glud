@@ -31,12 +31,15 @@ class SettingsPage extends StatelessWidget {
       ),
       backgroundColor: Colors.transparent,
       elevation: 0.0,
-      title: const Text(
-        '설정',
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 25.0,
-          fontWeight: FontWeight.bold,
+      title: const Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          '설정',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 25.0,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       titleSpacing: -10,

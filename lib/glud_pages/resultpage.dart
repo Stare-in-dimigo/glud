@@ -72,12 +72,15 @@ class _ResultPageState extends State<ResultPage> {
       ),
       backgroundColor: Colors.transparent,
       elevation: 0.0,
-      title: const Text(
-        '보도자료',
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 25.0,
-          fontWeight: FontWeight.bold,
+      title: const Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          '보도자료',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 25.0,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       titleSpacing: -10,
