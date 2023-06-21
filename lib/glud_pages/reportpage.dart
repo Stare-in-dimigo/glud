@@ -26,6 +26,30 @@ class _ReportPageState extends State<ReportPage> {
     super.dispose();
   }
 
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1500),
+      lastDate: DateTime(2500),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Color(0xFF92B4CD),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null) {
+      setState(() {
+        _dateTimeController.text = "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -80,11 +104,11 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   CustomContainer _buildCustomContainer(
-    IconData? icon,
-    String hintText,
-    TextEditingController controller, {
-    bool centerAlign = false,
-  }) {
+      IconData? icon,
+      String hintText,
+      TextEditingController controller, {
+        bool centerAlign = false,
+      }) {
     return CustomContainer(
       padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
       child: Row(
@@ -93,7 +117,7 @@ class _ReportPageState extends State<ReportPage> {
             Icon(icon, color: const Color(0xFFC0CFDB), size: 30.0),
           if (icon != null) const SizedBox(width: 15),
           Expanded(
-            child: CustomTextField(
+            child: hintText == '일시' ? _buildDateTimeField() : CustomTextField(
               hintText: hintText,
               centerAlign: centerAlign,
               textEditingController: controller,
@@ -109,15 +133,37 @@ class _ReportPageState extends State<ReportPage> {
     );
   }
 
+  TextField _buildDateTimeField() {
+    return TextField(
+      controller: _dateTimeController,
+      decoration: const InputDecoration(
+        hintText: '일시',
+        hintStyle: TextStyle(
+          color: Color(0xFF5E5E5E),
+          fontSize: 20.0,
+        ),
+        border: InputBorder.none,
+      ),
+      style: const TextStyle(
+        color: Color(0xFF5E5E5E),
+        fontSize: 20.0,
+      ),
+      readOnly: true,
+      onTap: () {
+        _selectDate(context);
+      },
+    );
+  }
+
   Widget _buildFloatingButton(BuildContext context) {
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 300),
       child: !_isFocused
           ? const Padding(
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-              key: ValueKey<int>(1),
-              child: CustomFloatingButton(text: '보도자료 생성하기'),
-            )
+        padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+        key: ValueKey<int>(1),
+        child: CustomFloatingButton(text: '보도자료 생성하기'),
+      )
           : const SizedBox.shrink(key: ValueKey<int>(2)),
     );
   }
@@ -166,6 +212,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      cursorColor: const Color(0xFF5E5E5E),
       maxLines: null,
       controller: textEditingController,
       onChanged: (text) {},
@@ -207,7 +254,7 @@ class CustomFloatingButton extends StatelessWidget {
       onTap: () {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => FinishPage()),
+          MaterialPageRoute(builder: (context) => const FinishPage()),
         );
       },
       child: CustomContainer(

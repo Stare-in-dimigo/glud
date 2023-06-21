@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import '../widgets.dart';
 import '../glud_pages/reportpage.dart';
+import '../glud_pages/reportpage_fordis.dart';
 
 class GludIndex extends StatelessWidget {
   GludIndex({Key? key}) : super(key: key);
 
   final List<_GludItem> _items = [
     _GludItem('보도자료', '생생한', 'assets/images/index/report.png', ReportPage()),
-    _GludItem('독서록', '동화같은', 'assets/images/index/booklog.png', ReportPage()),
+    _GludItem('독서록', '동화같은', 'assets/images/index/booklog.png', ReportPageD()),
     _GludItem(
         '소송문', '백전백승', 'assets/images/index/litigation.png', ReportPage()),
     _GludItem(
