@@ -110,6 +110,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> actions = [];
+
+    if (text == '글루드') {
+      actions = [
+        Container(
+          margin: const EdgeInsets.only(right: 20.0, top: 15.0),
+          child: Image.asset(
+            'assets/images/index/higlud.png',
+            width: 220,
+          ),
+        ),
+      ];
+    }
+
     return AppBar(
       systemOverlayStyle: bluestyle,
       backgroundColor: Colors.transparent,
@@ -118,14 +132,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         alignment: Alignment.centerLeft,
         child: Padding(
           padding: const EdgeInsets.only(left: 10.0),
-          child: Text(text,
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              )),
+          child: Text(
+            text,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
+      actions: actions,
       toolbarHeight: 100,
     );
   }
@@ -133,7 +150,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(100.0);
 }
-
 
 class CustomNavigationBar extends StatelessWidget {
   final int selectedIndex;
