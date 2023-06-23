@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:glud/widgets.dart';
-import 'finishpage.dart';
+import '../widgets.dart';
 
 class ReportPageD extends StatefulWidget {
   const ReportPageD({Key? key}) : super(key: key);
@@ -40,26 +39,15 @@ class _ReportPageDState extends State<ReportPageD> {
                   _currentPageNotifier.value = index;
                 },
                 children: <Widget>[
-                  for (var i = 0; i < 4; i++)
-                    PageViewTemplate(
-                      buttonAction: i < 3
-                          ? () {
-                        _controller.animateToPage(
-                          i + 1,
-                          duration: const Duration(milliseconds: 800),
-                          curve: Curves.ease,
-                        );
-                      }
-                          : () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const FinishPage(),
-                          ),
-                        );
-                      },
-                      isLastPage: i == 3,
-                    ),
+                  Page1Widget(
+                    onNextPage: () {
+                      _controller.animateToPage(
+                        1,
+                        duration: const Duration(milliseconds: 800),
+                        curve: Curves.ease,
+                      );
+                    },
+                  ),
                 ],
               ),
               Align(
@@ -107,6 +95,12 @@ class _ReportPageDState extends State<ReportPageD> {
   }
 
   AppBar buildAppBar(BuildContext context) {
+    const TextStyle appBarTextStyle = TextStyle(
+      color: Colors.black,
+      fontSize: 25.0,
+      fontWeight: FontWeight.bold,
+    );
+
     return AppBar(
       systemOverlayStyle: whitestyle,
       leading: IconButton(
@@ -116,15 +110,11 @@ class _ReportPageDState extends State<ReportPageD> {
       ),
       backgroundColor: Colors.transparent,
       elevation: 0.0,
-      title: const Align(
+      title: Align(
         alignment: Alignment.centerLeft,
         child: Text(
           '보도자료',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 25.0,
-            fontWeight: FontWeight.bold,
-          ),
+          style: appBarTextStyle,
         ),
       ),
       titleSpacing: -10,
@@ -133,80 +123,175 @@ class _ReportPageDState extends State<ReportPageD> {
   }
 }
 
-class PageViewTemplate extends StatelessWidget {
-  final void Function()? buttonAction;
-  final bool isLastPage;
+class Page1Widget extends StatefulWidget {
+  final void Function() onNextPage;
 
-  const PageViewTemplate({
-    Key? key,
-    this.buttonAction,
-    this.isLastPage = false,
-  }) : super(key: key);
+  const Page1Widget({Key? key, required this.onNextPage}) : super(key: key);
+
+  @override
+  _Page1WidgetState createState() => _Page1WidgetState();
+}
+
+class _Page1WidgetState extends State<Page1Widget> with TickerProviderStateMixin {
+  bool _showButton = false;
+  late AnimationController _animationController;
+  late AnimationController _fadeController;
+  late Animation<Offset> _offsetAnimation;
+  late Animation<double> _fadeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    );
+
+    _fadeController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+
+    _offsetAnimation = Tween<Offset>(
+      begin: const Offset(0.0, 0.3),
+      end: const Offset(0.0, 0.15),
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(_fadeController);
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    _fadeController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Stack(
       children: [
-        const CustomCircle(),
-        const SizedBox(height: 60),
-        const Center(
-          child: Column(children: [
-            Text(
-              '위 버튼을 눌러서\n음성으로 입력할 수 있어요',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 28.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
-            ),
-            SizedBox(height: 10),
-            Text(
-              '2023년 O월 O일 이라고 말해보세요',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF9D9D9D),
+        Positioned.fill(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(flex: 2, child: Container()),
+              _showButton
+                  ? Container()
+                  : GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _showButton = true;
+                    _animationController.forward();
+                    _fadeController.forward();
+                  });
+                },
+                child: const CustomCircle(),
               ),
-            ),
-          ]),
-        ),
-        const SizedBox(height: 50),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 135),
-          child: CustomContainer(
-            child: Column(
-              children: [
-                SizedBox(height: 5),
-                Icon(
-                  Icons.calendar_today,
-                  color: Color(0xFFC0CFDB),
-                  size: 30,
+              Expanded(flex: 9, child: Container()),
+              _showButton
+                  ? FadeTransition(
+                opacity: _fadeAnimation,
+                child: NavigationButton(
+                  label: '다음',
+                  action: widget.onNextPage,
                 ),
-                SizedBox(height: 15),
-                Text(
-                  '2023. 6. 6',
-                  style: TextStyle(
-                    color: Color(0xFF5E5E5E),
-                    fontSize: 20.0,
-                  ),
-                ),
-              ],
-            ),
+              )
+                  : Container(),
+              const SizedBox(height: 160),
+            ],
           ),
         ),
-        Expanded(child: Container()),
-        NavigationButton(
-          label: isLastPage ? '완료' : '다음',
-          action: buttonAction,
+        SlideTransition(
+          position: _offsetAnimation,
+          child: Column(
+            children: [
+              Column(
+                children: [
+                  if (!_showButton)
+                    const Text(
+                      '위 버튼을 눌러서\n음성으로 입력할 수 있어요',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  if (_showButton)
+                    const Text(
+                      "올바르게 입력되었다면\n'다음'이라고 말해주세요",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  const SizedBox(height: 10),
+                  if (!_showButton)
+                    const Text(
+                      '2023년 O월 O일 이라고 말해보세요',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF9D9D9D),
+                      ),
+                    ),
+                  if (_showButton)
+                    const Text(
+                      "잘못된 내용이 있다면 '돌아가기'라고 말해주세요",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF9D9D9D),
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 50),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 135),
+                child: CustomContainer(
+                  isHighLighted: _showButton == true ? true : null,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 5),
+                      const Icon(
+                        Icons.calendar_today,
+                        color: Color(0xFFC0CFDB),
+                        size: 30,
+                      ),
+                      const SizedBox(height: 15),
+                      Text(
+                        '2023. 6. 6',
+                        style: TextStyle(
+                          color: const Color(0xFF5E5E5E),
+                          fontSize: 20.0,
+                          fontWeight: _showButton
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-        const SizedBox(height: 160),
       ],
     );
   }
 }
-
 
 class NavigationButton extends StatelessWidget {
   final String label;
@@ -238,12 +323,13 @@ class NavigationButton extends StatelessWidget {
     );
   }
 }
+
 class CustomCircle extends StatelessWidget {
   final double size;
 
   const CustomCircle({
     Key? key,
-    this.size = 80.0, // Default size is 100
+    this.size = 80.0,
   }) : super(key: key);
 
   @override
@@ -252,10 +338,10 @@ class CustomCircle extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: const Color(0xFFffffff), // Inside color is white
+        color: const Color(0xFFffffff),
         border: Border.all(
-          color: const Color(0xFF92B4CD), // Border color
-          width: 2.0, // You can adjust border width as you need
+          color: const Color(0xFF92B4CD),
+          width: 2.0,
         ),
         shape: BoxShape.circle,
       ),

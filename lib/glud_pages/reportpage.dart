@@ -45,7 +45,8 @@ class _ReportPageState extends State<ReportPage> {
     );
     if (picked != null) {
       setState(() {
-        _dateTimeController.text = "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+        _dateTimeController.text =
+            "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
       });
     }
   }
@@ -104,11 +105,11 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   CustomContainer _buildCustomContainer(
-      IconData? icon,
-      String hintText,
-      TextEditingController controller, {
-        bool centerAlign = false,
-      }) {
+    IconData? icon,
+    String hintText,
+    TextEditingController controller, {
+    bool centerAlign = false,
+  }) {
     return CustomContainer(
       padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
       child: Row(
@@ -117,16 +118,18 @@ class _ReportPageState extends State<ReportPage> {
             Icon(icon, color: const Color(0xFFC0CFDB), size: 30.0),
           if (icon != null) const SizedBox(width: 15),
           Expanded(
-            child: hintText == '일시' ? _buildDateTimeField() : CustomTextField(
-              hintText: hintText,
-              centerAlign: centerAlign,
-              textEditingController: controller,
-              onFocusChange: (bool focused) {
-                setState(() {
-                  _isFocused = focused;
-                });
-              },
-            ),
+            child: hintText == '일시'
+                ? _buildDateTimeField()
+                : CustomTextField(
+                    hintText: hintText,
+                    centerAlign: centerAlign,
+                    textEditingController: controller,
+                    onFocusChange: (bool focused) {
+                      setState(() {
+                        _isFocused = focused;
+                      });
+                    },
+                  ),
           ),
         ],
       ),
@@ -160,10 +163,10 @@ class _ReportPageState extends State<ReportPage> {
       duration: const Duration(milliseconds: 300),
       child: !_isFocused
           ? const Padding(
-        padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-        key: ValueKey<int>(1),
-        child: CustomFloatingButton(text: '보도자료 생성하기'),
-      )
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+              key: ValueKey<int>(1),
+              child: CustomFloatingButton(text: '보도자료 생성하기'),
+            )
           : const SizedBox.shrink(key: ValueKey<int>(2)),
     );
   }
