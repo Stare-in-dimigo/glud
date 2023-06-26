@@ -39,43 +39,10 @@ class _ReportPageDState extends State<ReportPageD> {
                 onPageChanged: (int index) {
                   _currentPageNotifier.value = index;
                 },
+                physics: const NeverScrollableScrollPhysics(),
                 children: <Widget>[
-                  Page1Widget(
-                    onNextPage: () {
-                      _controller.animateToPage(
-                        1,
-                        duration: const Duration(milliseconds: 800),
-                        curve: Curves.ease,
-                      );
-                    },
-                  ),
-                  Page2Widget(
-                    onNextPage: () {
-                      _controller.animateToPage(
-                        2,
-                        duration: const Duration(milliseconds: 800),
-                        curve: Curves.ease,
-                      );
-                    },
-                  ),
-                  Page3Widget(
-                    onNextPage: () {
-                      _controller.animateToPage(
-                        3,
-                        duration: const Duration(milliseconds: 800),
-                        curve: Curves.ease,
-                      );
-                    },
-                  ),
-                  Page4Widget(
-                    onNextPage: () {
-                      _controller.animateToPage(
-                        4,
-                        duration: const Duration(milliseconds: 800),
-                        curve: Curves.ease,
-                      );
-                    },
-                  ),
+                  for (int i = 0; i < 4; i++) // Assuming 4 pages
+                    buildPageWidget(i),
                 ],
               ),
               Align(
@@ -94,6 +61,21 @@ class _ReportPageDState extends State<ReportPageD> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget buildPageWidget(int index) {
+    onNextPage() {
+      _controller.animateToPage(
+        index + 1,
+        duration: const Duration(milliseconds: 800),
+        curve: Curves.ease,
+      );
+    }
+
+    return PageWidget(
+      onNextPage: onNextPage,
+      pageIndex: index,
     );
   }
 
@@ -148,16 +130,21 @@ class _ReportPageDState extends State<ReportPageD> {
   }
 }
 
-class Page1Widget extends StatefulWidget {
+class PageWidget extends StatefulWidget {
+  final int pageIndex;
   final void Function() onNextPage;
 
-  const Page1Widget({Key? key, required this.onNextPage}) : super(key: key);
+  const PageWidget({
+    Key? key,
+    required this.pageIndex,
+    required this.onNextPage,
+  }) : super(key: key);
 
   @override
-  _Page1WidgetState createState() => _Page1WidgetState();
+  _PageWidgetState createState() => _PageWidgetState();
 }
 
-class _Page1WidgetState extends State<Page1Widget> with TickerProviderStateMixin {
+class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
   bool _showButton = false;
   late AnimationController _animationController;
   late AnimationController _fadeController;
@@ -210,24 +197,33 @@ class _Page1WidgetState extends State<Page1Widget> with TickerProviderStateMixin
               _showButton
                   ? Container()
                   : GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _showButton = true;
-                    _animationController.forward();
-                    _fadeController.forward();
-                  });
-                },
-                child: const CustomCircle(),
-              ),
+                      onTap: () {
+                        setState(() {
+                          _showButton = true;
+                          _animationController.forward();
+                          _fadeController.forward();
+                        });
+                      },
+                      child: const CustomCircle(),
+                    ),
               Expanded(flex: 9, child: Container()),
               _showButton
                   ? FadeTransition(
-                opacity: _fadeAnimation,
-                child: NavigationButton(
-                  label: '다음',
-                  action: widget.onNextPage,
-                ),
-              )
+                      opacity: _fadeAnimation,
+                      child: NavigationButton(
+                        label: widget.pageIndex == 3 ? '완료' : '다음',
+                        action: widget.pageIndex == 3
+                            ? () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const FinishPage(),
+                                  ),
+                                );
+                              }
+                            : widget.onNextPage,
+                      ),
+                    )
                   : Container(),
               const SizedBox(height: 160),
             ],
@@ -242,7 +238,7 @@ class _Page1WidgetState extends State<Page1Widget> with TickerProviderStateMixin
                   Text(
                     !_showButton
                         ? '위 버튼을 눌러서\n음성으로 입력할 수 있어요'
-                        : "올바르게 입력되었다면\n'다음'이라고 말해주세요",
+                        : "올바르게 입력되었다면\n${widget.pageIndex == 3 ? "'완료'" : "'다음'이"}라고 말해주세요",
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 25.0,
@@ -253,7 +249,7 @@ class _Page1WidgetState extends State<Page1Widget> with TickerProviderStateMixin
                   const SizedBox(height: 10),
                   Text(
                     !_showButton
-                        ? '2023년 O월 O일 이라고 말해보세요'
+                        ? getPageHintText(widget.pageIndex)
                         : "잘못된 내용이 있다면 '돌아가기'라고 말해주세요",
                     textAlign: TextAlign.center,
                     style: const TextStyle(
@@ -266,31 +262,10 @@ class _Page1WidgetState extends State<Page1Widget> with TickerProviderStateMixin
               ),
               const SizedBox(height: 50),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 135),
+                padding: getPagePadding(widget.pageIndex),
                 child: CustomContainer(
                   isHighLighted: _showButton == true ? true : null,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 5),
-                      const Icon(
-                        Icons.calendar_today,
-                        color: Color(0xFFC0CFDB),
-                        size: 30,
-                      ),
-                      const SizedBox(height: 15),
-                      Text(
-                        textAlign: TextAlign.center,
-                        '2023. 6. 6',
-                        style: TextStyle(
-                          color: const Color(0xFF5E5E5E),
-                          fontSize: 20.0,
-                          fontWeight: _showButton
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                        ),
-                      ),
-                    ],
-                  ),
+                  child: getPageContentText(widget.pageIndex),
                 ),
               ),
             ],
@@ -299,448 +274,82 @@ class _Page1WidgetState extends State<Page1Widget> with TickerProviderStateMixin
       ],
     );
   }
-}
 
-class Page2Widget extends StatefulWidget {
-  final void Function() onNextPage;
-
-  const Page2Widget({Key? key, required this.onNextPage}) : super(key: key);
-
-  @override
-  _Page2WidgetState createState() => _Page2WidgetState();
-}
-
-class _Page2WidgetState extends State<Page2Widget> with TickerProviderStateMixin {
-  bool _showButton = false;
-  late AnimationController _animationController;
-  late AnimationController _fadeController;
-  late Animation<Offset> _offsetAnimation;
-  late Animation<double> _fadeAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 800),
-      vsync: this,
-    );
-
-    _fadeController = AnimationController(
-      duration: const Duration(milliseconds: 500),
-      vsync: this,
-    );
-
-    _offsetAnimation = Tween<Offset>(
-      begin: const Offset(0.0, 0.3),
-      end: const Offset(0.0, 0.15),
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
-
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(_fadeController);
+  String getPageHintText(int pageIndex) {
+    switch (pageIndex) {
+      case 0:
+        return '2023년 O월 O일 이라고 말해보세요';
+      case 1:
+        return '안산시 단원구 사세충열로 94 라고 말해보세요';
+      case 2:
+        return '주요 내용을 말해보세요';
+      case 3:
+        return '"금일 생활관 마지막 방송" 이라고 말해보세요';
+      default:
+        return '';
+    }
   }
 
-  @override
-  void dispose() {
-    _animationController.dispose();
-    _fadeController.dispose();
-    super.dispose();
+  EdgeInsets getPagePadding(int pageIndex) {
+    switch (pageIndex) {
+      case 0:
+        return const EdgeInsets.symmetric(horizontal: 130);
+      case 1:
+        return const EdgeInsets.symmetric(horizontal: 120);
+      case 2:
+        return const EdgeInsets.symmetric(horizontal: 60);
+      case 3:
+        return const EdgeInsets.symmetric(horizontal: 110);
+      default:
+        return const EdgeInsets.all(0);
+    }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(flex: 2, child: Container()),
-              _showButton
-                  ? Container()
-                  : GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _showButton = true;
-                    _animationController.forward();
-                    _fadeController.forward();
-                  });
-                },
-                child: const CustomCircle(),
-              ),
-              Expanded(flex: 9, child: Container()),
-              _showButton
-                  ? FadeTransition(
-                opacity: _fadeAnimation,
-                child: NavigationButton(
-                  label: '다음',
-                  action: widget.onNextPage,
-                ),
-              )
-                  : Container(),
-              const SizedBox(height: 160),
-            ],
+  Widget getPageContentText(int pageIndex) {
+    Widget iconAndText(String text, IconData icon) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            color: const Color(0xFFC0CFDB),
+            size: 35,
+          ), // Adjust the size as needed
+          const SizedBox(height: 15), // Add some spacing
+          Text(
+            text,
+            style: const TextStyle(
+              color: Color(0xFF5E5E5E),
+              fontSize: 20.0,
+              fontWeight: FontWeight.normal,
+            ),
+            textAlign: TextAlign.center,
           ),
-        ),
-        SlideTransition(
-          position: _offsetAnimation,
-          child: Column(
-            children: [
-              Column(
-                children: [
-                  Text(
-                    !_showButton
-                        ? '위 버튼을 눌러서\n음성으로 입력할 수 있어요'
-                        : "올바르게 입력되었다면\n'다음'이라고 말해주세요",
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    !_showButton
-                        ? '안산시 단원구 사세충열로 94 라고 말해보세요'
-                        : "잘못된 내용이 있다면 '돌아가기'라고 말해주세요",
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF9D9D9D),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 50),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 120),
-                child: CustomContainer(
-                  isHighLighted: _showButton == true ? true : null,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 5),
-                      const Icon(
-                        Icons.calendar_today,
-                        color: Color(0xFFC0CFDB),
-                        size: 30,
-                      ),
-                      const SizedBox(height: 15),
-                      Text(
-                        '안산시 단원구\n사세충열로 94',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: const Color(0xFF5E5E5E),
-                          fontSize: 20.0,
-                          fontWeight: _showButton
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+        ],
+      );
+    }
+
+    switch (pageIndex) {
+      case 0:
+        return iconAndText('2023. 6. 6', Icons.calendar_today);
+      case 1:
+        return iconAndText('안산시 단원구\n사세충열로 94', Icons.place_outlined);
+      case 2:
+        return const Text(
+          '주요내용\n주요내용\n주요내용\n주요내용\n주요내용',
+          style: TextStyle(
+            color: Color(0xFF5E5E5E),
+            fontSize: 20.0,
+            fontWeight: FontWeight.normal,
           ),
-        ),
-      ],
-    );
+        );
+      case 3:
+        return iconAndText('"금일 마지막 방송"', Icons.format_quote_outlined);
+      default:
+        return const SizedBox();
+    }
   }
 }
-
-class Page3Widget extends StatefulWidget {
-  final void Function() onNextPage;
-
-  const Page3Widget({Key? key, required this.onNextPage}) : super(key: key);
-
-  @override
-  _Page3WidgetState createState() => _Page3WidgetState();
-}
-
-class _Page3WidgetState extends State<Page3Widget> with TickerProviderStateMixin {
-  bool _showButton = false;
-  late AnimationController _animationController;
-  late AnimationController _fadeController;
-  late Animation<Offset> _offsetAnimation;
-  late Animation<double> _fadeAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 800),
-      vsync: this,
-    );
-
-    _fadeController = AnimationController(
-      duration: const Duration(milliseconds: 500),
-      vsync: this,
-    );
-
-    _offsetAnimation = Tween<Offset>(
-      begin: const Offset(0.0, 0.3),
-      end: const Offset(0.0, 0.15),
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
-
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(_fadeController);
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    _fadeController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(flex: 2, child: Container()),
-              _showButton
-                  ? Container()
-                  : GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _showButton = true;
-                    _animationController.forward();
-                    _fadeController.forward();
-                  });
-                },
-                child: const CustomCircle(),
-              ),
-              Expanded(flex: 9, child: Container()),
-              _showButton
-                  ? FadeTransition(
-                opacity: _fadeAnimation,
-                child: NavigationButton(
-                  label: '다음',
-                  action: widget.onNextPage,
-                ),
-              )
-                  : Container(),
-              const SizedBox(height: 160),
-            ],
-          ),
-        ),
-        SlideTransition(
-          position: _offsetAnimation,
-          child: Column(
-            children: [
-              Column(
-                children: [
-                  Text(
-                    !_showButton
-                        ? '위 버튼을 눌러서\n음성으로 입력할 수 있어요'
-                        : "올바르게 입력되었다면\n'다음'이라고 말해주세요",
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    !_showButton
-                        ? '주요 내용을 말해보세요'
-                        : "잘못된 내용이 있다면 '돌아가기'라고 말해주세요",
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF9D9D9D),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 50),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: CustomContainer(
-                  isHighLighted: _showButton == true ? true : null,
-                  child: Text(
-                    '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
-                    style: TextStyle(
-                      color: const Color(0xFF5E5E5E),
-                      fontSize: 20.0,
-                      fontWeight: _showButton
-                          ? FontWeight.bold
-                          : FontWeight.normal,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class Page4Widget extends StatefulWidget {
-  final void Function() onNextPage;
-
-  const Page4Widget({Key? key, required this.onNextPage}) : super(key: key);
-
-  @override
-  _Page4WidgetState createState() => _Page4WidgetState();
-}
-
-class _Page4WidgetState extends State<Page4Widget> with TickerProviderStateMixin {
-  bool _showButton = false;
-  late AnimationController _animationController;
-  late AnimationController _fadeController;
-  late Animation<Offset> _offsetAnimation;
-  late Animation<double> _fadeAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 800),
-      vsync: this,
-    );
-
-    _fadeController = AnimationController(
-      duration: const Duration(milliseconds: 500),
-      vsync: this,
-    );
-
-    _offsetAnimation = Tween<Offset>(
-      begin: const Offset(0.0, 0.3),
-      end: const Offset(0.0, 0.15),
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
-
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(_fadeController);
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    _fadeController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(flex: 2, child: Container()),
-              _showButton
-                  ? Container()
-                  : GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _showButton = true;
-                    _animationController.forward();
-                    _fadeController.forward();
-                  });
-                },
-                child: const CustomCircle(),
-              ),
-              Expanded(flex: 9, child: Container()),
-              _showButton
-                  ? FadeTransition(
-                opacity: _fadeAnimation,
-                child: NavigationButton(
-                  label: '완료',
-                  action: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const FinishPage()),
-                    );
-                  },
-                ),
-              )
-                  : Container(),
-              const SizedBox(height: 160),
-            ],
-          ),
-        ),
-        SlideTransition(
-          position: _offsetAnimation,
-          child: Column(
-            children: [
-              Column(
-                children: [
-                  Text(
-                    !_showButton
-                        ? '위 버튼을 눌러서\n음성으로 입력할 수 있어요'
-                        : "올바르게 입력되었다면\n'완료'이라고 말해주세요",
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    !_showButton
-                        ? '"금일 생활관 마지막 방송" 이라고 말해보세요'
-                        : "잘못된 내용이 있다면 '돌아가기'라고 말해주세요",
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF9D9D9D),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 50),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: CustomContainer(
-                  isHighLighted: _showButton == true ? true : null,
-                  child: Text(
-                    '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
-                    style: TextStyle(
-                      color: const Color(0xFF5E5E5E),
-                      fontSize: 20.0,
-                      fontWeight: _showButton
-                          ? FontWeight.bold
-                          : FontWeight.normal,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 
 class NavigationButton extends StatelessWidget {
   final String label;
@@ -793,6 +402,14 @@ class CustomCircle extends StatelessWidget {
           width: 2.0,
         ),
         shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            spreadRadius: 0.1,
+            blurRadius: 0,
+            offset: const Offset(2, 2),
+          ),
+        ],
       ),
       child: FractionallySizedBox(
         widthFactor: 0.5,
@@ -805,3 +422,4 @@ class CustomCircle extends StatelessWidget {
     );
   }
 }
+

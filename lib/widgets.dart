@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -33,6 +31,14 @@ class CustomContainer extends StatelessWidget {
             width: 2,
           ),
           borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 0.1,
+              blurRadius: 0,
+              offset: const Offset(2, 2),
+            ),
+          ],
         ),
         child: child,
       );
@@ -44,12 +50,21 @@ class CustomContainer extends StatelessWidget {
         decoration: BoxDecoration(
           color: backgroundColor ?? const Color(0xFFF5F5F5),
           borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 0.1,
+              blurRadius: 0,
+              offset: const Offset(2, 2),
+            ),
+          ],
         ),
         child: child,
       );
     }
   }
 }
+
 
 
 class MyBehavior extends ScrollBehavior {
