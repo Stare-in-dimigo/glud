@@ -318,10 +318,10 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
           const SizedBox(height: 15), // Add some spacing
           Text(
             text,
-            style: const TextStyle(
-              color: Color(0xFF5E5E5E),
+            style: TextStyle(
+              color: const Color(0xFF5E5E5E),
               fontSize: 20.0,
-              fontWeight: FontWeight.normal,
+              fontWeight: _showButton ? FontWeight.bold : FontWeight.normal,
             ),
             textAlign: TextAlign.center,
           ),
@@ -335,12 +335,12 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
       case 1:
         return iconAndText('안산시 단원구\n사세충열로 94', Icons.place_outlined);
       case 2:
-        return const Text(
+        return Text(
           '주요내용\n주요내용\n주요내용\n주요내용\n주요내용',
           style: TextStyle(
-            color: Color(0xFF5E5E5E),
+            color: const Color(0xFF5E5E5E),
             fontSize: 20.0,
-            fontWeight: FontWeight.normal,
+            fontWeight: _showButton ? FontWeight.bold : FontWeight.normal,
           ),
         );
       case 3:
