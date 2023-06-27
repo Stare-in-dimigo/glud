@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
@@ -10,17 +11,20 @@ import 'dart:io' show Platform;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (Platform.isAndroid) {
-    await FlutterDisplayMode.setHighRefreshRate();
-  }
+  if (!kIsWeb) {
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
 
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
+    if (Platform.isAndroid) {
+      await FlutterDisplayMode.setHighRefreshRate();
+    }
+  }
 
   runApp(const GludApp());
 }
+
 
 class GludApp extends StatefulWidget {
   const GludApp({Key? key}) : super(key: key);
