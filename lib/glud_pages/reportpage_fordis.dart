@@ -147,20 +147,13 @@ class PageWidget extends StatefulWidget {
 class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
   bool _showButton = false;
   late AnimationController _animationController;
-  late AnimationController _fadeController;
   late Animation<Offset> _offsetAnimation;
-  late Animation<double> _fadeAnimation;
 
   @override
   void initState() {
     super.initState();
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 800),
-      vsync: this,
-    );
-
-    _fadeController = AnimationController(
-      duration: const Duration(milliseconds: 500),
       vsync: this,
     );
 
@@ -171,17 +164,11 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
       parent: _animationController,
       curve: Curves.easeInOut,
     ));
-
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(_fadeController);
   }
 
   @override
   void dispose() {
     _animationController.dispose();
-    _fadeController.dispose();
     super.dispose();
   }
 
@@ -194,37 +181,51 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(flex: 2, child: Container()),
-              _showButton
-                  ? Container()
-                  : GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _showButton = true;
-                          _animationController.forward();
-                          _fadeController.forward();
-                        });
-                      },
-                      child: const CustomCircle(),
-                    ),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return ScaleTransition(
+                    scale: animation,
+                    child: child,
+                  );
+                },
+                child: _showButton
+                    ? Container(key: const ValueKey<int>(1))
+                    : GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _showButton = true;
+                      _animationController.forward();
+                    });
+                  },
+                  child: const CustomCircle(key: ValueKey<int>(2)),
+                ),
+              ),
               Expanded(flex: 9, child: Container()),
-              _showButton
-                  ? FadeTransition(
-                      opacity: _fadeAnimation,
-                      child: NavigationButton(
-                        label: widget.pageIndex == 3 ? '완료' : '다음',
-                        action: widget.pageIndex == 3
-                            ? () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const FinishPage(),
-                                  ),
-                                );
-                              }
-                            : widget.onNextPage,
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return ScaleTransition(
+                    scale: animation,
+                    child: child,
+                  );
+                },
+                child: _showButton
+                    ? NavigationButton(
+                  label: widget.pageIndex == 3 ? '완료' : '다음',
+                  action: widget.pageIndex == 3
+                      ? () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const FinishPage(),
                       ),
-                    )
-                  : Container(),
+                    );
+                  }
+                      : widget.onNextPage,
+                )
+                    : Container(key: const ValueKey<int>(2)),
+              ),
               const SizedBox(height: 160),
             ],
           ),
