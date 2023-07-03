@@ -39,6 +39,34 @@ class _GludListPageState extends State<GludListPage> {
         content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
         completed: true,
         route: ResultPage()),
+    Glud(
+        title: '반성문 제목',
+        date: '2023-06-10',
+        imagePath: 'assets/images/index/reflection.png',
+        content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
+        completed: true,
+        route: ResultPage()),
+    Glud(
+        title: '반성문 제목',
+        date: '2023-06-10',
+        imagePath: 'assets/images/index/reflection.png',
+        content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
+        completed: true,
+        route: ResultPage()),
+    Glud(
+        title: '반성문 제목',
+        date: '2023-06-10',
+        imagePath: 'assets/images/index/reflection.png',
+        content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
+        completed: true,
+        route: ResultPage()),
+    Glud(
+        title: '반성문 제목',
+        date: '2023-06-10',
+        imagePath: 'assets/images/index/reflection.png',
+        content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
+        completed: true,
+        route: ResultPage()),
   ];
 
   @override
@@ -46,16 +74,38 @@ class _GludListPageState extends State<GludListPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: buildAppBar(context),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-        child: ScrollConfiguration(
-          behavior: MyBehavior(),
-          child: ListView.builder(
-            itemCount: gludList.length,
-            itemBuilder: (context, index) =>
-                buildGludContainer(context, gludList[index]),
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+            child: ScrollConfiguration(
+              behavior: MyBehavior(),
+              child: ListView.builder(
+                itemCount: gludList.length,
+                itemBuilder: (context, index) =>
+                    buildGludContainer(context, gludList[index]),
+              ),
+            ),
           ),
-        ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              height: 100,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [0.0, 0.3, 1.0],
+                  colors: [
+                    Colors.white10,
+                    Colors.white70,
+                    Colors.white,
+                  ],
+                ),
+              ),
+            )
+          ),
+        ],
       ),
     );
   }

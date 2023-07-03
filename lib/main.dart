@@ -5,7 +5,6 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:glud/widgets.dart';
 import 'index/gludindex.dart';
 import 'index/profile.dart';
-import 'login_pages/loginpage.dart';
 import 'dart:io' show Platform;
 
 void main() async {
