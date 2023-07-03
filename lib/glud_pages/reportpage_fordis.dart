@@ -146,6 +146,7 @@ class PageWidget extends StatefulWidget {
 
 class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
   bool _showButton = false;
+  bool _isCircleClicked = false;
   late AnimationController _animationController;
   late Animation<Offset> _offsetAnimation;
 
@@ -194,11 +195,17 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
                     : GestureDetector(
                   onTap: () {
                     setState(() {
-                      _showButton = true;
-                      _animationController.forward();
+                      if (_isCircleClicked) {
+                        _showButton = true;
+                        _animationController.forward();
+                      } else {
+                        _isCircleClicked = true;
+                      }
                     });
                   },
-                  child: const CustomCircle(key: ValueKey<int>(2)),
+                  child: CustomCircle(
+                    isActive: _isCircleClicked,
+                  ),
                 ),
               ),
               Expanded(flex: 9, child: Container()),
@@ -385,10 +392,12 @@ class NavigationButton extends StatelessWidget {
 
 class CustomCircle extends StatelessWidget {
   final double size;
+  final bool isActive;
 
   const CustomCircle({
     Key? key,
     this.size = 80.0,
+    this.isActive = false,
   }) : super(key: key);
 
   @override
@@ -397,7 +406,7 @@ class CustomCircle extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: const Color(0xFFffffff),
+        color: isActive ? Color(0xFF92B4CD) : Colors.white,
         border: Border.all(
           color: const Color(0xFF92B4CD),
           width: 2.0,
@@ -415,7 +424,10 @@ class CustomCircle extends StatelessWidget {
       child: FractionallySizedBox(
         widthFactor: 0.5,
         heightFactor: 0.5,
-        child: Image.asset(
+        child: isActive ? Image.asset(
+          'assets/images/index/mic_active.png',
+          fit: BoxFit.contain,
+        ) : Image.asset(
           'assets/images/index/mic.png',
           fit: BoxFit.contain,
         ),

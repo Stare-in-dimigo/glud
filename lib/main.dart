@@ -61,17 +61,6 @@ class _GludAppState extends State<GludApp> {
 
   @override
   Widget build(BuildContext context) {
-    if (!isLoggedIn) {
-      return MaterialApp(
-        theme: ThemeData(
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          fontFamily: 'Pretendard',
-        ),
-        home: LoginPage(onLogin: login),
-      );
-    }
-
     final appBarTitle = ['글루드', '마이페이지'][_selectedIndex];
 
     return MaterialApp(
@@ -83,24 +72,28 @@ class _GludAppState extends State<GludApp> {
       home: Scaffold(
         backgroundColor: Colors.white,
         appBar: CustomAppBar(text: appBarTitle),
-        body: ScrollConfiguration(
-          behavior: const ScrollBehavior().copyWith(overscroll: false),
-          child: PageView(
-            controller: _pageController,
-            children: <Widget>[
-              GludIndex(),
-              Profile(),
-            ],
-            onPageChanged: (index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
-          ),
-        ),
-        bottomNavigationBar: CustomNavigationBar(
-          selectedIndex: _selectedIndex,
-          onTap: _onItemTapped,
+        body: Stack(
+          children: [
+            PageView(
+              controller: _pageController,
+              children: <Widget>[
+                GludIndex(),
+                Profile(),
+              ],
+              onPageChanged: (index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: CustomNavigationBar(
+                selectedIndex: _selectedIndex,
+                onTap: _onItemTapped,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -159,7 +152,7 @@ class CustomNavigationBar extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onTap;
 
-  const CustomNavigationBar({
+  CustomNavigationBar({
     Key? key,
     required this.selectedIndex,
     required this.onTap,
@@ -167,36 +160,61 @@ class CustomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(25),
-        topRight: Radius.circular(25),
-      ),
-      child: Container(
-        decoration: const BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Color(0xFFB1B8C0),
+    return CustomContainer(
+      height: 100,
+      padding: const EdgeInsets.all(15.0),
+      borderRadius: 30,
+      backgroundColor: const Color(0xFF92B4CD),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          GestureDetector(
+            onTap: () => onTap(0),
+            child: Column(
+              children: <Widget>[
+                Icon(
+                  Icons.border_color_rounded,
+                  size: 30,
+                  color: selectedIndex == 0
+                      ? const Color(0xFFFFFFFF)
+                      : const Color(0xFFE5E5E5),
+                ),
+                const SizedBox(height: 3.0),
+                Text(
+                  '글루드',
+                  style: TextStyle(
+                    color: selectedIndex == 0
+                        ? const Color(0xFFFFFFFF)
+                        : const Color(0xFFE5E5E5),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-        child: BottomNavigationBar(
-          backgroundColor: const Color(0xFF92B4CD),
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.border_color_rounded),
-              label: '글루드',
+          ),
+          GestureDetector(
+            onTap: () => onTap(1),
+            child: Column(
+              children: <Widget>[
+                Icon(
+                  Icons.person_rounded,
+                  size: 30,
+                  color: selectedIndex == 1
+                      ? const Color(0xFFFFFFFF)
+                      : const Color(0xFFE5E5E5),
+                ),
+                const SizedBox(height: 3.0),
+                Text(
+                  '마이페이지',
+                  style: TextStyle(
+                    color: selectedIndex == 1
+                        ? const Color(0xFFFFFFFF)
+                        : const Color(0xFFE5E5E5),
+                  ),
+                ),
+              ],
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_rounded),
-              label: '마이페이지',
-            ),
-          ],
-          currentIndex: selectedIndex,
-          unselectedItemColor: const Color(0xFFE5E5E5),
-          selectedItemColor: const Color(0xFFFFFFFF),
-          onTap: onTap,
-        ),
+          ),
+        ],
       ),
     );
   }
