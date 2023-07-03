@@ -161,9 +161,12 @@ class CustomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomContainer(
-      height: 100,
+      height: Platform.isAndroid ? 80 : 100,
       padding: const EdgeInsets.all(15.0),
-      borderRadius: 30,
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(30.0),
+        topRight: Radius.circular(30.0),
+      ),
       backgroundColor: const Color(0xFF92B4CD),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,

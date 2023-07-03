@@ -7,7 +7,7 @@ class CustomContainer extends StatelessWidget {
   final Color? backgroundColor;
   final EdgeInsetsGeometry? padding;
   final bool? isHighLighted;
-  final double? borderRadius;
+  final BorderRadius? borderRadius;
 
   const CustomContainer({
     Key? key,
@@ -32,7 +32,7 @@ class CustomContainer extends StatelessWidget {
             color: const Color(0xFF7EAAC9),
             width: 2,
           ),
-          borderRadius: BorderRadius.circular(borderRadius ?? 20),
+          borderRadius: borderRadius ?? BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
@@ -51,7 +51,7 @@ class CustomContainer extends StatelessWidget {
         padding: padding ?? const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: backgroundColor ?? const Color(0xFFF5F5F5),
-          borderRadius: BorderRadius.circular(borderRadius ?? 20),
+          borderRadius: borderRadius ?? BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
