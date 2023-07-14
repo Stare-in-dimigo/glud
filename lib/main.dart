@@ -5,6 +5,7 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:glud/widgets.dart';
 import 'index/gludindex.dart';
 import 'index/profile.dart';
+import 'login_pages/loginpage.dart';
 import 'dart:io' show Platform;
 
 void main() async {
@@ -61,6 +62,17 @@ class _GludAppState extends State<GludApp> {
   @override
   Widget build(BuildContext context) {
     final appBarTitle = ['글루드', '마이페이지'][_selectedIndex];
+
+    if (!isLoggedIn) {
+      return MaterialApp(
+        theme: ThemeData(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          fontFamily: 'Pretendard',
+        ),
+        home: LoginPage(onLogin: login),
+      );
+    }
 
     return MaterialApp(
       theme: ThemeData(
