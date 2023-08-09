@@ -157,7 +157,8 @@ class Page1Widget extends StatefulWidget {
   _Page1WidgetState createState() => _Page1WidgetState();
 }
 
-class _Page1WidgetState extends State<Page1Widget> with TickerProviderStateMixin {
+class _Page1WidgetState extends State<Page1Widget>
+    with TickerProviderStateMixin {
   bool _showButton = false;
   late AnimationController _animationController;
   late AnimationController _fadeController;
@@ -210,24 +211,24 @@ class _Page1WidgetState extends State<Page1Widget> with TickerProviderStateMixin
               _showButton
                   ? Container()
                   : GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _showButton = true;
-                    _animationController.forward();
-                    _fadeController.forward();
-                  });
-                },
-                child: const CustomCircle(),
-              ),
+                      onTap: () {
+                        setState(() {
+                          _showButton = true;
+                          _animationController.forward();
+                          _fadeController.forward();
+                        });
+                      },
+                      child: const CustomCircle(),
+                    ),
               Expanded(flex: 9, child: Container()),
               _showButton
                   ? FadeTransition(
-                opacity: _fadeAnimation,
-                child: NavigationButton(
-                  label: '다음',
-                  action: widget.onNextPage,
-                ),
-              )
+                      opacity: _fadeAnimation,
+                      child: NavigationButton(
+                        label: '다음',
+                        action: widget.onNextPage,
+                      ),
+                    )
                   : Container(),
               const SizedBox(height: 160),
             ],
@@ -284,9 +285,8 @@ class _Page1WidgetState extends State<Page1Widget> with TickerProviderStateMixin
                         style: TextStyle(
                           color: const Color(0xFF5E5E5E),
                           fontSize: 20.0,
-                          fontWeight: _showButton
-                              ? FontWeight.bold
-                              : FontWeight.normal,
+                          fontWeight:
+                              _showButton ? FontWeight.bold : FontWeight.normal,
                         ),
                       ),
                     ],
@@ -310,7 +310,8 @@ class Page2Widget extends StatefulWidget {
   _Page2WidgetState createState() => _Page2WidgetState();
 }
 
-class _Page2WidgetState extends State<Page2Widget> with TickerProviderStateMixin {
+class _Page2WidgetState extends State<Page2Widget>
+    with TickerProviderStateMixin {
   bool _showButton = false;
   late AnimationController _animationController;
   late AnimationController _fadeController;
@@ -363,24 +364,24 @@ class _Page2WidgetState extends State<Page2Widget> with TickerProviderStateMixin
               _showButton
                   ? Container()
                   : GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _showButton = true;
-                    _animationController.forward();
-                    _fadeController.forward();
-                  });
-                },
-                child: const CustomCircle(),
-              ),
+                      onTap: () {
+                        setState(() {
+                          _showButton = true;
+                          _animationController.forward();
+                          _fadeController.forward();
+                        });
+                      },
+                      child: const CustomCircle(),
+                    ),
               Expanded(flex: 9, child: Container()),
               _showButton
                   ? FadeTransition(
-                opacity: _fadeAnimation,
-                child: NavigationButton(
-                  label: '다음',
-                  action: widget.onNextPage,
-                ),
-              )
+                      opacity: _fadeAnimation,
+                      child: NavigationButton(
+                        label: '다음',
+                        action: widget.onNextPage,
+                      ),
+                    )
                   : Container(),
               const SizedBox(height: 160),
             ],
@@ -437,9 +438,8 @@ class _Page2WidgetState extends State<Page2Widget> with TickerProviderStateMixin
                         style: TextStyle(
                           color: const Color(0xFF5E5E5E),
                           fontSize: 20.0,
-                          fontWeight: _showButton
-                              ? FontWeight.bold
-                              : FontWeight.normal,
+                          fontWeight:
+                              _showButton ? FontWeight.bold : FontWeight.normal,
                         ),
                       ),
                     ],
@@ -463,7 +463,8 @@ class Page3Widget extends StatefulWidget {
   _Page3WidgetState createState() => _Page3WidgetState();
 }
 
-class _Page3WidgetState extends State<Page3Widget> with TickerProviderStateMixin {
+class _Page3WidgetState extends State<Page3Widget>
+    with TickerProviderStateMixin {
   bool _showButton = false;
   late AnimationController _animationController;
   late AnimationController _fadeController;
@@ -516,24 +517,24 @@ class _Page3WidgetState extends State<Page3Widget> with TickerProviderStateMixin
               _showButton
                   ? Container()
                   : GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _showButton = true;
-                    _animationController.forward();
-                    _fadeController.forward();
-                  });
-                },
-                child: const CustomCircle(),
-              ),
+                      onTap: () {
+                        setState(() {
+                          _showButton = true;
+                          _animationController.forward();
+                          _fadeController.forward();
+                        });
+                      },
+                      child: const CustomCircle(),
+                    ),
               Expanded(flex: 9, child: Container()),
               _showButton
                   ? FadeTransition(
-                opacity: _fadeAnimation,
-                child: NavigationButton(
-                  label: '다음',
-                  action: widget.onNextPage,
-                ),
-              )
+                      opacity: _fadeAnimation,
+                      child: NavigationButton(
+                        label: '다음',
+                        action: widget.onNextPage,
+                      ),
+                    )
                   : Container(),
               const SizedBox(height: 160),
             ],
@@ -580,9 +581,8 @@ class _Page3WidgetState extends State<Page3Widget> with TickerProviderStateMixin
                     style: TextStyle(
                       color: const Color(0xFF5E5E5E),
                       fontSize: 20.0,
-                      fontWeight: _showButton
-                          ? FontWeight.bold
-                          : FontWeight.normal,
+                      fontWeight:
+                          _showButton ? FontWeight.bold : FontWeight.normal,
                     ),
                   ),
                 ),
@@ -604,7 +604,8 @@ class Page4Widget extends StatefulWidget {
   _Page4WidgetState createState() => _Page4WidgetState();
 }
 
-class _Page4WidgetState extends State<Page4Widget> with TickerProviderStateMixin {
+class _Page4WidgetState extends State<Page4Widget>
+    with TickerProviderStateMixin {
   bool _showButton = false;
   late AnimationController _animationController;
   late AnimationController _fadeController;
@@ -657,29 +658,30 @@ class _Page4WidgetState extends State<Page4Widget> with TickerProviderStateMixin
               _showButton
                   ? Container()
                   : GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _showButton = true;
-                    _animationController.forward();
-                    _fadeController.forward();
-                  });
-                },
-                child: const CustomCircle(),
-              ),
+                      onTap: () {
+                        setState(() {
+                          _showButton = true;
+                          _animationController.forward();
+                          _fadeController.forward();
+                        });
+                      },
+                      child: const CustomCircle(),
+                    ),
               Expanded(flex: 9, child: Container()),
               _showButton
                   ? FadeTransition(
-                opacity: _fadeAnimation,
-                child: NavigationButton(
-                  label: '완료',
-                  action: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const FinishPage()),
-                    );
-                  },
-                ),
-              )
+                      opacity: _fadeAnimation,
+                      child: NavigationButton(
+                        label: '완료',
+                        action: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const FinishPage()),
+                          );
+                        },
+                      ),
+                    )
                   : Container(),
               const SizedBox(height: 160),
             ],
@@ -726,9 +728,8 @@ class _Page4WidgetState extends State<Page4Widget> with TickerProviderStateMixin
                     style: TextStyle(
                       color: const Color(0xFF5E5E5E),
                       fontSize: 20.0,
-                      fontWeight: _showButton
-                          ? FontWeight.bold
-                          : FontWeight.normal,
+                      fontWeight:
+                          _showButton ? FontWeight.bold : FontWeight.normal,
                     ),
                   ),
                 ),
@@ -740,7 +741,6 @@ class _Page4WidgetState extends State<Page4Widget> with TickerProviderStateMixin
     );
   }
 }
-
 
 class NavigationButton extends StatelessWidget {
   final String label;

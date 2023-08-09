@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "434712487042",
+    "firebase_url": "https://glud-1539d-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "glud-1539d",
+    "storage_bucket": "glud-1539d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:434712487042:android:b7915aa48329a01a86009b",
+        "android_client_info": {
+          "package_name": "com.glud.glud"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "434712487042-ml105d4hm0hr3o7gkgovc580aq94l6a7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.glud.glud",
+            "certificate_hash": "193823218e1d5949e957bc43341ceff7e375cf6b"
+          }
+        },
+        {
+          "client_id": "434712487042-39vj68puckaot8pc9dbv6h1n3vj13js0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9ExMbCNBfEcQlM_accGLY4WUJIt_MDMA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "434712487042-39vj68puckaot8pc9dbv6h1n3vj13js0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

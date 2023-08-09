@@ -5,11 +5,27 @@ import 'package:glud/widgets.dart';
 import 'index/gludindex.dart';
 import 'index/profile.dart';
 import 'login_pages/loginpage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
 import 'dart:io' show Platform;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await Firebase.initializeApp();
+  //options: FirebaseOptions(
+  // apiKey: 'AIzaSyC9ExMbCNBfEcQlM_accGLY4WUJIt_MDMA',
+  // authDomain: 'glud-1539d.firebaseapp.com',
+  //databaseURL:
+  //   'https://glud-1539d-default-rtdb.asia-southeast1.firebasedatabase.app/',
+  //projectId: 'glud-1539d',
+  //storageBucket: 'glud-1539d.appspot.com',
+  //appId: '1:434712487042:android:b7915aa48329a01a86009b',
+  //messagingSenderId:
+  //  '434712487042-ml105d4hm0hr3o7gkgovc580aq94l6a7.apps.googleusercontent.com',
+  //),
+  //);
   if (Platform.isAndroid) {
     await FlutterDisplayMode.setHighRefreshRate();
   }
@@ -59,6 +75,7 @@ class _GludAppState extends State<GludApp> {
   Widget build(BuildContext context) {
     if (!isLoggedIn) {
       return MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,

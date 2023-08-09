@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'registerpage.dart';
 import '../widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_database/firebase_database.dart';
+
+String usersUID = ""; // 현재 로그인한 사용자의 UID를 대입
+String usersEmail = "";
 
 class LoginPage extends StatefulWidget {
   final VoidCallback onLogin;
@@ -16,6 +22,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   late AnimationController _controller1;
   late AnimationController _controller2;
   late AnimationController _controller3;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   final cloudImageWidths = [150.0, 175.0, 100.0];
   final cloudBottomOffsets = [700.0, 375.0, 250.0];
   final cloudOpacities = [0.5, 0.3, 0.2];
@@ -95,6 +103,55 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     );
   }
 
+  void _handleGoogleSignIn() async {
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
+      final User? user = userCredential.user;
+
+      //이메일과 UID 가져오기
+      final String userEmail = user?.email ?? '';
+      final String userUID = user?.uid ?? '';
+      usersUID = user?.uid ?? '';
+      usersEmail = user?.email ?? '';
+      String userType = "Google";
+      final DatabaseReference userRef =
+          FirebaseDatabase.instance.ref().child('users').child(userUID);
+      final DataSnapshot snapshot =
+          await userRef.once().then((event) => event.snapshot);
+      if (!snapshot.exists) {
+        // 데이터베이스에 사용자 UID가 없으면 저장
+        await userRef.child('email').set(userEmail);
+        await userRef.child('userType').set(userType);
+      }
+
+      // 로그인 성공 후 필요한 처리를 수행합니다.
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const RegisterPage()),
+      ).then((value) {
+        if (value == true) {
+          widget.onLogin();
+        } else if (value == false) {
+          widget.onLogin();
+        } else {
+          SystemChrome.setSystemUIOverlayStyle(bluestyle);
+        }
+      }); // 로그인 완료 후 콜백 호출
+    } catch (e) {
+      // 로그인 실패 시 예외 처리
+      print('Google Sign-In Error: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,31 +181,19 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                 child: Column(
                   children: [
                     InkWell(
-                      onTap: isRegistered
-                          ? widget.onLogin
-                          : () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const RegisterPage()),
-                        ).then((value) {
-                          if (value == true) {
-                            widget.onLogin();
-                          } else if (value == false) {
-                            widget.onLogin();
-                          } else {
-                            SystemChrome.setSystemUIOverlayStyle(bluestyle);
-                          }
-                        });
-                      },
+                      onTap:
+                          isRegistered ? widget.onLogin : _handleGoogleSignIn,
                       child: CustomContainer(
                         backgroundColor: Colors.white,
                         child: Center(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Image.asset('assets/images/loginpage/google.png', width: 20.0), // Image Widget
-                              const SizedBox(width: 10.0), // Spacing between image and text
+                              Image.asset('assets/images/loginpage/google.png',
+                                  width: 20.0), // Image Widget
+                              const SizedBox(
+                                  width:
+                                      10.0), // Spacing between image and text
                               const Text(
                                 '구글로 시작하기',
                                 style: TextStyle(
@@ -167,28 +212,32 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                       onTap: isRegistered
                           ? widget.onLogin
                           : () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const RegisterPage()),
-                        ).then((value) {
-                          if (value == true) {
-                            widget.onLogin();
-                          } else if (value == false) {
-                            widget.onLogin();
-                          } else {
-                            SystemChrome.setSystemUIOverlayStyle(bluestyle);
-                          }
-                        });
-                      },
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const RegisterPage()),
+                              ).then((value) {
+                                if (value == true) {
+                                  widget.onLogin();
+                                } else if (value == false) {
+                                  widget.onLogin();
+                                } else {
+                                  SystemChrome.setSystemUIOverlayStyle(
+                                      bluestyle);
+                                }
+                              });
+                            },
                       child: CustomContainer(
                         backgroundColor: const Color(0xFFF6E24B),
                         child: Center(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Image.asset('assets/images/loginpage/kakao.png', width: 20.0), // Image Widget
-                              const SizedBox(width: 10.0), // Spacing between image and text
+                              Image.asset('assets/images/loginpage/kakao.png',
+                                  width: 20.0), // Image Widget
+                              const SizedBox(
+                                  width:
+                                      10.0), // Spacing between image and text
                               const Text(
                                 '카카오로 시작하기',
                                 style: TextStyle(

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:glud/login_pages/loginpage.dart';
 import '../glud_pages/gludlist.dart';
 import '../widgets.dart';
 import 'settings.dart';
+import 'package:firebase_database/firebase_database.dart';
+
+int userType = 0;
 
 class Profile extends StatelessWidget {
   Profile({Key? key}) : super(key: key);
@@ -14,11 +18,23 @@ class Profile extends StatelessWidget {
     _MypageItem('공지사항', 'assets/images/mypage/notice.png', GludListPage()),
   ];
 
+  void getuserTypeFromFirebase() async {
+    final usersRef = FirebaseDatabase.instance.ref();
+    final snapshot = await usersRef.child('users/$usersUID/userType').get();
+    if (snapshot.value == "Google") {
+      userType = 1;
+    } else {
+      userType = 2;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     int crossAxisCount = 3;
     int totalItems = ((_items.length / crossAxisCount).ceil()) * crossAxisCount;
-
+    int atIndex = usersEmail.indexOf('@');
+    String name = usersEmail.substring(0, atIndex);
+    getuserTypeFromFirebase();
     return Padding(
       padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
       child: Column(
@@ -29,26 +45,28 @@ class Profile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 CircleAvatar(
-                  backgroundImage: Image.asset('assets/images/icon.png').image,
+                  backgroundImage: userType == 1
+                      ? Image.asset('assets/images/google_icon.png').image
+                      : Image.asset('assets/images/icon.png').image,
                   radius: 30.0,
                 ),
                 const SizedBox(width: 15.0),
-                const Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "GLUD",
+                        "$name",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 20.0,
+                          fontSize: 18.0,
                         ),
                       ),
                       SizedBox(height: 5.0),
                       Text(
-                        "hello@glud.com",
+                        "$usersEmail",
                         style: TextStyle(
-                          fontSize: 15.0,
+                          fontSize: 14.0,
                           color: Color(0xFF9D9D9D),
                         ),
                       ),
