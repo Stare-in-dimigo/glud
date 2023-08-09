@@ -41,6 +41,11 @@ dependencies:
   firebase_core: ^2.14.0
   firebase_auth: ^4.6.3
   firebase_database: ^10.2.3
+  provider: ^6.0.5
+  http: ^1.1.0
+
+  path_provider: ^2.1.0
+  docx_template: ^0.3.4
 
 dev_dependencies:
   flutter_test:

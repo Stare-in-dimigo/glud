@@ -1,26 +1,20 @@
 import 'dart:ffi';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:glud/glud_pages/finishpage.dart';
 import '../widgets.dart';
 import 'package:glud/login_pages/loginpage.dart' as user;
 import 'package:firebase_database/firebase_database.dart'; // Firebase Realtime Database 라이브러리 추가
-import 'package:http/http.dart' as http;
-import '../main.dart';
 
 String content = "";
-String date = "";
-String place = "";
-String quote = "";
 
-class ReportPage extends StatefulWidget {
-  const ReportPage({Key? key}) : super(key: key);
+class ReflectionPage extends StatefulWidget {
+  const ReflectionPage({Key? key}) : super(key: key);
 
   @override
-  _ReportPageState createState() => _ReportPageState();
+  _ReflectionPageState createState() => _ReflectionPageState();
 }
 
-class _ReportPageState extends State<ReportPage> {
+class _ReflectionPageState extends State<ReflectionPage> {
   final TextEditingController _dateTimeController = TextEditingController();
   final TextEditingController _placeController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
@@ -41,17 +35,11 @@ class _ReportPageState extends State<ReportPage> {
   void initState() {
     super.initState();
     _contentController.addListener(_onContentChanged);
-    _dateTimeController.addListener(_onContentChanged);
-    _placeController.addListener(_onContentChanged);
-    _quoteController.addListener(_onContentChanged);
   }
 
   void _onContentChanged() {
     setState(() {
       content = _contentController.text;
-      date = _dateTimeController.text;
-      place = _placeController.text;
-      quote = _quoteController.text;
     });
   }
 
@@ -195,7 +183,7 @@ class _ReportPageState extends State<ReportPage> {
               padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
               key: ValueKey<int>(1),
               child: CustomFloatingButton(
-                text: '보도자료 생성하기',
+                text: '반성문 생성하기',
               ),
             )
           : const SizedBox.shrink(key: ValueKey<int>(2)),
@@ -215,7 +203,7 @@ class _ReportPageState extends State<ReportPage> {
       title: const Align(
         alignment: Alignment.centerLeft,
         child: Text(
-          '보도자료',
+          '반성문',
           style: TextStyle(
             color: Colors.black,
             fontSize: 25.0,
@@ -281,38 +269,11 @@ class CustomFloatingButton extends StatelessWidget {
   final String text;
 
   const CustomFloatingButton({Key? key, required this.text}) : super(key: key);
-  Future<String> generateText(String prompt) async {
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $apiKey'
-      },
-      body: jsonEncode({
-        "model": "text-davinci-003",
-        'prompt': prompt,
-        'max_tokens': 1000,
-        'temperature': 0,
-        'top_p': 1,
-        'frequency_penalty': 0,
-        'presence_penalty': 0
-      }),
-    );
-
-    Map<String, dynamic> newresponse =
-        jsonDecode(utf8.decode(response.bodyBytes));
-
-    return newresponse['choices'][0]['text'];
-  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {
-        String prompt =
-            "일시 : $date, 장소 : $place, 주요내용 : $content, 인용문 : $quote 다음 정보를 가지고 보도자료 작성해줘";
-        String contents = await generateText(prompt);
-
+      onTap: () {
         DateTime now = DateTime.now();
         String timestamp = now.toString();
         DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
@@ -322,11 +283,10 @@ class CustomFloatingButton extends StatelessWidget {
             .child("writing")
             .push()
             .set({
-          "content": contents,
+          "content": content,
           "time": timestamp,
-          "type": "보도자료",
+          "type": "반성문",
         });
-
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const FinishPage()),

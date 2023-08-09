@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -9,6 +7,7 @@ class CustomContainer extends StatelessWidget {
   final Color? backgroundColor;
   final EdgeInsetsGeometry? padding;
   final bool? isHighLighted;
+  final BorderRadius? borderRadius;
 
   const CustomContainer({
     Key? key,
@@ -17,6 +16,7 @@ class CustomContainer extends StatelessWidget {
     this.isHighLighted,
     this.backgroundColor,
     this.padding,
+    this.borderRadius,
   }) : super(key: key);
 
   @override
@@ -32,7 +32,15 @@ class CustomContainer extends StatelessWidget {
             color: const Color(0xFF7EAAC9),
             width: 2,
           ),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: borderRadius ?? BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 0.1,
+              blurRadius: 0,
+              offset: const Offset(2, 2),
+            ),
+          ],
         ),
         child: child,
       );
@@ -43,7 +51,15 @@ class CustomContainer extends StatelessWidget {
         padding: padding ?? const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: backgroundColor ?? const Color(0xFFF5F5F5),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: borderRadius ?? BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 0.1,
+              blurRadius: 0,
+              offset: const Offset(2, 2),
+            ),
+          ],
         ),
         child: child,
       );

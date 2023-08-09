@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
+import 'package:glud/index/settings.dart';
 import 'package:glud/widgets.dart';
 import 'index/gludindex.dart';
 import 'index/profile.dart';
@@ -8,24 +9,18 @@ import 'login_pages/loginpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'dart:io' show Platform;
+
+const apiKey = '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';
+const apiUrl = 'https://api.openai.com/v1/completions';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  //options: FirebaseOptions(
-  // apiKey: 'AIzaSyC9ExMbCNBfEcQlM_accGLY4WUJIt_MDMA',
-  // authDomain: 'glud-1539d.firebaseapp.com',
-  //databaseURL:
-  //   'https://glud-1539d-default-rtdb.asia-southeast1.firebasedatabase.app/',
-  //projectId: 'glud-1539d',
-  //storageBucket: 'glud-1539d.appspot.com',
-  //appId: '1:434712487042:android:b7915aa48329a01a86009b',
-  //messagingSenderId:
-  //  '434712487042-ml105d4hm0hr3o7gkgovc580aq94l6a7.apps.googleusercontent.com',
-  //),
-  //);
+
   if (Platform.isAndroid) {
     await FlutterDisplayMode.setHighRefreshRate();
   }
@@ -73,9 +68,10 @@ class _GludAppState extends State<GludApp> {
 
   @override
   Widget build(BuildContext context) {
+    final appBarTitle = ['글루드', '마이페이지'][_selectedIndex];
+
     if (!isLoggedIn) {
       return MaterialApp(
-        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
@@ -84,8 +80,6 @@ class _GludAppState extends State<GludApp> {
         home: LoginPage(onLogin: login),
       );
     }
-
-    final appBarTitle = ['글루드', '마이페이지'][_selectedIndex];
 
     return MaterialApp(
       theme: ThemeData(
@@ -96,24 +90,28 @@ class _GludAppState extends State<GludApp> {
       home: Scaffold(
         backgroundColor: Colors.white,
         appBar: CustomAppBar(text: appBarTitle),
-        body: ScrollConfiguration(
-          behavior: const ScrollBehavior().copyWith(overscroll: false),
-          child: PageView(
-            controller: _pageController,
-            children: <Widget>[
-              GludIndex(),
-              Profile(),
-            ],
-            onPageChanged: (index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
-          ),
-        ),
-        bottomNavigationBar: CustomNavigationBar(
-          selectedIndex: _selectedIndex,
-          onTap: _onItemTapped,
+        body: Stack(
+          children: [
+            PageView(
+              controller: _pageController,
+              children: <Widget>[
+                GludIndex(),
+                Profile(),
+              ],
+              onPageChanged: (index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: CustomNavigationBar(
+                selectedIndex: _selectedIndex,
+                onTap: _onItemTapped,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -172,7 +170,7 @@ class CustomNavigationBar extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onTap;
 
-  const CustomNavigationBar({
+  CustomNavigationBar({
     Key? key,
     required this.selectedIndex,
     required this.onTap,
@@ -180,36 +178,64 @@ class CustomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
+    return CustomContainer(
+      height: Platform.isAndroid ? 80 : 100,
+      padding: const EdgeInsets.all(15.0),
       borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(25),
-        topRight: Radius.circular(25),
+        topLeft: Radius.circular(30.0),
+        topRight: Radius.circular(30.0),
       ),
-      child: Container(
-        decoration: const BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Color(0xFFB1B8C0),
+      backgroundColor: const Color(0xFF92B4CD),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          GestureDetector(
+            onTap: () => onTap(0),
+            child: Column(
+              children: <Widget>[
+                Icon(
+                  Icons.border_color_rounded,
+                  size: 30,
+                  color: selectedIndex == 0
+                      ? const Color(0xFFFFFFFF)
+                      : const Color(0xFFE5E5E5),
+                ),
+                const SizedBox(height: 3.0),
+                Text(
+                  '글루드',
+                  style: TextStyle(
+                    color: selectedIndex == 0
+                        ? const Color(0xFFFFFFFF)
+                        : const Color(0xFFE5E5E5),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-        child: BottomNavigationBar(
-          backgroundColor: const Color(0xFF92B4CD),
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.border_color_rounded),
-              label: '글루드',
+          ),
+          GestureDetector(
+            onTap: () => onTap(1),
+            child: Column(
+              children: <Widget>[
+                Icon(
+                  Icons.person_rounded,
+                  size: 30,
+                  color: selectedIndex == 1
+                      ? const Color(0xFFFFFFFF)
+                      : const Color(0xFFE5E5E5),
+                ),
+                const SizedBox(height: 3.0),
+                Text(
+                  '마이페이지',
+                  style: TextStyle(
+                    color: selectedIndex == 1
+                        ? const Color(0xFFFFFFFF)
+                        : const Color(0xFFE5E5E5),
+                  ),
+                ),
+              ],
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_rounded),
-              label: '마이페이지',
-            ),
-          ],
-          currentIndex: selectedIndex,
-          unselectedItemColor: const Color(0xFFE5E5E5),
-          selectedItemColor: const Color(0xFFFFFFFF),
-          onTap: onTap,
-        ),
+          ),
+        ],
       ),
     );
   }

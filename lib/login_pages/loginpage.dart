@@ -104,6 +104,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   }
 
   void _handleGoogleSignIn() async {
+    int regist = 0;
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       final GoogleSignInAuthentication googleAuth =
@@ -129,23 +130,27 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
           await userRef.once().then((event) => event.snapshot);
       if (!snapshot.exists) {
         // 데이터베이스에 사용자 UID가 없으면 저장
+        regist = 1;
         await userRef.child('email').set(userEmail);
         await userRef.child('userType').set(userType);
       }
-
-      // 로그인 성공 후 필요한 처리를 수행합니다.
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const RegisterPage()),
-      ).then((value) {
-        if (value == true) {
-          widget.onLogin();
-        } else if (value == false) {
-          widget.onLogin();
-        } else {
-          SystemChrome.setSystemUIOverlayStyle(bluestyle);
-        }
-      }); // 로그인 완료 후 콜백 호출
+      if (regist == 0) {
+        // 이미 회원가입한 사용자라면 회원가입을 건너뜀
+        widget.onLogin();
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const RegisterPage()),
+        ).then((value) {
+          if (value == true) {
+            widget.onLogin();
+          } else if (value == false) {
+            widget.onLogin();
+          } else {
+            SystemChrome.setSystemUIOverlayStyle(bluestyle);
+          }
+        });
+      }
     } catch (e) {
       // 로그인 실패 시 예외 처리
       print('Google Sign-In Error: $e');

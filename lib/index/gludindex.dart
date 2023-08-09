@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../widgets.dart';
 import '../glud_pages/reportpage.dart';
+import '../glud_pages/litigationpage.dart';
+import '../glud_pages/bookreview.dart';
+import '../glud_pages/reflection.dart';
 import '../glud_pages/reportpage_fordis.dart';
 
 class GludIndex extends StatelessWidget {
@@ -8,11 +11,12 @@ class GludIndex extends StatelessWidget {
 
   final List<_GludItem> _items = [
     _GludItem('보도자료', '생생한', 'assets/images/index/report.png', ReportPage()),
-    _GludItem('독서록', '동화같은', 'assets/images/index/booklog.png', ReportPageD()),
     _GludItem(
-        '소송문', '백전백승', 'assets/images/index/litigation.png', ReportPage()),
+        '독서록', '동화같은', 'assets/images/index/booklog.png', BookreviewPage()),
     _GludItem(
-        '반성문', '그럴듯한', 'assets/images/index/reflection.png', ReportPage()),
+        '소송문', '백전백승', 'assets/images/index/litigation.png', LitigationPage()),
+    _GludItem(
+        '반성문', '그럴듯한', 'assets/images/index/reflection.png', ReflectionPage()),
   ];
 
   @override
@@ -26,11 +30,8 @@ class GludIndex extends StatelessWidget {
         mainAxisSpacing: 20,
         children: _items.map((item) {
           return GestureDetector(
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => item.page,
-              ),
-            ),
+            onTap: () => _onItemTap(context, item),
+            onLongPress: () => _onItemLongPress(context, item),
             child: CustomContainer(
               child: Padding(
                 padding: const EdgeInsets.only(top: 10.0, left: 5),
@@ -69,6 +70,22 @@ class GludIndex extends StatelessWidget {
             ),
           );
         }).toList(),
+      ),
+    );
+  }
+
+  void _onItemTap(BuildContext context, _GludItem item) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => item.page,
+      ),
+    );
+  }
+
+  void _onItemLongPress(BuildContext context, _GludItem item) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ReportPageD(),
       ),
     );
   }
