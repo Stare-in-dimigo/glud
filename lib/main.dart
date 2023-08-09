@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 
 import 'dart:io' show Platform;
 
-const apiKey = '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';
+const apiKey = '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';
 const apiUrl = 'https://api.openai.com/v1/completions';
 
 void main() async {
@@ -35,7 +35,6 @@ void main() async {
 
   runApp(const GludApp());
 }
-
 
 class GludApp extends StatefulWidget {
   const GludApp({Key? key}) : super(key: key);
