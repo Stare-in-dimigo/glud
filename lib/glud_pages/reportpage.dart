@@ -190,6 +190,12 @@ class _ReportPageState extends State<ReportPage> {
   Widget _buildFloatingButton(BuildContext context) {
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 300),
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        return ScaleTransition(
+          scale: animation,
+          child: child,
+        );
+      },
       child: !_isFocused
           ? const Padding(
               padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
