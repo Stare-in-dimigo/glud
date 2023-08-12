@@ -1,9 +1,10 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:glud/login_pages/loginpage.dart';
+
 import '../glud_pages/gludlist.dart';
 import '../widgets.dart';
 import 'settings.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 int userType = 0;
 
@@ -105,12 +106,12 @@ class Profile extends StatelessWidget {
                           top: (index < crossAxisCount)
                               ? BorderSide.none
                               : const BorderSide(
-                                  color: Colors.black12, width: 1.5),
+                              color: Colors.black12, width: 1.5),
                           bottom: BorderSide.none,
                           left: (index % crossAxisCount == 0)
                               ? BorderSide.none
                               : const BorderSide(
-                                  color: Colors.black12, width: 1.5),
+                              color: Colors.black12, width: 1.5),
                           right: BorderSide.none,
                         ),
                       ),
@@ -136,12 +137,12 @@ class Profile extends StatelessWidget {
                         top: (index < crossAxisCount)
                             ? BorderSide.none
                             : const BorderSide(
-                                color: Colors.black12, width: 1.5),
+                            color: Colors.black12, width: 1.5),
                         bottom: BorderSide.none,
                         left: (index % crossAxisCount == 0)
                             ? BorderSide.none
                             : const BorderSide(
-                                color: Colors.black12, width: 1.5),
+                            color: Colors.black12, width: 1.5),
                         right: BorderSide.none,
                       ),
                     ),

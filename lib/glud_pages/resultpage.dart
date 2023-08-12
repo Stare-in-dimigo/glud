@@ -1,11 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:glud/glud_pages/reflection.dart';
-import 'package:glud/login_pages/loginpage.dart' as user;
-import '../widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // 추가된 부분
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
+import 'package:glud/login_pages/loginpage.dart' as user;
+
+import '../widgets.dart';
 
 String writingcontent = "";
 
@@ -58,7 +56,7 @@ class _ResultPageState extends State<ResultPage> {
   void copyToClipboard() {
     Clipboard.setData(ClipboardData(text: writingcontent));
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("클립보드에 복사되었습니다.")),
+      const SnackBar(content: Text("클립보드에 복사되었습니다.")),
     );
   }
 
@@ -78,20 +76,20 @@ class _ResultPageState extends State<ResultPage> {
               children: [
                 CustomContainer(
                   child: Text(
-                    "$writingcontent",
-                    style: TextStyle(
+                    writingcontent,
+                    style: const TextStyle(
                       fontSize: 18.0,
                       color: Color(0xFF5E5E5E),
                     ),
                   ),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 CustomContainer(
-                  backgroundColor: Color(0xFF9D9D9D),
+                  backgroundColor: const Color(0xFF9D9D9D),
                   child: Center(
                     child: TextButton(
                       onPressed: copyToClipboard, // 클립보드에 복사
-                      child: Text(
+                      child: const Text(
                         '클립보드에 복사하기',
                         style: TextStyle(
                           fontSize: 20.0,
@@ -102,8 +100,8 @@ class _ResultPageState extends State<ResultPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 15),
-                CustomContainer(
+                const SizedBox(height: 15),
+                const CustomContainer(
                     backgroundColor: Color(0xFF7EAAC9),
                     child: Center(
                       child: Text(
@@ -115,7 +113,7 @@ class _ResultPageState extends State<ResultPage> {
                         ),
                       ),
                     )),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
               ],
             )),
       ),

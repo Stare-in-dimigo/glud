@@ -1,12 +1,13 @@
-import 'dart:ffi';
 import 'dart:convert';
+
+import 'package:firebase_database/firebase_database.dart'; // Firebase Realtime Database 라이브러리 추가
 import 'package:flutter/material.dart';
 import 'package:glud/glud_pages/finishpage.dart';
-import '../widgets.dart';
 import 'package:glud/login_pages/loginpage.dart' as user;
-import 'package:firebase_database/firebase_database.dart'; // Firebase Realtime Database 라이브러리 추가
 import 'package:http/http.dart' as http;
+
 import '../main.dart';
+import '../widgets.dart';
 
 String content = "";
 String date = "";

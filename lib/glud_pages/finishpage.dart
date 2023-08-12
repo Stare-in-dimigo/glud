@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'gludlist.dart';
+
 import '../widgets.dart';
+import 'gludlist.dart';
 
 class FinishPage extends StatefulWidget {
   const FinishPage({Key? key}) : super(key: key);
@@ -50,7 +51,7 @@ class _FinishPageState extends State<FinishPage> {
               children: [
                 InkWell(
                   onTap: () => Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => GludListPage())),
+                      MaterialPageRoute(builder: (context) => const GludListPage())),
                   child: const CustomContainer(
                     backgroundColor: Color(0xFF7EAAC9),
                     child: Center(

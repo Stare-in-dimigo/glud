@@ -1,19 +1,15 @@
+import 'dart:io' show Platform;
+
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
-import 'package:glud/index/settings.dart';
 import 'package:glud/widgets.dart';
+
 import 'index/gludindex.dart';
 import 'index/profile.dart';
 import 'login_pages/loginpage.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'dart:io' show Platform;
 
 const apiKey = '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';
 const apiUrl = 'https://api.openai.com/v1/completions';

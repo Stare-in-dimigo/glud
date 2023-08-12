@@ -1,10 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'registerpage.dart';
-import '../widgets.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_database/firebase_database.dart';
+
+import '../widgets.dart';
+import 'registerpage.dart';
 
 String usersUID = ""; // 현재 로그인한 사용자의 UID를 대입
 String usersEmail = "";
@@ -73,8 +74,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     final AnimationController controller = index == 0
         ? _controller1
         : index == 1
-            ? _controller2
-            : _controller3;
+        ? _controller2
+        : _controller3;
 
     return AnimatedBuilder(
       animation: controller,
@@ -108,14 +109,14 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       final GoogleSignInAuthentication googleAuth =
-          await googleUser!.authentication;
+      await googleUser!.authentication;
       final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
       final UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
+      await _auth.signInWithCredential(credential);
       final User? user = userCredential.user;
 
       //이메일과 UID 가져오기
@@ -125,9 +126,9 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       usersEmail = user?.email ?? '';
       String userType = "Google";
       final DatabaseReference userRef =
-          FirebaseDatabase.instance.ref().child('users').child(userUID);
+      FirebaseDatabase.instance.ref().child('users').child(userUID);
       final DataSnapshot snapshot =
-          await userRef.once().then((event) => event.snapshot);
+      await userRef.once().then((event) => event.snapshot);
       if (!snapshot.exists) {
         // 데이터베이스에 사용자 UID가 없으면 저장
         regist = 1;
@@ -187,7 +188,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                   children: [
                     InkWell(
                       onTap:
-                          isRegistered ? widget.onLogin : _handleGoogleSignIn,
+                      isRegistered ? widget.onLogin : _handleGoogleSignIn,
                       child: CustomContainer(
                         backgroundColor: Colors.white,
                         child: Center(
@@ -198,7 +199,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   width: 20.0), // Image Widget
                               const SizedBox(
                                   width:
-                                      10.0), // Spacing between image and text
+                                  10.0), // Spacing between image and text
                               const Text(
                                 '구글로 시작하기',
                                 style: TextStyle(
@@ -217,21 +218,21 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                       onTap: isRegistered
                           ? widget.onLogin
                           : () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const RegisterPage()),
-                              ).then((value) {
-                                if (value == true) {
-                                  widget.onLogin();
-                                } else if (value == false) {
-                                  widget.onLogin();
-                                } else {
-                                  SystemChrome.setSystemUIOverlayStyle(
-                                      bluestyle);
-                                }
-                              });
-                            },
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const RegisterPage()),
+                        ).then((value) {
+                          if (value == true) {
+                            widget.onLogin();
+                          } else if (value == false) {
+                            widget.onLogin();
+                          } else {
+                            SystemChrome.setSystemUIOverlayStyle(
+                                bluestyle);
+                          }
+                        });
+                      },
                       child: CustomContainer(
                         backgroundColor: const Color(0xFFF6E24B),
                         child: Center(
@@ -242,7 +243,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   width: 20.0), // Image Widget
                               const SizedBox(
                                   width:
-                                      10.0), // Spacing between image and text
+                                  10.0), // Spacing between image and text
                               const Text(
                                 '카카오로 시작하기',
                                 style: TextStyle(

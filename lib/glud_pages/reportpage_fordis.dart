@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../widgets.dart';
 import 'finishpage.dart';
 
@@ -406,7 +407,7 @@ class CustomCircle extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: isActive ? Color(0xFF92B4CD) : Colors.white,
+        color: isActive ? const Color(0xFF92B4CD) : Colors.white,
         border: Border.all(
           color: const Color(0xFF92B4CD),
           width: 2.0,
