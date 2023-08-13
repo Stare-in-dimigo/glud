@@ -3,8 +3,10 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter/foundation.dart';
+import 'package:glud/widgets.dart';
 
-import '../widgets.dart';
+import '../firebase_options.dart';
 import 'registerpage.dart';
 
 String usersUID = ""; // 현재 로그인한 사용자의 UID를 대입
@@ -24,7 +26,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   late AnimationController _controller2;
   late AnimationController _controller3;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(clientId: DefaultFirebaseOptions.currentPlatform.iosClientId);
   final cloudImageWidths = [150.0, 175.0, 100.0];
   final cloudBottomOffsets = [700.0, 350.0, 200.0];
   final cloudOpacities = [0.5, 0.3, 0.2];
@@ -200,7 +202,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   width: 20.0), // Image Widget
                               const SizedBox(
                                   width:
-                                  10.0), // Spacing between image and text
+                                  10.0),
                               const Text(
                                 '구글로 시작하기',
                                 style: TextStyle(
