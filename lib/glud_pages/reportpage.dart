@@ -321,14 +321,31 @@ class CustomFloatingButton extends StatelessWidget {
           barrierDismissible: false,
           builder: (BuildContext context) {
             return Dialog(
+              shape: RoundedRectangleBorder( // 모서리에 곡률을 줍니다
+                borderRadius: BorderRadius.circular(15), // 곡률의 정도를 조절합니다
+              ),
               child: Container(
-                padding: EdgeInsets.all(20),
-                child: Row(
+                width: 200, // Dialog의 너비를 지정합니다
+                padding: const EdgeInsets.all(30),
+                child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    CircularProgressIndicator(),
-                    SizedBox(width: 10),
-                    Text('로딩중...'),
+                    SizedBox(
+                      height: 40.0, // 원하는 높이
+                      width: 40.0,  // 원하는 너비
+                      child: CircularProgressIndicator(
+                        color: Color(0xFFC0CFDB),
+                        strokeWidth: 4.0,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      '로딩중...',
+                      style: TextStyle(
+                        color: Color(0xFF5E5E5E),
+                        fontSize: 25.0,
+                      ),
+                    ),
                   ],
                 ),
               ),
