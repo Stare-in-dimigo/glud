@@ -6,14 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:glud/widgets.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 import 'firebase_options.dart';
 import 'index/gludindex.dart';
 import 'index/profile.dart';
 import 'login_pages/loginpage.dart';
 
-const apiKey = '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';
+const apiKey = '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';
 const apiUrl = 'https://api.openai.com/v1/completions';
 
 void main() async {
@@ -21,7 +20,6 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  GoogleSignIn(clientId: DefaultFirebaseOptions.currentPlatform.iosClientId).signIn();
 
   if (!kIsWeb) {
     await SystemChrome.setPreferredOrientations([
