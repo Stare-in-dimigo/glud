@@ -19,55 +19,6 @@ class _GludListPageState extends State<GludListPage> {
         content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
         completed: true,
         route: const ResultPage()),
-    Glud(
-        title: '독서록 제목',
-        date: '2023-06-10',
-        imagePath: 'assets/images/index/booklog.png',
-        content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
-        completed: false,
-        route: const ResultPage()),
-    Glud(
-        title: '소송문 제목',
-        date: '2023-06-10',
-        imagePath: 'assets/images/index/litigation.png',
-        content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
-        completed: true,
-        route: const ResultPage()),
-    Glud(
-        title: '반성문 제목',
-        date: '2023-06-10',
-        imagePath: 'assets/images/index/reflection.png',
-        content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
-        completed: true,
-        route: const ResultPage()),
-    Glud(
-        title: '반성문 제목',
-        date: '2023-06-10',
-        imagePath: 'assets/images/index/reflection.png',
-        content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
-        completed: true,
-        route: const ResultPage()),
-    Glud(
-        title: '반성문 제목',
-        date: '2023-06-10',
-        imagePath: 'assets/images/index/reflection.png',
-        content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
-        completed: true,
-        route: const ResultPage()),
-    Glud(
-        title: '반성문 제목',
-        date: '2023-06-10',
-        imagePath: 'assets/images/index/reflection.png',
-        content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
-        completed: true,
-        route: const ResultPage()),
-    Glud(
-        title: '반성문 제목',
-        date: '2023-06-10',
-        imagePath: 'assets/images/index/reflection.png',
-        content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
-        completed: true,
-        route: const ResultPage()),
   ];
 
   @override
