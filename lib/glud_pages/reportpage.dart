@@ -316,9 +316,31 @@ class CustomFloatingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Dialog(
+              child: Container(
+                padding: EdgeInsets.all(20),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(width: 10),
+                    Text('로딩중...'),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+
         String prompt =
             "일시 : $date, 장소 : $place, 주요내용 : $content, 인용문 : $quote 다음 정보를 가지고 보도자료 작성해줘";
         String contents = await generateText(prompt);
+
+        Navigator.of(context).pop(); // 로딩 창 닫기
 
         DateTime now = DateTime.now();
         String timestamp = now.toString();

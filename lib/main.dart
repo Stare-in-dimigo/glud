@@ -12,7 +12,7 @@ import 'index/gludindex.dart';
 import 'index/profile.dart';
 import 'login_pages/loginpage.dart';
 
-const apiKey = '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';
+const apiKey = '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';
 const apiUrl = 'https://api.openai.com/v1/completions';
 
 void main() async {
