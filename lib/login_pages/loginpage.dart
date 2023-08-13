@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final cloudImageWidths = [150.0, 175.0, 100.0];
-  final cloudBottomOffsets = [700.0, 375.0, 250.0];
+  final cloudBottomOffsets = [700.0, 350.0, 200.0];
   final cloudOpacities = [0.5, 0.3, 0.2];
   final cloudImagePaths = [
     'assets/images/loginpage/cloud.png',
@@ -186,6 +186,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
+                    const SizedBox(height: 50),
                     InkWell(
                       onTap:
                       isRegistered ? widget.onLogin : _handleGoogleSignIn,
@@ -213,51 +214,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 15),
-                    InkWell(
-                      onTap: isRegistered
-                          ? widget.onLogin
-                          : () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const RegisterPage()),
-                        ).then((value) {
-                          if (value == true) {
-                            widget.onLogin();
-                          } else if (value == false) {
-                            widget.onLogin();
-                          } else {
-                            SystemChrome.setSystemUIOverlayStyle(
-                                bluestyle);
-                          }
-                        });
-                      },
-                      child: CustomContainer(
-                        backgroundColor: const Color(0xFFF6E24B),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Image.asset('assets/images/loginpage/kakao.png',
-                                  width: 20.0), // Image Widget
-                              const SizedBox(
-                                  width:
-                                  10.0), // Spacing between image and text
-                              const Text(
-                                '카카오로 시작하기',
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF381F1F),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 80),
                   ],
                 ),
               ),

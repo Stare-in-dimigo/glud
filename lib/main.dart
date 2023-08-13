@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:glud/widgets.dart';
 
+import 'firebase_options.dart';
 import 'index/gludindex.dart';
 import 'index/profile.dart';
 import 'login_pages/loginpage.dart';
@@ -16,7 +17,9 @@ const apiUrl = 'https://api.openai.com/v1/completions';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   if (!kIsWeb) {
     await SystemChrome.setPreferredOrientations([

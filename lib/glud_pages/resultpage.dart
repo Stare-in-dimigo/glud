@@ -84,21 +84,20 @@ class _ResultPageState extends State<ResultPage> {
                   ),
                 ),
                 const SizedBox(height: 15),
-                CustomContainer(
-                  backgroundColor: const Color(0xFF9D9D9D),
-                  child: Center(
-                    child: TextButton(
-                      onPressed: copyToClipboard, // 클립보드에 복사
-                      child: const Text(
-                        '클립보드에 복사하기',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                GestureDetector(
+                  onTap: copyToClipboard,
+                  child: const CustomContainer(
+                      backgroundColor: Color(0xFF9D9D9D),
+                      child: Center(
+                        child: Text(
+                          '클립보드에 복사하기',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
+                      )),
                 ),
                 const SizedBox(height: 15),
                 const CustomContainer(

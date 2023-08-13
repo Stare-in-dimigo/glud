@@ -5,7 +5,7 @@ import '../widgets.dart';
 class SettingsPage extends StatelessWidget {
   SettingsPage({Key? key}) : super(key: key);
 
-  final settingsItems = ['푸시 알림', '색약 모드', '다크 모드'];
+  final settingsItems = ['글루드 모드'];
 
   @override
   Widget build(BuildContext context) {

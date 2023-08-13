@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>434712487042-kq6tpq1bstabr7ds6tism8dpujp64tng.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.434712487042-kq6tpq1bstabr7ds6tism8dpujp64tng</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>434712487042-cllgvmi0qqs34cefijr8k5j0mos59249.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDpA4R1mxHgtyZ_Y6MEl0LSricR5RYTcdk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>434712487042</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.glud.glud</string>
+	<key>PROJECT_ID</key>
+	<string>glud-1539d</string>
+	<key>STORAGE_BUCKET</key>
+	<string>glud-1539d.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:434712487042:ios:7a2833705621192686009b</string>
+	<key>DATABASE_URL</key>
+	<string>https://glud-1539d-default-rtdb.asia-southeast1.firebasedatabase.app</string>
+</dict>
+</plist>
