@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../widgets.dart';
 
@@ -60,13 +61,26 @@ class _ContactPageState extends State<ContactPage> {
             child: Column(
               children: [
                 InkWell(
-                  onTap: () {},
+                  onTap: () async {
+                    final Uri emailUri = Uri(
+                      scheme: 'mailto',
+                      path: 'gludmaster@gmail.com',
+                      query: 'subject=[글루드 문의]',
+                    );
+
+                    if (await canLaunchUrl(emailUri)) {
+                      launchUrl(emailUri);
+                    } else {
+                      throw 'Could not launch ${emailUri.toString()}';
+                    }
+
+                  },
                   child: const CustomContainer(
                     backgroundColor: Color(0xFF7EAAC9),
                     child: Align(
                       alignment: Alignment.center,
                       child: Text(
-                        '카카오톡 고객센터 연결하기',
+                        '메일로 문의하기',
                         style: TextStyle(
                           fontSize: 20.0,
                           color: Colors.white,

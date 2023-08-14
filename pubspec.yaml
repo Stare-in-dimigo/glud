@@ -45,6 +45,7 @@ dependencies:
 
   path_provider: ^2.1.0
   docx_template: ^0.3.4
+  url_launcher: ^6.1.12
 
 dev_dependencies:
   flutter_test:
