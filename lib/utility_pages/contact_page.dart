@@ -48,7 +48,7 @@ class _ContactPageState extends State<ContactPage> {
                           color: Color(0xFF9D9D9D),
                         ),
                       ),
-                      const SizedBox(height: 100),
+                      SizedBox(height: 150),
                     ]),
                   ),
                 ],
