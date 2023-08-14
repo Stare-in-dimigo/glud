@@ -49,7 +49,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '434712487042',
     projectId: 'glud-1539d',
     authDomain: 'glud-1539d.firebaseapp.com',
-    databaseURL: 'https://glud-1539d-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://glud-1539d-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'glud-1539d.appspot.com',
     measurementId: 'G-TM5X0W6V7T',
   );
@@ -59,7 +60,8 @@ class DefaultFirebaseOptions {
     appId: '1:434712487042:android:b7915aa48329a01a86009b',
     messagingSenderId: '434712487042',
     projectId: 'glud-1539d',
-    databaseURL: 'https://glud-1539d-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://glud-1539d-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'glud-1539d.appspot.com',
   );
 
@@ -68,10 +70,13 @@ class DefaultFirebaseOptions {
     appId: '1:434712487042:ios:7a2833705621192686009b',
     messagingSenderId: '434712487042',
     projectId: 'glud-1539d',
-    databaseURL: 'https://glud-1539d-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://glud-1539d-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'glud-1539d.appspot.com',
-    androidClientId: '434712487042-cllgvmi0qqs34cefijr8k5j0mos59249.apps.googleusercontent.com',
-    iosClientId: '434712487042-kq6tpq1bstabr7ds6tism8dpujp64tng.apps.googleusercontent.com',
+    androidClientId:
+        '434712487042-cllgvmi0qqs34cefijr8k5j0mos59249.apps.googleusercontent.com',
+    iosClientId:
+        '434712487042-kq6tpq1bstabr7ds6tism8dpujp64tng.apps.googleusercontent.com',
     iosBundleId: 'com.glud.glud',
   );
 
@@ -80,10 +85,13 @@ class DefaultFirebaseOptions {
     appId: '1:434712487042:ios:b787d5ebdda2d21c86009b',
     messagingSenderId: '434712487042',
     projectId: 'glud-1539d',
-    databaseURL: 'https://glud-1539d-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://glud-1539d-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'glud-1539d.appspot.com',
-    androidClientId: '434712487042-cllgvmi0qqs34cefijr8k5j0mos59249.apps.googleusercontent.com',
-    iosClientId: '434712487042-ndrjiktftfi6e5n4hdujtgj9fipup92k.apps.googleusercontent.com',
+    androidClientId:
+        '434712487042-cllgvmi0qqs34cefijr8k5j0mos59249.apps.googleusercontent.com',
+    iosClientId:
+        '434712487042-ndrjiktftfi6e5n4hdujtgj9fipup92k.apps.googleusercontent.com',
     iosBundleId: 'com.glud.glud.RunnerTests',
   );
 }

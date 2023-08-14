@@ -61,46 +61,32 @@ class _ResultPageState extends State<ResultPage> {
     return FutureBuilder(
       future: fetchLatestContent(),
       builder: (context, snapshot) {
-          return Scaffold(
-            backgroundColor: Colors.white,
-            appBar: buildAppBar(context),
-            body: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-              child: ScrollConfiguration(
-                behavior: MyBehavior(),
-                child: ListView(
-                  children: [
-                    CustomContainer(
-                      child: Text(
-                        writingcontent,
-                        style: const TextStyle(
-                          fontSize: 18.0,
-                          color: Color(0xFF5E5E5E),
-                        ),
+        return Scaffold(
+          backgroundColor: Colors.white,
+          appBar: buildAppBar(context),
+          body: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+            child: ScrollConfiguration(
+              behavior: MyBehavior(),
+              child: ListView(
+                children: [
+                  CustomContainer(
+                    child: Text(
+                      writingcontent,
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                        color: Color(0xFF5E5E5E),
                       ),
                     ),
-                    const SizedBox(height: 15),
-                    GestureDetector(
-                      onTap: copyToClipboard,
-                      child: const CustomContainer(
-                          backgroundColor: Color(0xFF9D9D9D),
-                          child: Center(
-                            child: Text(
-                              '클립보드에 복사하기',
-                              style: TextStyle(
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                          )),
-                    ),
-                    const SizedBox(height: 15),
-                    const CustomContainer(
-                        backgroundColor: Color(0xFF7EAAC9),
+                  ),
+                  const SizedBox(height: 15),
+                  GestureDetector(
+                    onTap: copyToClipboard,
+                    child: const CustomContainer(
+                        backgroundColor: Color(0xFF9D9D9D),
                         child: Center(
                           child: Text(
-                            'Docx 파일로 다운받기',
+                            '클립보드에 복사하기',
                             style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
@@ -108,19 +94,34 @@ class _ResultPageState extends State<ResultPage> {
                             ),
                           ),
                         )),
-                    const SizedBox(height: 20),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 15),
+                  const CustomContainer(
+                      backgroundColor: Color(0xFF7EAAC9),
+                      child: Center(
+                        child: Text(
+                          'Docx 파일로 다운받기',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      )),
+                  const SizedBox(height: 20),
+                ],
               ),
             ),
-          );
+          ),
+        );
       },
     );
   }
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      systemOverlayStyle: whitestyle, // 추측한 변수 이름입니다.
+      systemOverlayStyle: whitestyle,
+      // 추측한 변수 이름입니다.
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
         iconSize: 20,

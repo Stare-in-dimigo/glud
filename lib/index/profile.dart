@@ -12,11 +12,16 @@ class Profile extends StatelessWidget {
   Profile({Key? key}) : super(key: key);
 
   final List<_MypageItem> _items = [
-    _MypageItem('최근 작성한 글', 'assets/images/mypage/recent.png', const GludListPage()),
-    _MypageItem('자주 찾는 질문', 'assets/images/mypage/faq.png', const GludListPage()),
-    _MypageItem('고객센터', 'assets/images/mypage/contact.png', const GludListPage()),
-    _MypageItem('실험실', 'assets/images/mypage/laboratory.png', const GludListPage()),
-    _MypageItem('공지사항', 'assets/images/mypage/notice.png', const GludListPage()),
+    _MypageItem(
+        '최근 작성한 글', 'assets/images/mypage/recent.png', const GludListPage()),
+    _MypageItem(
+        '자주 찾는 질문', 'assets/images/mypage/faq.png', const GludListPage()),
+    _MypageItem(
+        '고객센터', 'assets/images/mypage/contact.png', const GludListPage()),
+    _MypageItem(
+        '실험실', 'assets/images/mypage/laboratory.png', const GludListPage()),
+    _MypageItem(
+        '공지사항', 'assets/images/mypage/notice.png', const GludListPage()),
   ];
 
   Future<int> getUserTypeFromFirebase() async {

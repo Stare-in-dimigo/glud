@@ -50,8 +50,10 @@ class _FinishPageState extends State<FinishPage> {
             child: Column(
               children: [
                 InkWell(
-                  onTap: () => Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => const GludListPage())),
+                  onTap: () => Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const GludListPage())),
                   child: const CustomContainer(
                     backgroundColor: Color(0xFF7EAAC9),
                     child: Center(

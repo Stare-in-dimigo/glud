@@ -288,6 +288,7 @@ class CustomFloatingButton extends StatelessWidget {
   final String text;
 
   const CustomFloatingButton({Key? key, required this.text}) : super(key: key);
+
   Future<String> generateText(String prompt) async {
     final response = await http.post(
       Uri.parse(apiUrl),
@@ -321,7 +322,8 @@ class CustomFloatingButton extends StatelessWidget {
           barrierDismissible: false,
           builder: (BuildContext context) {
             return Dialog(
-              shape: RoundedRectangleBorder( // 모서리에 곡률을 줍니다
+              shape: RoundedRectangleBorder(
+                // 모서리에 곡률을 줍니다
                 borderRadius: BorderRadius.circular(15), // 곡률의 정도를 조절합니다
               ),
               child: Container(
@@ -332,7 +334,7 @@ class CustomFloatingButton extends StatelessWidget {
                   children: [
                     SizedBox(
                       height: 40.0, // 원하는 높이
-                      width: 40.0,  // 원하는 너비
+                      width: 40.0, // 원하는 너비
                       child: CircularProgressIndicator(
                         color: Color(0xFFC0CFDB),
                         strokeWidth: 4.0,
