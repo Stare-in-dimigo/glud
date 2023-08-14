@@ -2,9 +2,13 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:glud/login_pages/loginpage.dart';
 
-import '../glud_pages/gludlist.dart';
+import '../utility_pages/glud_list_page.dart';
 import '../widgets.dart';
-import 'settings.dart';
+import '../utility_pages/settings_page.dart';
+import '../utility_pages/notice_page.dart';
+import '../utility_pages/faq_page.dart';
+import '../utility_pages/contact_page.dart';
+import '../utility_pages/laboratory_page.dart';
 
 int globalUserType = -1;
 
@@ -13,15 +17,15 @@ class Profile extends StatelessWidget {
 
   final List<_MypageItem> _items = [
     _MypageItem(
-        '최근 작성한 글', 'assets/images/mypage/recent.png', const GludListPage()),
+        '내가 작성한 글', 'assets/images/mypage/recent.png', const GludListPage()),
     _MypageItem(
-        '자주 찾는 질문', 'assets/images/mypage/faq.png', const GludListPage()),
+        '자주 찾는 질문', 'assets/images/mypage/faq.png', const FaqPage()),
     _MypageItem(
-        '고객센터', 'assets/images/mypage/contact.png', const GludListPage()),
+        '고객센터', 'assets/images/mypage/contact.png', const ContactPage()),
     _MypageItem(
-        '실험실', 'assets/images/mypage/laboratory.png', const GludListPage()),
+        '실험실', 'assets/images/mypage/laboratory.png', LaboratoryPage()),
     _MypageItem(
-        '공지사항', 'assets/images/mypage/notice.png', const GludListPage()),
+        '공지사항', 'assets/images/mypage/notice.png', NoticePage()),
   ];
 
   Future<int> getUserTypeFromFirebase() async {

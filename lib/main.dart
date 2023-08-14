@@ -8,11 +8,11 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:glud/widgets.dart';
 
 import 'firebase_options.dart';
-import 'index/gludindex.dart';
+import 'index/menu.dart';
 import 'index/profile.dart';
 import 'login_pages/loginpage.dart';
 
-const apiKey = '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';
+const apiKey = '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';
 const apiUrl = 'https://api.openai.com/v1/completions';
 
 void main() async {

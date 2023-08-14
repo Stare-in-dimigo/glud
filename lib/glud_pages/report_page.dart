@@ -1,20 +1,27 @@
+import 'dart:convert';
+
 import 'package:firebase_database/firebase_database.dart'; // Firebase Realtime Database 라이브러리 추가
 import 'package:flutter/material.dart';
-import 'package:glud/glud_pages/finishpage.dart';
+import 'package:glud/glud_pages/finish_page.dart';
 import 'package:glud/login_pages/loginpage.dart' as user;
+import 'package:http/http.dart' as http;
 
+import '../main.dart';
 import '../widgets.dart';
 
 String content = "";
+String date = "";
+String place = "";
+String quote = "";
 
-class BookreviewPage extends StatefulWidget {
-  const BookreviewPage({Key? key}) : super(key: key);
+class ReportPage extends StatefulWidget {
+  const ReportPage({Key? key}) : super(key: key);
 
   @override
-  _BookreviewPageState createState() => _BookreviewPageState();
+  _ReportPageState createState() => _ReportPageState();
 }
 
-class _BookreviewPageState extends State<BookreviewPage> {
+class _ReportPageState extends State<ReportPage> {
   final TextEditingController _dateTimeController = TextEditingController();
   final TextEditingController _placeController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
@@ -35,11 +42,17 @@ class _BookreviewPageState extends State<BookreviewPage> {
   void initState() {
     super.initState();
     _contentController.addListener(_onContentChanged);
+    _dateTimeController.addListener(_onContentChanged);
+    _placeController.addListener(_onContentChanged);
+    _quoteController.addListener(_onContentChanged);
   }
 
   void _onContentChanged() {
     setState(() {
       content = _contentController.text;
+      date = _dateTimeController.text;
+      place = _placeController.text;
+      quote = _quoteController.text;
     });
   }
 
@@ -178,12 +191,18 @@ class _BookreviewPageState extends State<BookreviewPage> {
   Widget _buildFloatingButton(BuildContext context) {
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 300),
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        return ScaleTransition(
+          scale: animation,
+          child: child,
+        );
+      },
       child: !_isFocused
           ? const Padding(
               padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
               key: ValueKey<int>(1),
               child: CustomFloatingButton(
-                text: '독서록 생성하기',
+                text: '보도자료 생성하기',
               ),
             )
           : const SizedBox.shrink(key: ValueKey<int>(2)),
@@ -203,7 +222,7 @@ class _BookreviewPageState extends State<BookreviewPage> {
       title: const Align(
         alignment: Alignment.centerLeft,
         child: Text(
-          '독서록',
+          '보도자료',
           style: TextStyle(
             color: Colors.black,
             fontSize: 25.0,
@@ -270,10 +289,79 @@ class CustomFloatingButton extends StatelessWidget {
 
   const CustomFloatingButton({Key? key, required this.text}) : super(key: key);
 
+  Future<String> generateText(String prompt) async {
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $apiKey'
+      },
+      body: jsonEncode({
+        "model": "text-davinci-003",
+        'prompt': prompt,
+        'max_tokens': 1000,
+        'temperature': 0,
+        'top_p': 1,
+        'frequency_penalty': 0,
+        'presence_penalty': 0
+      }),
+    );
+
+    Map<String, dynamic> newresponse =
+        jsonDecode(utf8.decode(response.bodyBytes));
+
+    return newresponse['choices'][0]['text'];
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                // 모서리에 곡률을 줍니다
+                borderRadius: BorderRadius.circular(15), // 곡률의 정도를 조절합니다
+              ),
+              child: Container(
+                width: 200, // Dialog의 너비를 지정합니다
+                padding: const EdgeInsets.all(40),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 30.0, // 원하는 높이
+                      width: 30.0, // 원하는 너비
+                      child: CircularProgressIndicator(
+                        color: Color(0xFFC0CFDB),
+                        strokeWidth: 4.0,
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    Text(
+                      '로딩중...',
+                      style: TextStyle(
+                        color: Color(0xFF5E5E5E),
+                        fontSize: 20.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+
+        String prompt =
+            "일시 : $date, 장소 : $place, 주요내용 : $content, 인용문 : $quote 다음 정보를 가지고 보도자료 작성해줘";
+        String contents = await generateText(prompt);
+
+        Navigator.of(context).pop(); // 로딩 창 닫기
+
         DateTime now = DateTime.now();
         String timestamp = now.toString();
         DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
@@ -283,10 +371,11 @@ class CustomFloatingButton extends StatelessWidget {
             .child("writing")
             .push()
             .set({
-          "content": content,
+          "content": contents,
           "time": timestamp,
-          "type": "독서록",
+          "type": "보도자료",
         });
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const FinishPage()),

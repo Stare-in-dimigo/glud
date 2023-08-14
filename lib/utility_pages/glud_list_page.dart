@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../widgets.dart';
-import 'resultpage.dart';
+import '../glud_pages/content_page.dart';
 
 class GludListPage extends StatefulWidget {
   const GludListPage({Key? key}) : super(key: key);
@@ -18,6 +18,13 @@ class _GludListPageState extends State<GludListPage> {
         imagePath: 'assets/images/index/report.png',
         content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
         completed: true,
+        route: const ResultPage()),
+    Glud(
+        title: '보도자료 제목',
+        date: '2023-06-10',
+        imagePath: 'assets/images/index/report.png',
+        content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
+        completed: false,
         route: const ResultPage()),
   ];
 
@@ -154,7 +161,7 @@ class _GludListPageState extends State<GludListPage> {
       title: const Align(
         alignment: Alignment.centerLeft,
         child: Text(
-          '최근 작성한 글',
+          '내가 작성한 글',
           style: TextStyle(
             color: Colors.black,
             fontSize: 25.0,

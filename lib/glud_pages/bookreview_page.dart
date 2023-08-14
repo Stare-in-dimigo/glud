@@ -1,20 +1,20 @@
 import 'package:firebase_database/firebase_database.dart'; // Firebase Realtime Database 라이브러리 추가
 import 'package:flutter/material.dart';
-import 'package:glud/glud_pages/finishpage.dart';
+import 'package:glud/glud_pages/finish_page.dart';
 import 'package:glud/login_pages/loginpage.dart' as user;
 
 import '../widgets.dart';
 
 String content = "";
 
-class LitigationPage extends StatefulWidget {
-  const LitigationPage({Key? key}) : super(key: key);
+class BookreviewPage extends StatefulWidget {
+  const BookreviewPage({Key? key}) : super(key: key);
 
   @override
-  _LitigationPageState createState() => _LitigationPageState();
+  _BookreviewPageState createState() => _BookreviewPageState();
 }
 
-class _LitigationPageState extends State<LitigationPage> {
+class _BookreviewPageState extends State<BookreviewPage> {
   final TextEditingController _dateTimeController = TextEditingController();
   final TextEditingController _placeController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
@@ -183,7 +183,7 @@ class _LitigationPageState extends State<LitigationPage> {
               padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
               key: ValueKey<int>(1),
               child: CustomFloatingButton(
-                text: '소송문 생성하기',
+                text: '독서록 생성하기',
               ),
             )
           : const SizedBox.shrink(key: ValueKey<int>(2)),
@@ -203,7 +203,7 @@ class _LitigationPageState extends State<LitigationPage> {
       title: const Align(
         alignment: Alignment.centerLeft,
         child: Text(
-          '소송문',
+          '독서록',
           style: TextStyle(
             color: Colors.black,
             fontSize: 25.0,
@@ -285,7 +285,7 @@ class CustomFloatingButton extends StatelessWidget {
             .set({
           "content": content,
           "time": timestamp,
-          "type": "소송문",
+          "type": "독서록",
         });
         Navigator.pushReplacement(
           context,

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 import '../widgets.dart';
-import 'finishpage.dart';
+import 'finish_page.dart';
 
-class ReportPageD extends StatefulWidget {
-  const ReportPageD({Key? key}) : super(key: key);
+class VoicePage extends StatefulWidget {
+  const VoicePage({Key? key}) : super(key: key);
 
   @override
-  _ReportPageDState createState() => _ReportPageDState();
+  _VoicePageState createState() => _VoicePageState();
 }
 
-class _ReportPageDState extends State<ReportPageD> {
+class _VoicePageState extends State<VoicePage> {
   final PageController _controller = PageController(initialPage: 0);
   final ValueNotifier<int> _currentPageNotifier = ValueNotifier<int>(0);
 
