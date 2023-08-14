@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 
+// 상황에 따라 CustomContainer 위젯과 whitestyle을 정의해야 할 수 있습니다.
 import '../widgets.dart';
+
+class FaqItem {
+  final String question;
+  final String answer;
+
+  FaqItem(this.question, this.answer);
+}
 
 class FaqPage extends StatefulWidget {
   const FaqPage({Key? key}) : super(key: key);
@@ -10,7 +18,14 @@ class FaqPage extends StatefulWidget {
 }
 
 class _FaqPageState extends State<FaqPage> {
-  List<bool> expanded = [false, false, false, false]; // 각 질문/답변 쌍의 상태를 저장합니다.
+  List<bool> expanded = [false, false, false, false];
+
+  final List<FaqItem> faqItems = [
+    FaqItem('다른 형식의 글은 쓸 수 없나요?', '없어용 없어용 없어용 없어용 ...'),
+    FaqItem('어떻게 회원가입하나요?', '회원가입은 ...'),
+    FaqItem('비밀번호를 잊어버렸어요', '비밀번호 재설정 ...'),
+    FaqItem('어떻게 상품을 주문하나요?', '상품 주문은 ...'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +35,8 @@ class _FaqPageState extends State<FaqPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _buildFaqItem(0),
-            _buildFaqItem(1),
-            _buildFaqItem(2),
-            _buildFaqItem(3),
+            for (int i = 0; i < faqItems.length; i++)
+              _buildFaqItem(i),
           ],
         ),
       ),
@@ -41,8 +54,7 @@ class _FaqPageState extends State<FaqPage> {
                     ? null
                     : const Border(
                   bottom: BorderSide(
-                      color: Colors.black12,
-                      width: 1.0), // 회색 보더를 정의합니다.
+                      color: Colors.black12, width: 1.0),
                 ),
               ),
               child: Padding(
@@ -50,7 +62,7 @@ class _FaqPageState extends State<FaqPage> {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('다른 형식의 글은 쓸 수 없나요?',
+                      Text(faqItems[index].question,
                           style: TextStyle(
                             fontSize: 20.0,
                             color: Color(0xFF5E5E5E),
@@ -58,8 +70,7 @@ class _FaqPageState extends State<FaqPage> {
                       IconButton(
                         onPressed: () {
                           setState(() {
-                            expanded[index] =
-                            !expanded[index]; // 해당 index의 상태를 변경합니다.
+                            expanded[index] = !expanded[index];
                           });
                         },
                         icon: Icon(
@@ -73,13 +84,13 @@ class _FaqPageState extends State<FaqPage> {
                     ]),
               )),
         ),
-        if (expanded[index]) // 답변이 확장되었다면 표시합니다.
-          const Padding(
+        if (expanded[index])
+          Padding(
             padding: EdgeInsets.fromLTRB(40, 0, 40, 10),
             child: CustomContainer(
               padding: EdgeInsets.fromLTRB(25, 20, 15, 20),
               child: Text(
-                  '없어용 없어용 없어용 없어용 없어용 없어용 없어용 없어용 없어용 없어용 없어용 없어용 없어용 없어용 없어용 없어용 없어용 없어용 없어용 없어용 없어용 없어용 없어용 없어용 ',
+                  faqItems[index].answer,
                   style: TextStyle(
                     fontSize: 20.0,
                     color: Color(0xFF5E5E5E),
@@ -92,7 +103,7 @@ class _FaqPageState extends State<FaqPage> {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      systemOverlayStyle: whitestyle,
+      systemOverlayStyle: whitestyle, // 정의되어 있어야 합니다.
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
         iconSize: 20,
