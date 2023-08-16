@@ -47,52 +47,56 @@ class _FaqPageState extends State<FaqPage> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-          child: Container(
-              decoration: BoxDecoration(
-                border: expanded[index]
-                    ? null
-                    : const Border(
-                  bottom: BorderSide(
-                      color: Colors.black12, width: 1.0),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(faqItems[index].question,
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: Color(0xFF5E5E5E),
-                          )),
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            expanded[index] = !expanded[index];
-                          });
-                        },
-                        icon: Icon(
-                          expanded[index]
-                              ? Icons.close_rounded
-                              : Icons.arrow_forward_ios_rounded,
-                          color: const Color(0xFF9D9D9D),
-                          size: 20,
+          padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+          child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  expanded[index] = !expanded[index];
+                });
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  border: expanded[index]
+                      ? null
+                      : const Border(
+                          bottom: BorderSide(color: Colors.black12, width: 1.0),
                         ),
-                      )
-                    ]),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
+                  child: Row(children: [
+                    const Text(
+                      'Q',
+                      style: TextStyle(
+                        fontSize: 22.0,
+                        color: Color(0xff7eaac9),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(faqItems[index].question,
+                        style: const TextStyle(
+                          fontSize: 18.0,
+                          color: Color(0xFF5E5E5E),
+                        )),
+                    Expanded(child: Container()),
+                    if (!expanded[index])
+                      const Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: Color(0xFF9D9D9D),
+                        size: 20,
+                      ),
+                  ]),
+                ),
               )),
         ),
         if (expanded[index])
           Padding(
-            padding: EdgeInsets.fromLTRB(40, 0, 40, 10),
+            padding: const EdgeInsets.fromLTRB(40, 0, 40, 10),
             child: CustomContainer(
-              padding: EdgeInsets.fromLTRB(25, 20, 15, 20),
-              child: Text(
-                  faqItems[index].answer,
-                  style: TextStyle(
-                    fontSize: 20.0,
+              padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+              child: Text(faqItems[index].answer,
+                  style: const TextStyle(
+                    fontSize: 18.0,
                     color: Color(0xFF5E5E5E),
                   )),
             ),

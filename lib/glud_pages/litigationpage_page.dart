@@ -1,192 +1,81 @@
-import 'package:firebase_database/firebase_database.dart'; // Firebase Realtime Database 라이브러리 추가
 import 'package:flutter/material.dart';
-import 'package:glud/glud_pages/finish_page.dart';
-import 'package:glud/login_pages/loginpage.dart' as user;
 
 import '../widgets.dart';
 
-String content = "";
-
-class LitigationPage extends StatefulWidget {
-  const LitigationPage({Key? key}) : super(key: key);
-
-  @override
-  _LitigationPageState createState() => _LitigationPageState();
-}
-
-class _LitigationPageState extends State<LitigationPage> {
-  final TextEditingController _dateTimeController = TextEditingController();
-  final TextEditingController _placeController = TextEditingController();
-  final TextEditingController _contentController = TextEditingController();
-  final TextEditingController _quoteController = TextEditingController();
-
-  bool _isFocused = false;
-
-  @override
-  void dispose() {
-    _dateTimeController.dispose();
-    _placeController.dispose();
-    _contentController.dispose();
-    _quoteController.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _contentController.addListener(_onContentChanged);
-  }
-
-  void _onContentChanged() {
-    setState(() {
-      content = _contentController.text;
-    });
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1500),
-      lastDate: DateTime(2500),
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Color(0xFF92B4CD),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-    if (picked != null) {
-      setState(() {
-        _dateTimeController.text =
-            "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
-      });
-    }
-  }
+class LitigationPage extends StatelessWidget {
+  LitigationPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-        setState(() {
-          _isFocused = false;
-        });
-      },
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: buildAppBar(context),
-        body: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-          child: ScrollConfiguration(
-            behavior: MyBehavior(),
-            child: ListView(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: buildAppBar(context),
+      body: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/index/litigation.png',
+                    height: 100,
+                  ),
+                  const SizedBox(height: 30),
+                  const Center(
+                    child: Column(children: [
+                      Text(
+                        '기능을 준비 중이에요',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        '소송문 기능은 추후 이용하실 수 있어요',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF9D9D9D),
+                        ),
+                      ),
+                      SizedBox(height: 150),
+                    ]),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
               children: [
-                _buildCustomContainer(
-                  Icons.calendar_today,
-                  '일시',
-                  _dateTimeController,
+                InkWell(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: const CustomContainer(
+                    backgroundColor: Color(0xFF7EAAC9),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        '돌아가기',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 15),
-                _buildCustomContainer(
-                  Icons.place_outlined,
-                  '장소',
-                  _placeController,
-                ),
-                const SizedBox(height: 15),
-                _buildCustomContainer(
-                  null,
-                  '\n\n주요 내용\n\n',
-                  _contentController,
-                  centerAlign: true,
-                ),
-                const SizedBox(height: 15),
-                _buildCustomContainer(
-                  Icons.format_quote_outlined,
-                  '인용문',
-                  _quoteController,
-                ),
-                const SizedBox(height: 85),
+                const SizedBox(height: 50),
               ],
             ),
           ),
-        ),
-        floatingActionButton: _buildFloatingButton(context),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      ),
-    );
-  }
-
-  CustomContainer _buildCustomContainer(
-    IconData? icon,
-    String hintText,
-    TextEditingController controller, {
-    bool centerAlign = false,
-  }) {
-    return CustomContainer(
-      padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-      child: Row(
-        children: [
-          if (icon != null)
-            Icon(icon, color: const Color(0xFFC0CFDB), size: 30.0),
-          if (icon != null) const SizedBox(width: 15),
-          Expanded(
-            child: hintText == '일시'
-                ? _buildDateTimeField()
-                : CustomTextField(
-                    hintText: hintText,
-                    centerAlign: centerAlign,
-                    textEditingController: controller,
-                    onFocusChange: (bool focused) {
-                      setState(() {
-                        _isFocused = focused;
-                      });
-                    },
-                  ),
-          ),
         ],
       ),
-    );
-  }
-
-  TextField _buildDateTimeField() {
-    return TextField(
-      controller: _dateTimeController,
-      decoration: const InputDecoration(
-        hintText: '일시',
-        hintStyle: TextStyle(
-          color: Color(0xFF5E5E5E),
-          fontSize: 20.0,
-        ),
-        border: InputBorder.none,
-      ),
-      style: const TextStyle(
-        color: Color(0xFF5E5E5E),
-        fontSize: 20.0,
-      ),
-      readOnly: true,
-      onTap: () {
-        _selectDate(context);
-      },
-    );
-  }
-
-  Widget _buildFloatingButton(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 300),
-      child: !_isFocused
-          ? const Padding(
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-              key: ValueKey<int>(1),
-              child: CustomFloatingButton(
-                text: '소송문 생성하기',
-              ),
-            )
-          : const SizedBox.shrink(key: ValueKey<int>(2)),
     );
   }
 
@@ -213,99 +102,6 @@ class _LitigationPageState extends State<LitigationPage> {
       ),
       titleSpacing: -10,
       toolbarHeight: 100,
-    );
-  }
-}
-
-class CustomTextField extends StatelessWidget {
-  final String hintText;
-  final bool centerAlign;
-  final TextEditingController textEditingController;
-  final Function(bool) onFocusChange;
-
-  const CustomTextField({
-    Key? key,
-    this.hintText = '',
-    this.centerAlign = false,
-    required this.textEditingController,
-    required this.onFocusChange,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      cursorColor: const Color(0xFF5E5E5E),
-      maxLines: null,
-      controller: textEditingController,
-      onChanged: (text) {},
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: const TextStyle(
-          color: Color(0xFF5E5E5E),
-          fontSize: 20.0,
-        ),
-        border: InputBorder.none,
-        alignLabelWithHint: true,
-      ),
-      style: const TextStyle(
-        color: Color(0xFF5E5E5E),
-        fontSize: 20.0,
-      ),
-      textAlign: centerAlign ? TextAlign.center : TextAlign.left,
-      onTap: () {
-        onFocusChange(true);
-      },
-      onEditingComplete: () {
-        onFocusChange(false);
-      },
-      onSubmitted: (text) {
-        onFocusChange(false);
-      },
-    );
-  }
-}
-
-class CustomFloatingButton extends StatelessWidget {
-  final String text;
-
-  const CustomFloatingButton({Key? key, required this.text}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        DateTime now = DateTime.now();
-        String timestamp = now.toString();
-        DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
-        databaseReference
-            .child("users")
-            .child(user.usersUID)
-            .child("writing")
-            .push()
-            .set({
-          "content": content,
-          "time": timestamp,
-          "type": "소송문",
-        });
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const FinishPage()),
-        );
-      },
-      child: CustomContainer(
-        height: 70,
-        backgroundColor: const Color(0xFF7EAAC9),
-        child: Center(
-          child: Text(
-            text,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

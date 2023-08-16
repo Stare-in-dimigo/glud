@@ -15,9 +15,9 @@ class GludIndex extends StatelessWidget {
     _GludItem(
         '독서록', '동화같은', 'assets/images/index/booklog.png', BookreviewPage()),
     _GludItem(
-        '소송문', '백전백승', 'assets/images/index/litigation.png', LitigationPage()),
-    _GludItem(
         '반성문', '그럴듯한', 'assets/images/index/reflection.png', ReflectionPage()),
+    _GludItem(
+        '소송문', '백전백승', 'assets/images/index/litigation.png', LitigationPage()),
   ];
 
   @override

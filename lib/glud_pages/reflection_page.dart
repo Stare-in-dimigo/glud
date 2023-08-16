@@ -1,11 +1,18 @@
+import 'dart:convert';
+
 import 'package:firebase_database/firebase_database.dart'; // Firebase Realtime Database 라이브러리 추가
 import 'package:flutter/material.dart';
 import 'package:glud/glud_pages/finish_page.dart';
 import 'package:glud/login_pages/loginpage.dart' as user;
+import 'package:http/http.dart' as http;
 
+import '../main.dart';
 import '../widgets.dart';
 
 String content = "";
+String date = "";
+String place = "";
+String relatedperson = "";
 
 class ReflectionPage extends StatefulWidget {
   const ReflectionPage({Key? key}) : super(key: key);
@@ -15,19 +22,20 @@ class ReflectionPage extends StatefulWidget {
 }
 
 class _ReflectionPageState extends State<ReflectionPage> {
-  final TextEditingController _dateTimeController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
   final TextEditingController _placeController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
-  final TextEditingController _quoteController = TextEditingController();
+  final TextEditingController _relatedpersonController =
+      TextEditingController();
 
   bool _isFocused = false;
 
   @override
   void dispose() {
-    _dateTimeController.dispose();
+    _dateController.dispose();
     _placeController.dispose();
     _contentController.dispose();
-    _quoteController.dispose();
+    _relatedpersonController.dispose();
     super.dispose();
   }
 
@@ -35,11 +43,17 @@ class _ReflectionPageState extends State<ReflectionPage> {
   void initState() {
     super.initState();
     _contentController.addListener(_onContentChanged);
+    _dateController.addListener(_onContentChanged);
+    _placeController.addListener(_onContentChanged);
+    _relatedpersonController.addListener(_onContentChanged);
   }
 
   void _onContentChanged() {
     setState(() {
       content = _contentController.text;
+      date = _dateController.text;
+      place = _placeController.text;
+      relatedperson = _relatedpersonController.text;
     });
   }
 
@@ -62,7 +76,7 @@ class _ReflectionPageState extends State<ReflectionPage> {
     );
     if (picked != null) {
       setState(() {
-        _dateTimeController.text =
+        _dateController.text =
             "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
       });
     }
@@ -89,7 +103,7 @@ class _ReflectionPageState extends State<ReflectionPage> {
                 _buildCustomContainer(
                   Icons.calendar_today,
                   '일시',
-                  _dateTimeController,
+                  _dateController,
                 ),
                 const SizedBox(height: 15),
                 _buildCustomContainer(
@@ -99,16 +113,16 @@ class _ReflectionPageState extends State<ReflectionPage> {
                 ),
                 const SizedBox(height: 15),
                 _buildCustomContainer(
+                  Icons.people_alt_outlined,
+                  '사건 관련자',
+                  _relatedpersonController,
+                ),
+                const SizedBox(height: 15),
+                _buildCustomContainer(
                   null,
                   '\n\n주요 내용\n\n',
                   _contentController,
                   centerAlign: true,
-                ),
-                const SizedBox(height: 15),
-                _buildCustomContainer(
-                  Icons.format_quote_outlined,
-                  '인용문',
-                  _quoteController,
                 ),
                 const SizedBox(height: 85),
               ],
@@ -121,12 +135,11 @@ class _ReflectionPageState extends State<ReflectionPage> {
     );
   }
 
-  CustomContainer _buildCustomContainer(
-    IconData? icon,
-    String hintText,
-    TextEditingController controller, {
-    bool centerAlign = false,
-  }) {
+  CustomContainer _buildCustomContainer(IconData? icon,
+      String hintText,
+      TextEditingController controller, {
+        bool centerAlign = false,
+      }) {
     return CustomContainer(
       padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
       child: Row(
@@ -138,15 +151,15 @@ class _ReflectionPageState extends State<ReflectionPage> {
             child: hintText == '일시'
                 ? _buildDateTimeField()
                 : CustomTextField(
-                    hintText: hintText,
-                    centerAlign: centerAlign,
-                    textEditingController: controller,
-                    onFocusChange: (bool focused) {
-                      setState(() {
-                        _isFocused = focused;
-                      });
-                    },
-                  ),
+              hintText: hintText,
+              centerAlign: centerAlign,
+              textEditingController: controller,
+              onFocusChange: (bool focused) {
+                setState(() {
+                  _isFocused = focused;
+                });
+              },
+            ),
           ),
         ],
       ),
@@ -155,7 +168,7 @@ class _ReflectionPageState extends State<ReflectionPage> {
 
   TextField _buildDateTimeField() {
     return TextField(
-      controller: _dateTimeController,
+      controller: _dateController,
       decoration: const InputDecoration(
         hintText: '일시',
         hintStyle: TextStyle(
@@ -178,6 +191,12 @@ class _ReflectionPageState extends State<ReflectionPage> {
   Widget _buildFloatingButton(BuildContext context) {
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 300),
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        return ScaleTransition(
+          scale: animation,
+          child: child,
+        );
+      },
       child: !_isFocused
           ? const Padding(
               padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
@@ -270,10 +289,79 @@ class CustomFloatingButton extends StatelessWidget {
 
   const CustomFloatingButton({Key? key, required this.text}) : super(key: key);
 
+  Future<String> generateText(String prompt) async {
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $apiKey'
+      },
+      body: jsonEncode({
+        "model": "text-davinci-003",
+        'prompt': prompt,
+        'max_tokens': 1000,
+        'temperature': 0,
+        'top_p': 1,
+        'frequency_penalty': 0,
+        'presence_penalty': 0
+      }),
+    );
+
+    Map<String, dynamic> newresponse =
+        jsonDecode(utf8.decode(response.bodyBytes));
+
+    return newresponse['choices'][0]['text'];
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                // 모서리에 곡률을 줍니다
+                borderRadius: BorderRadius.circular(15), // 곡률의 정도를 조절합니다
+              ),
+              child: Container(
+                width: 200, // Dialog의 너비를 지정합니다
+                padding: const EdgeInsets.all(40),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 30.0, // 원하는 높이
+                      width: 30.0, // 원하는 너비
+                      child: CircularProgressIndicator(
+                        color: Color(0xFFC0CFDB),
+                        strokeWidth: 4.0,
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    Text(
+                      '로딩중...',
+                      style: TextStyle(
+                        color: Color(0xFF5E5E5E),
+                        fontSize: 20.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+
+        String prompt =
+            "일시 : $date, 장소 : $place, 사건 관련자 : $relatedperson, 주요 내용 : $content 다음 정보를 가지고 반성문 작성해줘";
+        String contents = await generateText(prompt);
+
+        Navigator.of(context).pop(); // 로딩 창 닫기
+
         DateTime now = DateTime.now();
         String timestamp = now.toString();
         DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
@@ -283,10 +371,11 @@ class CustomFloatingButton extends StatelessWidget {
             .child("writing")
             .push()
             .set({
-          "content": content,
+          "content": contents,
           "time": timestamp,
-          "type": "반성문",
+          "type": "보도자료",
         });
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const FinishPage()),
