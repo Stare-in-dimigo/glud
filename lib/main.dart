@@ -6,13 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:glud/widgets.dart';
+import 'package:flutter_web_frame/flutter_web_frame.dart';
 
 import 'firebase_options.dart';
 import 'index/menu.dart';
 import 'index/profile.dart';
 import 'login_pages/loginpage.dart';
 
-const apiKey = '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';
+const apiKey = 'secret';
 const apiUrl = 'https://api.openai.com/v1/completions';
 
 void main() async {
@@ -73,49 +74,65 @@ class _GludAppState extends State<GludApp> {
     final appBarTitle = ['글루드', '마이페이지'][_selectedIndex];
 
     if (!isLoggedIn) {
-      return MaterialApp(
-        theme: ThemeData(
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          fontFamily: 'Pretendard',
-        ),
-        home: LoginPage(onLogin: login),
+      return FlutterWebFrame(
+        builder: (context) {
+          return MaterialApp(
+            theme: ThemeData(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              fontFamily: 'Pretendard',
+            ),
+            home: LoginPage(onLogin: login),
+          );
+        },
+        clipBehavior: Clip.hardEdge,
+        maximumSize: Size(475.0, 812.0),
+        enabled: kIsWeb,
+        backgroundColor: Color(0xFF7EAAC9),
       );
     }
 
-    return MaterialApp(
-      theme: ThemeData(
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        fontFamily: 'Pretendard',
-      ),
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: CustomAppBar(text: appBarTitle),
-        body: Stack(
-          children: [
-            PageView(
-              controller: _pageController,
-              children: <Widget>[
-                GludIndex(),
-                Profile(),
+    return FlutterWebFrame(
+      builder: (context) {
+        return MaterialApp(
+          theme: ThemeData(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            fontFamily: 'Pretendard',
+          ),
+          home: Scaffold(
+            backgroundColor: Colors.white,
+            appBar: CustomAppBar(text: appBarTitle),
+            body: Stack(
+              children: [
+                PageView(
+                  controller: _pageController,
+                  children: <Widget>[
+                    GludIndex(),
+                    Profile(),
+                  ],
+                  onPageChanged: (index) {
+                    setState(() {
+                      _selectedIndex = index;
+                    });
+                  },
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: CustomNavigationBar(
+                    selectedIndex: _selectedIndex,
+                    onTap: _onItemTapped,
+                  ),
+                ),
               ],
-              onPageChanged: (index) {
-                setState(() {
-                  _selectedIndex = index;
-                });
-              },
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: CustomNavigationBar(
-                selectedIndex: _selectedIndex,
-                onTap: _onItemTapped,
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
+      clipBehavior: Clip.hardEdge,
+      maximumSize: Size(475.0, 812.0),
+      enabled: kIsWeb,
+      backgroundColor: Color(0xFF7EAAC9),
     );
   }
 }
@@ -180,8 +197,15 @@ class CustomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double height;
+    if (kIsWeb) {
+      height = 80;
+    } else {
+      height = Platform.isAndroid ? 80 : 100;
+    }
+
     return CustomContainer(
-      height: Platform.isAndroid ? 80 : 100,
+      height: height,
       padding: const EdgeInsets.all(15.0),
       borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(30.0),
