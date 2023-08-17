@@ -33,7 +33,7 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>glud</title>
+  <title>Glud</title>
   <link rel="manifest" href="manifest.json">
 
   <script>
@@ -60,5 +60,29 @@
       });
     });
   </script>
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAOFtNzMRFUqMSYj9e4TMe1vHYuRTdZ2hg",
+    authDomain: "glud-1539d.firebaseapp.com",
+    databaseURL: "https://glud-1539d-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "glud-1539d",
+    storageBucket: "glud-1539d.appspot.com",
+    messagingSenderId: "434712487042",
+    appId: "1:434712487042:web:ffac1e3e5bd881ab86009b",
+    measurementId: "G-TM5X0W6V7T"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 </body>
 </html>
