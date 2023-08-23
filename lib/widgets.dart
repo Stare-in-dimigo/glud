@@ -89,14 +89,7 @@ class MyBehavior extends ScrollBehavior {
   }
 }
 
-const SystemUiOverlayStyle bluestyle = SystemUiOverlayStyle(
+const SystemUiOverlayStyle statusbarStyle = SystemUiOverlayStyle(
   statusBarColor: Colors.transparent,
-  systemNavigationBarColor: Color(0xFF92B4CD),
-  statusBarIconBrightness: Brightness.dark,
-);
-
-const SystemUiOverlayStyle whitestyle = SystemUiOverlayStyle(
-  statusBarColor: Colors.transparent,
-  systemNavigationBarColor: Colors.white,
   statusBarIconBrightness: Brightness.dark,
 );

@@ -120,8 +120,7 @@ class _ResultPageState extends State<ResultPage> {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      systemOverlayStyle: whitestyle,
-      // 추측한 변수 이름입니다.
+      systemOverlayStyle: statusbarStyle,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
         iconSize: 20,

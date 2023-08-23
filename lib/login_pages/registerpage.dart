@@ -16,7 +16,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setSystemUIOverlayStyle(whitestyle);
+    SystemChrome.setSystemUIOverlayStyle(statusbarStyle);
   }
 
   @override

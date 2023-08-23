@@ -107,7 +107,7 @@ class _FaqPageState extends State<FaqPage> {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      systemOverlayStyle: whitestyle, // 정의되어 있어야 합니다.
+      systemOverlayStyle: statusbarStyle, // 정의되어 있어야 합니다.
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
         iconSize: 20,

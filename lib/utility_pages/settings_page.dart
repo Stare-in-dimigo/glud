@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../login_pages/loginpage.dart';
+import '../main.dart';
 import '../widgets.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -15,8 +17,10 @@ class SettingsPage extends StatelessWidget {
       body: ScrollConfiguration(
         behavior: MyBehavior(),
         child: ListView(
-          children:
-              settingsItems.map((item) => buildSettingsItem(item)).toList(),
+          children: [
+            ...settingsItems.map((item) => buildSettingsItem(item)).toList(),
+            buildLogoutButton(context),
+          ],
         ),
       ),
     );
@@ -24,7 +28,7 @@ class SettingsPage extends StatelessWidget {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      systemOverlayStyle: whitestyle,
+      systemOverlayStyle: statusbarStyle,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
         iconSize: 20,
@@ -53,6 +57,34 @@ class SettingsPage extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10.0),
       child: SettingsItem(
         text: item,
+      ),
+    );
+  }
+
+  Widget buildLogoutButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20),
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => LoginPage(
+                      onLogin: () {
+                        isLoggedIn = false;
+                      },
+                    )),
+            (Route<dynamic> route) => false,
+          );
+        },
+        child: Text('로그아웃', style: TextStyle(fontSize: 18.0)),
+        style: ElevatedButton.styleFrom(
+          primary: Colors.red, // Button color
+          onPrimary: Colors.white, // Text color
+          padding: EdgeInsets.symmetric(vertical: 12.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+        ),
       ),
     );
   }

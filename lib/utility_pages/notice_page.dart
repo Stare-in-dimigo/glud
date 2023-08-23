@@ -150,7 +150,7 @@ class _NoticePageState extends State<NoticePage> {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      systemOverlayStyle: whitestyle,
+      systemOverlayStyle: statusbarStyle,
       // 정의되어 있어야 합니다.
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),

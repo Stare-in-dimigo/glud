@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       vsync: this,
     )..repeat();
 
-    SystemChrome.setSystemUIOverlayStyle(bluestyle);
+    SystemChrome.setSystemUIOverlayStyle(statusbarStyle);
   }
 
   @override
@@ -150,7 +150,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
           } else if (value == false) {
             widget.onLogin();
           } else {
-            SystemChrome.setSystemUIOverlayStyle(bluestyle);
+            SystemChrome.setSystemUIOverlayStyle(statusbarStyle);
           }
         });
       }

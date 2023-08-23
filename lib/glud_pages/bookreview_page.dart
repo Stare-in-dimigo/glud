@@ -209,7 +209,7 @@ class _BookreviewPageState extends State<BookreviewPage> {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      systemOverlayStyle: whitestyle,
+      systemOverlayStyle: statusbarStyle,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
         iconSize: 20,

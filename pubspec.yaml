@@ -49,6 +49,9 @@ dependencies:
   url_launcher: ^6.1.12
   flutter_web_frame: ^1.0.0
 
+  pdf: ^3.10.4
+  printing: ^5.11.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -110,7 +110,7 @@ class _VoicePageState extends State<VoicePage> {
     );
 
     return AppBar(
-      systemOverlayStyle: whitestyle,
+      systemOverlayStyle: statusbarStyle,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
         iconSize: 20,
