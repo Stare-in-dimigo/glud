@@ -1,7 +1,10 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../main.dart';
 import '../widgets.dart';
+import 'loginpage.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -69,10 +72,20 @@ class _RegisterPageState extends State<RegisterPage> {
               children: [
                 InkWell(
                   onTap: selectedButtonIndex == -1
-                      ? () {
+                      ? () async {
                           setState(() {
                             selectedButtonIndex = 0;
                           });
+                          isDisabled = true;
+                          final DatabaseReference userRef = FirebaseDatabase
+                              .instance
+                              .ref()
+                              .child('users')
+                              .child(usersUID);
+                          final DataSnapshot snapshot = await userRef
+                              .once()
+                              .then((event) => event.snapshot);
+                          await userRef.child('isDisabled').set(isDisabled);
                           Future.delayed(const Duration(seconds: 1), () {
                             Navigator.of(context).pop(true);
                           });
@@ -96,10 +109,20 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 15),
                 InkWell(
                   onTap: selectedButtonIndex == -1
-                      ? () {
+                      ? () async {
                           setState(() {
                             selectedButtonIndex = 1;
                           });
+                          isDisabled = false;
+                          final DatabaseReference userRef = FirebaseDatabase
+                              .instance
+                              .ref()
+                              .child('users')
+                              .child(usersUID);
+                          final DataSnapshot snapshot = await userRef
+                              .once()
+                              .then((event) => event.snapshot);
+                          await userRef.child('isDisabled').set(isDisabled);
                           Future.delayed(const Duration(seconds: 1), () {
                             Navigator.of(context).pop(false);
                           });

@@ -1,10 +1,12 @@
 import 'dart:io' show Platform;
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
+import 'package:glud/index/voice_menu.dart';
 import 'package:glud/widgets.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
 
@@ -13,8 +15,11 @@ import 'index/menu.dart';
 import 'index/profile.dart';
 import 'login_pages/loginpage.dart';
 
-const apiKey = 'secret';
-const apiUrl = 'https://api.openai.com/v1/completions';
+const apiKey = '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';
+const apiUrl = 'https://api.openai.com/v1/chat/completions';
+
+bool isLoggedIn = false;
+bool isDisabled = false;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,8 +52,6 @@ class _GludAppState extends State<GludApp> {
   int _selectedIndex = 0;
   final _pageController = PageController();
 
-  bool isLoggedIn = false;
-
   void _onItemTapped(int index) {
     _pageController.animateToPage(
       index,
@@ -68,6 +71,16 @@ class _GludAppState extends State<GludApp> {
     _pageController.dispose();
     super.dispose();
   }
+
+  Future<bool> checkIsDisabled() async {
+    final usersRef = FirebaseDatabase.instance.ref();
+    final snapshot = await usersRef.child('users/$usersUID/isDisabled').get();
+    if (snapshot.value is bool) {
+      return snapshot.value as bool;
+    }
+    return false;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +121,16 @@ class _GludAppState extends State<GludApp> {
                 PageView(
                   controller: _pageController,
                   children: <Widget>[
-                    GludIndex(),
+                    FutureBuilder<bool>(
+                      future: checkIsDisabled(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData && snapshot.data == true) {
+                          return VoiceMenu();
+                        } else {
+                          return Menu();
+                        }
+                      },
+                    ),
                     Profile(),
                   ],
                   onPageChanged: (index) {
@@ -117,11 +139,51 @@ class _GludAppState extends State<GludApp> {
                     });
                   },
                 ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: CustomNavigationBar(
-                    selectedIndex: _selectedIndex,
-                    onTap: _onItemTapped,
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: Platform.isAndroid ? 65 : 85,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30.0),
+                        topRight: Radius.circular(30.0),
+                      ),
+                      color: const Color(0xFF92B4CD),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.border_color_rounded,
+                              color: _selectedIndex == 0 ? Colors.white : Colors.grey,
+                              size: 30,
+                            ),
+                            onPressed: () {
+                              _pageController.animateToPage(0,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.ease);
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.person_rounded,
+                              color: _selectedIndex == 1 ? Colors.white : Colors.grey,
+                              size: 30,
+                            ),
+                            onPressed: () {
+                              _pageController.animateToPage(1,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.ease);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -159,7 +221,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     }
 
     return AppBar(
-      systemOverlayStyle: bluestyle,
+      systemOverlayStyle: statusbarStyle,
       backgroundColor: Colors.transparent,
       elevation: 0.0,
       title: Align(
@@ -183,86 +245,4 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(100.0);
-}
-
-class CustomNavigationBar extends StatelessWidget {
-  final int selectedIndex;
-  final Function(int) onTap;
-
-  CustomNavigationBar({
-    Key? key,
-    required this.selectedIndex,
-    required this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    double height;
-    if (kIsWeb) {
-      height = 80;
-    } else {
-      height = Platform.isAndroid ? 80 : 100;
-    }
-
-    return CustomContainer(
-      height: height,
-      padding: const EdgeInsets.all(15.0),
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(30.0),
-        topRight: Radius.circular(30.0),
-      ),
-      backgroundColor: const Color(0xFF92B4CD),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          GestureDetector(
-            onTap: () => onTap(0),
-            child: Column(
-              children: <Widget>[
-                Icon(
-                  Icons.border_color_rounded,
-                  size: 30,
-                  color: selectedIndex == 0
-                      ? const Color(0xFFFFFFFF)
-                      : const Color(0xFFE5E5E5),
-                ),
-                const SizedBox(height: 3.0),
-                Text(
-                  '글루드',
-                  style: TextStyle(
-                    color: selectedIndex == 0
-                        ? const Color(0xFFFFFFFF)
-                        : const Color(0xFFE5E5E5),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          GestureDetector(
-            onTap: () => onTap(1),
-            child: Column(
-              children: <Widget>[
-                Icon(
-                  Icons.person_rounded,
-                  size: 30,
-                  color: selectedIndex == 1
-                      ? const Color(0xFFFFFFFF)
-                      : const Color(0xFFE5E5E5),
-                ),
-                const SizedBox(height: 3.0),
-                Text(
-                  '마이페이지',
-                  style: TextStyle(
-                    color: selectedIndex == 1
-                        ? const Color(0xFFFFFFFF)
-                        : const Color(0xFFE5E5E5),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

@@ -7,8 +7,8 @@ import '../glud_pages/report_page.dart';
 import '../glud_pages/voice_page.dart';
 import '../widgets.dart';
 
-class GludIndex extends StatelessWidget {
-  GludIndex({Key? key}) : super(key: key);
+class Menu extends StatelessWidget {
+  Menu({Key? key}) : super(key: key);
 
   final List<_GludItem> _items = [
     _GludItem('보도자료', '생생한', 'assets/images/index/report.png', ReportPage()),

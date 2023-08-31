@@ -49,7 +49,7 @@ class _ContactPageState extends State<ContactPage> {
                           color: Color(0xFF9D9D9D),
                         ),
                       ),
-                      SizedBox(height: 150),
+                      SizedBox(height: 50),
                     ]),
                   ),
                 ],

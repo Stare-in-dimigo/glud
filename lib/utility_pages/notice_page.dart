@@ -81,10 +81,10 @@ class _NoticePageState extends State<NoticePage> {
           child: Row(
             children: [
               Image.asset('assets/images/notice_icon.png', width: 25),
-              const SizedBox(width: 15),
+              const SizedBox(width: 10),
               Text(item.question,
                   style: TextStyle(
-                    fontSize: 18.0,
+                    fontSize: 16.0,
                     color: Color(0xFF5E5E5E),
                   )),
             ],
@@ -118,7 +118,7 @@ class _NoticePageState extends State<NoticePage> {
                   child: Row(children: [
                     Text(faqItems[index].question,
                         style: const TextStyle(
-                          fontSize: 18.0,
+                          fontSize: 16.0,
                           color: Color(0xFF5E5E5E),
                         )),
                     Expanded(child: Container()),
@@ -139,7 +139,7 @@ class _NoticePageState extends State<NoticePage> {
               padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
               child: Text(faqItems[index].answer,
                   style: const TextStyle(
-                    fontSize: 18.0,
+                    fontSize: 16.0,
                     color: Color(0xFF5E5E5E),
                   )),
             ),

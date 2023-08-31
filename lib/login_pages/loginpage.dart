@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:glud/main.dart';
 import 'package:glud/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -136,6 +137,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         regist = 1;
         await userRef.child('email').set(userEmail);
         await userRef.child('userType').set(userType);
+        await userRef.child('isDisabled').set(isDisabled);
       }
       if (regist == 0) {
         // 이미 회원가입한 사용자라면 회원가입을 건너뜀

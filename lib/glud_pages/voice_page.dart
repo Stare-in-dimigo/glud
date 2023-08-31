@@ -121,7 +121,7 @@ class _VoicePageState extends State<VoicePage> {
       title: const Align(
         alignment: Alignment.centerLeft,
         child: Text(
-          '보도자료',
+          '음성으로 시작하기',
           style: appBarTextStyle,
         ),
       ),

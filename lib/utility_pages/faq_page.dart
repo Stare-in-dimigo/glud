@@ -21,10 +21,9 @@ class _FaqPageState extends State<FaqPage> {
   List<bool> expanded = [false, false, false, false];
 
   final List<FaqItem> faqItems = [
-    FaqItem('다른 형식의 글은 쓸 수 없나요?', '없어용 없어용 없어용 없어용 ...'),
-    FaqItem('어떻게 회원가입하나요?', '회원가입은 ...'),
-    FaqItem('비밀번호를 잊어버렸어요', '비밀번호 재설정 ...'),
-    FaqItem('어떻게 상품을 주문하나요?', '상품 주문은 ...'),
+    FaqItem('다른 형식의 글은 쓸 수 없나요?', 'A. 추후 업데이트를 통해 더욱 다양한 글쓰기 형식을 지원할 예정이에요!'),
+    FaqItem('회원탈퇴를 하고싶어요', 'A. 회원탈퇴는 고객센터에서 메일로 문의해주시면 빠른시일 내에 도와드려요!'),
+    FaqItem('생성된 글은 어디에 사용할 수 있나요?', 'A. 생성된 글을 상업적인 목적을 포함해 어떠한 곳이든 사용할 수 있어요!'),
   ];
 
   @override
@@ -68,14 +67,14 @@ class _FaqPageState extends State<FaqPage> {
                     const Text(
                       'Q',
                       style: TextStyle(
-                        fontSize: 22.0,
+                        fontSize: 20.0,
                         color: Color(0xff7eaac9),
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 8),
                     Text(faqItems[index].question,
                         style: const TextStyle(
-                          fontSize: 18.0,
+                          fontSize: 16.0,
                           color: Color(0xFF5E5E5E),
                         )),
                     Expanded(child: Container()),
@@ -96,7 +95,7 @@ class _FaqPageState extends State<FaqPage> {
               padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
               child: Text(faqItems[index].answer,
                   style: const TextStyle(
-                    fontSize: 18.0,
+                    fontSize: 16.0,
                     color: Color(0xFF5E5E5E),
                   )),
             ),

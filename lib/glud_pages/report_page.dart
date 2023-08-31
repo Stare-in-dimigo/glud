@@ -291,27 +291,40 @@ class CustomFloatingButton extends StatelessWidget {
 
   Future<String> generateText(String prompt) async {
     final response = await http.post(
-      Uri.parse(apiUrl),
+      Uri.parse(apiUrl), // Ensure this URL points to v1/chat/completions
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $apiKey'
       },
       body: jsonEncode({
-        "model": "text-davinci-003",
-        'prompt': prompt,
-        'max_tokens': 1000,
-        'temperature': 0,
-        'top_p': 1,
-        'frequency_penalty': 0,
-        'presence_penalty': 0
+        "model": "gpt-3.5-turbo",
+        'messages': [
+          {"role": "system", "content": "You are a Korean reporter"},
+          {"role": "user", "content": prompt}
+        ]
       }),
     );
 
-    Map<String, dynamic> newresponse =
-        jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      Map<String, dynamic> newresponse = jsonDecode(utf8.decode(response.bodyBytes));
 
-    return newresponse['choices'][0]['text'];
+      if (newresponse != null &&
+          newresponse.containsKey('choices') &&
+          newresponse['choices'].isNotEmpty &&
+          newresponse['choices'][0].containsKey('message')) {
+        return newresponse['choices'][0]['message']['content'];
+      } else {
+        print("Response Body: ${response.body}");
+        throw Exception('Unexpected response structure from the API');
+      }
+    } else {
+      print("Response Status Code: ${response.statusCode}");
+      print("Response Body: ${response.body}");
+      // Use ScaffoldMessenger or another method to show an error message
+      throw Exception('Failed to load data from the API');
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -357,7 +370,9 @@ class CustomFloatingButton extends StatelessWidget {
         );
 
         String prompt =
-            "일시 : $date, 장소 : $place, 주요내용 : $content, 인용문 : $quote 다음 정보를 가지고 보도자료 작성해줘";
+            'Write a press release based on the information: An incident took place at $place on $date where $content. The key figure of the event said, "$quote".'
+            'The essential contents to include are the title, date, and a summary of the incident. Except for the title, write everything in a single paragraph.'
+            'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.';
         String contents = await generateText(prompt);
 
         Navigator.of(context).pop(); // 로딩 창 닫기
