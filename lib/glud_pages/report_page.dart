@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart'; // Firebase Realtime Database 라이브러리 추가
 import 'package:flutter/material.dart';
 import 'package:glud/glud_pages/finish_page.dart';
-import 'package:glud/login_pages/loginpage.dart' as user;
 import 'package:http/http.dart' as http;
 
 import '../main.dart';
 import '../widgets.dart';
+import '../login_pages/loginpage.dart';
 
 String content = "";
 String date = "";
@@ -306,7 +306,8 @@ class CustomFloatingButton extends StatelessWidget {
     );
 
     if (response.statusCode == 200) {
-      Map<String, dynamic> newresponse = jsonDecode(utf8.decode(response.bodyBytes));
+      Map<String, dynamic> newresponse =
+          jsonDecode(utf8.decode(response.bodyBytes));
 
       if (newresponse != null &&
           newresponse.containsKey('choices') &&
@@ -324,7 +325,6 @@ class CustomFloatingButton extends StatelessWidget {
       throw Exception('Failed to load data from the API');
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -369,11 +369,25 @@ class CustomFloatingButton extends StatelessWidget {
           },
         );
 
+        final usersRef = FirebaseDatabase.instance.ref();
+        final snapshot =
+            await usersRef.child("users").child(usersUID).child("num").get();
+
+        int num = int.parse(snapshot.value.toString()) + 1;
+
+        final DatabaseReference userRef =
+            FirebaseDatabase.instance.ref().child('users').child(usersUID);
+
+        await userRef.child('num').set(num);
+        await userRef.child('writing').set(num.toString());
+
         String prompt =
             'Write a press release based on the information: An incident took place at $place on $date where $content. The key figure of the event said, "$quote".'
             'The essential contents to include are the title, date, and a summary of the incident. Except for the title, write everything in a single paragraph.'
             'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.';
         String contents = await generateText(prompt);
+        prompt = "Please write the title of the article that you wrote above.";
+        String title = await generateText(prompt);
 
         Navigator.of(context).pop(); // 로딩 창 닫기
 
@@ -382,12 +396,13 @@ class CustomFloatingButton extends StatelessWidget {
         DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
         databaseReference
             .child("users")
-            .child(user.usersUID)
+            .child(usersUID)
             .child("writing")
-            .push()
+            .child(num.toString())
             .set({
+          "title": title,
           "content": contents,
-          "time": timestamp,
+          "date": timestamp,
           "type": "보도자료",
         });
 

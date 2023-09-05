@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../widgets.dart';
 import '../glud_pages/content_page.dart';
+import 'package:firebase_database/firebase_database.dart';
+import '../login_pages/loginpage.dart';
 
 class GludListPage extends StatefulWidget {
   const GludListPage({Key? key}) : super(key: key);
@@ -11,24 +13,89 @@ class GludListPage extends StatefulWidget {
 }
 
 class _GludListPageState extends State<GludListPage> {
-  List<Glud> gludList = [
-    Glud(
-        title: '보도자료 제목',
-        date: '2023-06-10',
-        imagePath: 'assets/images/index/report.png',
-        content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
-        completed: true,
-        route: const ResultPage()),
-    Glud(
-        title: '보도자료 제목',
-        date: '2023-06-10',
-        imagePath: 'assets/images/index/report.png',
-        content: '내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용',
-        completed: false,
-        route: const ResultPage()),
-  ];
+  List<Glud> gludList = [];
+
+  Future fillwrite() async {
+    print(1);
+    final usersRef = FirebaseDatabase.instance.ref();
+    final snapshot =
+        await usersRef.child("users").child(usersUID).child("num").get();
+
+    int num = int.parse(snapshot.value.toString());
+    String title;
+    String type;
+    String content;
+    String date;
+
+    if (num <= 20 && num != 0) {
+      for (int i = 1; i <= num; i++) {
+        final titleRef = FirebaseDatabase.instance.ref();
+        final dateRef = FirebaseDatabase.instance.ref();
+        final contentRef = FirebaseDatabase.instance.ref();
+        final typeRef = FirebaseDatabase.instance.ref();
+
+        final title_snapshot = await titleRef
+            .child("users")
+            .child(usersUID)
+            .child("writing")
+            .child(i.toString())
+            .child("title")
+            .get();
+        final date_snapshot = await dateRef
+            .child("users")
+            .child(usersUID)
+            .child("writing")
+            .child(i.toString())
+            .child("date")
+            .get();
+        final content_snapshot = await contentRef
+            .child("users")
+            .child(usersUID)
+            .child("writing")
+            .child(i.toString())
+            .child("content")
+            .get();
+        final type_snapshot = await typeRef
+            .child("users")
+            .child(usersUID)
+            .child("writing")
+            .child(i.toString())
+            .child("type")
+            .get();
+        title = title_snapshot.value.toString();
+        content = content_snapshot.value.toString();
+        date = date_snapshot.value.toString();
+        print(title);
+        print(content);
+        print(date);
+
+        gludList.add(
+          Glud(
+            title: title,
+            date: date,
+            imagePath: 'assets/images/index/report.png',
+            content: content,
+            completed: true,
+            route: const ResultPage(),
+          ),
+        );
+      }
+    } else if (num > 20 && num != 0) {}
+  }
 
   @override
+  void initState() {
+    super.initState();
+    initializeData();
+  }
+
+  Future<void> initializeData() async {
+    await fillwrite();
+    setState(() {
+      // This will trigger a rebuild of the widget with the loaded data.
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,

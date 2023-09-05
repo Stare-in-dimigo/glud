@@ -31,6 +31,22 @@
           }
         },
         {
+          "client_id": "434712487042-norpj7i8lnteja481ck4hqf1het2i4cr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.glud.glud",
+            "certificate_hash": "05b807ccb810c554c56e4bcd973536a0e1a5550f"
+          }
+        },
+        {
+          "client_id": "434712487042-sb35c2ir8ac07ks3pcn9sn4dvfdqrbbq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.glud.glud",
+            "certificate_hash": "bf69c293411205d10e1597c6a9dc263908b600ec"
+          }
+        },
+        {
           "client_id": "434712487042-39vj68puckaot8pc9dbv6h1n3vj13js0.apps.googleusercontent.com",
           "client_type": 3
         }

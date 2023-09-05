@@ -138,6 +138,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         await userRef.child('email').set(userEmail);
         await userRef.child('userType').set(userType);
         await userRef.child('isDisabled').set(isDisabled);
+        await userRef.child('num').set("0");
+        await userRef.child('writing').set("");
       }
       if (regist == 0) {
         // 이미 회원가입한 사용자라면 회원가입을 건너뜀

@@ -81,7 +81,6 @@ class _GludAppState extends State<GludApp> {
     return false;
   }
 
-
   @override
   Widget build(BuildContext context) {
     final appBarTitle = ['글루드', '마이페이지'][_selectedIndex];
@@ -153,14 +152,17 @@ class _GludAppState extends State<GludApp> {
                       color: const Color(0xFF92B4CD),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 20.0),
+                      padding:
+                          const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 20.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           IconButton(
                             icon: Icon(
                               Icons.border_color_rounded,
-                              color: _selectedIndex == 0 ? Colors.white : Colors.grey,
+                              color: _selectedIndex == 0
+                                  ? Colors.white
+                                  : Colors.grey,
                               size: 30,
                             ),
                             onPressed: () {
@@ -172,7 +174,9 @@ class _GludAppState extends State<GludApp> {
                           IconButton(
                             icon: Icon(
                               Icons.person_rounded,
-                              color: _selectedIndex == 1 ? Colors.white : Colors.grey,
+                              color: _selectedIndex == 1
+                                  ? Colors.white
+                                  : Colors.grey,
                               size: 30,
                             ),
                             onPressed: () {
