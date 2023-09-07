@@ -15,7 +15,7 @@ import 'index/menu.dart';
 import 'index/profile.dart';
 import 'login_pages/loginpage.dart';
 
-const apiKey = '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';
+const apiKey = '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';
 const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
 bool isLoggedIn = false;

@@ -15,8 +15,7 @@ class GludListPage extends StatefulWidget {
 class _GludListPageState extends State<GludListPage> {
   List<Glud> gludList = [];
 
-  Future fillwrite() async {
-    print(1);
+  Future<void> fillwrite() async {
     final usersRef = FirebaseDatabase.instance.ref();
     final snapshot =
         await usersRef.child("users").child(usersUID).child("num").get();
@@ -27,8 +26,8 @@ class _GludListPageState extends State<GludListPage> {
     String content;
     String date;
 
-    if (num <= 20 && num != 0) {
-      for (int i = 1; i <= num; i++) {
+    if (num > 10 && num != 0) {
+      for (int i = num; i > num - 10; i--) {
         final titleRef = FirebaseDatabase.instance.ref();
         final dateRef = FirebaseDatabase.instance.ref();
         final contentRef = FirebaseDatabase.instance.ref();
@@ -65,22 +64,95 @@ class _GludListPageState extends State<GludListPage> {
         title = title_snapshot.value.toString();
         content = content_snapshot.value.toString();
         date = date_snapshot.value.toString();
+        type = type_snapshot.value.toString();
         print(title);
         print(content);
         print(date);
-
+        print(type);
+        if (type == "보도자료") {
+          type = 'assets/images/index/report.png';
+        } else if (type == "반성문") {
+          type = 'assets/images/index/reflection.png';
+        } else if (type == "독서록") {
+          type = 'assets/images/index/booklog.png';
+        } else {
+          type = 'assets/images/index/litigation.png';
+        }
         gludList.add(
           Glud(
             title: title,
             date: date,
-            imagePath: 'assets/images/index/report.png',
+            imagePath: type,
             content: content,
             completed: true,
             route: const ResultPage(),
           ),
         );
       }
-    } else if (num > 20 && num != 0) {}
+    } else if (num <= 10 && num != 0) {
+      for (int i = num; i > 0; i--) {
+        final titleRef = FirebaseDatabase.instance.ref();
+        final dateRef = FirebaseDatabase.instance.ref();
+        final contentRef = FirebaseDatabase.instance.ref();
+        final typeRef = FirebaseDatabase.instance.ref();
+
+        final title_snapshot = await titleRef
+            .child("users")
+            .child(usersUID)
+            .child("writing")
+            .child(i.toString())
+            .child("title")
+            .get();
+        final date_snapshot = await dateRef
+            .child("users")
+            .child(usersUID)
+            .child("writing")
+            .child(i.toString())
+            .child("date")
+            .get();
+        final content_snapshot = await contentRef
+            .child("users")
+            .child(usersUID)
+            .child("writing")
+            .child(i.toString())
+            .child("content")
+            .get();
+        final type_snapshot = await typeRef
+            .child("users")
+            .child(usersUID)
+            .child("writing")
+            .child(i.toString())
+            .child("type")
+            .get();
+        title = title_snapshot.value.toString();
+        content = content_snapshot.value.toString();
+        date = date_snapshot.value.toString();
+        type = type_snapshot.value.toString();
+        print(title);
+        print(content);
+        print(date);
+        print(type);
+        if (type == "보도자료") {
+          type = 'assets/images/index/report.png';
+        } else if (type == "반성문") {
+          type = 'assets/images/index/reflection.png';
+        } else if (type == "독서록") {
+          type = 'assets/images/index/booklog.png';
+        } else {
+          type = 'assets/images/index/litigation.png';
+        }
+        gludList.add(
+          Glud(
+            title: title,
+            date: date,
+            imagePath: type,
+            content: content,
+            completed: true,
+            route: const ResultPage(),
+          ),
+        );
+      }
+    }
   }
 
   @override

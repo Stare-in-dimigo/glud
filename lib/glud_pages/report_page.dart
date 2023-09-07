@@ -405,6 +405,7 @@ class CustomFloatingButton extends StatelessWidget {
           "date": timestamp,
           "type": "보도자료",
         });
+        databaseReference.child("users").child(usersUID).child("num").set(num);
 
         Navigator.pushReplacement(
           context,
