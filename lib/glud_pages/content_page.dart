@@ -6,6 +6,7 @@ import 'package:glud/login_pages/loginpage.dart' as user;
 import '../widgets.dart';
 
 String writingcontent = "";
+GlobalKey<_ResultPageState> myGlobalKey = GlobalKey<_ResultPageState>();
 
 class ResultPage extends StatefulWidget {
   const ResultPage({Key? key}) : super(key: key);
@@ -21,6 +22,8 @@ class _ResultPageState extends State<ResultPage> {
   void initState() {
     super.initState();
   }
+
+  int myGlobalVariable = 0;
 
   Future<void> fetchLatestContent() async {
     final snapshot = await usersRef
