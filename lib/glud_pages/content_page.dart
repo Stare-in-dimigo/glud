@@ -1,11 +1,14 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:glud/glud_pages/reflection_page.dart';
 import 'package:glud/login_pages/loginpage.dart' as user;
 
 import '../widgets.dart';
+import 'package:glud/utility_pages/glud_list_page.dart';
 
 String writingcontent = "";
+String writingcontents = "";
 GlobalKey<_ResultPageState> myGlobalKey = GlobalKey<_ResultPageState>();
 
 class ResultPage extends StatefulWidget {
@@ -23,16 +26,16 @@ class _ResultPageState extends State<ResultPage> {
     super.initState();
   }
 
-  int myGlobalVariable = 0;
-
   Future<void> fetchLatestContent() async {
     final snapshot = await usersRef
         .child("users")
         .child(user.usersUID)
         .child("writing")
-        .limitToLast(1)
+        .child(globalIndex.toString())
+        .child("content")
         .get();
     writingcontent = snapshot.value.toString();
+    writingcontents = snapshot.value.toString();
     String pattern = r"content:([^}]+)";
     RegExp regExp = RegExp(pattern);
     Match? match = regExp.firstMatch(writingcontent);
@@ -75,7 +78,7 @@ class _ResultPageState extends State<ResultPage> {
                 children: [
                   CustomContainer(
                     child: Text(
-                      writingcontent,
+                      writingcontents,
                       style: const TextStyle(
                         fontSize: 18.0,
                         color: Color(0xFF5E5E5E),

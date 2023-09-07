@@ -5,6 +5,8 @@ import '../glud_pages/content_page.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../login_pages/loginpage.dart';
 
+int globalIndex = 0;
+
 class GludListPage extends StatefulWidget {
   const GludListPage({Key? key}) : super(key: key);
 
@@ -86,6 +88,7 @@ class _GludListPageState extends State<GludListPage> {
             content: content,
             completed: true,
             route: const ResultPage(),
+            index: i,
           ),
         );
       }
@@ -149,6 +152,7 @@ class _GludListPageState extends State<GludListPage> {
             content: content,
             completed: true,
             route: const ResultPage(),
+            index: i,
           ),
         );
       }
@@ -213,6 +217,8 @@ class _GludListPageState extends State<GludListPage> {
       child: GestureDetector(
         onTap: () {
           if (glud.completed) {
+            print(glud.index);
+            globalIndex = glud.index;
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => glud.route),
@@ -321,6 +327,7 @@ class Glud {
   final String content;
   final bool completed;
   final Widget route;
+  final int index;
 
   Glud({
     required this.title,
@@ -329,5 +336,6 @@ class Glud {
     required this.content,
     required this.completed,
     required this.route,
+    required this.index,
   });
 }
