@@ -379,7 +379,8 @@ class CustomFloatingButton extends StatelessWidget {
             FirebaseDatabase.instance.ref().child('users').child(usersUID);
 
         await userRef.child('num').set(num);
-        await userRef.child('writing').set(num.toString());
+        DatabaseReference newItemRef =
+            userRef.child('writing').child(num.toString());
 
         String prompt =
             'Write a press release based on the information: An incident took place at $place on $date where $content. The key figure of the event said, "$quote".'
