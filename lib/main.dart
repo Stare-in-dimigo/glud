@@ -6,9 +6,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
+import 'package:flutter_web_frame/flutter_web_frame.dart';
 import 'package:glud/index/voice_menu.dart';
 import 'package:glud/widgets.dart';
-import 'package:flutter_web_frame/flutter_web_frame.dart';
 
 import 'firebase_options.dart';
 import 'index/menu.dart';
@@ -143,7 +143,11 @@ class _GludAppState extends State<GludApp> {
                   left: 0,
                   right: 0,
                   child: Container(
-                    height: Platform.isAndroid ? 65 : 85,
+                    height: kIsWeb
+                        ? 65
+                        : Platform.isAndroid
+                            ? 65
+                            : 85,
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(30.0),
