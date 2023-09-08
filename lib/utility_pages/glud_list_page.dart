@@ -7,6 +7,12 @@ import '../login_pages/loginpage.dart';
 
 int globalIndex = 0;
 
+String convertDateFormat(String originalDate) {
+  // Extract the date part from the original date string
+  String formattedDate = originalDate.split(' ')[0];
+  return formattedDate;
+}
+
 class GludListPage extends StatefulWidget {
   const GludListPage({Key? key}) : super(key: key);
 
@@ -65,12 +71,9 @@ class _GludListPageState extends State<GludListPage> {
             .get();
         title = title_snapshot.value.toString();
         content = content_snapshot.value.toString();
-        date = date_snapshot.value.toString();
+        date = convertDateFormat(date_snapshot.value.toString());
         type = type_snapshot.value.toString();
-        print(title);
-        print(content);
-        print(date);
-        print(type);
+        print("Load Success");
         if (type == "보도자료") {
           type = 'assets/images/index/report.png';
         } else if (type == "반성문") {
@@ -129,12 +132,9 @@ class _GludListPageState extends State<GludListPage> {
             .get();
         title = title_snapshot.value.toString();
         content = content_snapshot.value.toString();
-        date = date_snapshot.value.toString();
+        date = convertDateFormat(date_snapshot.value.toString());
         type = type_snapshot.value.toString();
-        print(title);
-        print(content);
-        print(date);
-        print(type);
+        print("Load Success");
         if (type == "보도자료") {
           type = 'assets/images/index/report.png';
         } else if (type == "반성문") {
@@ -233,11 +233,11 @@ class _GludListPageState extends State<GludListPage> {
           }
         },
         child: CustomContainer(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(10),
           child: Row(
             children: [
               if (glud.completed)
-                Image.asset(glud.imagePath, height: 80)
+                Image.asset(glud.imagePath, height: 75)
               else
                 const SizedBox(
                   width: 80,
@@ -250,7 +250,7 @@ class _GludListPageState extends State<GludListPage> {
                     ),
                   ),
                 ),
-              const SizedBox(width: 15),
+              const SizedBox(width: 10),
               Expanded(
                 child: Stack(
                   children: [
@@ -262,9 +262,9 @@ class _GludListPageState extends State<GludListPage> {
                           glud.title,
                           maxLines: 1,
                           style: const TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(height: 5),
+                        const SizedBox(height: 8),
                         Text(
                           glud.content,
                           maxLines: 2,
@@ -276,7 +276,7 @@ class _GludListPageState extends State<GludListPage> {
                     ),
                     Positioned(
                       top: 0,
-                      right: 0,
+                      right: 5,
                       child: Text(
                         glud.date,
                         style: const TextStyle(

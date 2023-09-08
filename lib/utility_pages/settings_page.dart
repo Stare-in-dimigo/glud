@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../login_pages/loginpage.dart';
 import '../main.dart';
@@ -65,7 +67,9 @@ class SettingsPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20),
       child: ElevatedButton(
-        onPressed: () {
+        onPressed: () async {
+          await FirebaseAuth.instance.signOut();
+          await GoogleSignIn().signOut();
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => LoginPage(
