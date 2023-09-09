@@ -299,7 +299,7 @@ class CustomFloatingButton extends StatelessWidget {
       body: jsonEncode({
         "model": "gpt-3.5-turbo",
         'messages': [
-          {"role": "system", "content": "You are a Korean reporter"},
+          {"role": "system", "content": "You are a Korean reporter. You're going to write an article and a title"},
           {"role": "user", "content": prompt}
         ]
       }),
@@ -356,8 +356,8 @@ class CustomFloatingButton extends StatelessWidget {
             'The essential contents to include are the title, date, and a summary of the incident. Except for the title, write everything in a single paragraph.'
             'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.';
         String contents = await generateText(prompt);
-        prompt = "Please write the Korean title of the article that you wrote above. Title contains spaces and up to 10 characters";
-        String title = await generateText(prompt);
+        String titlePrompt = "Please write a Korean title for the press release on this content. $prompt. Title contains spaces and up to 10 characters";
+        String title = await generateText(titlePrompt);
 
         Navigator.of(context).pop(); // 로딩 창 닫기
 
