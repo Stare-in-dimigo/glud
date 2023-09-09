@@ -219,10 +219,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     if (text == '글루드') {
       actions = [
         Container(
-          margin: const EdgeInsets.only(right: 20.0, top: 15.0),
+          margin: const EdgeInsets.only(right: 25.0, top: 15.0),
           child: Image.asset(
             'assets/images/index/higlud.png',
-            width: 220,
+            width: 170,
           ),
         ),
       ];

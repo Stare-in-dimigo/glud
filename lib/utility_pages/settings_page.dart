@@ -9,7 +9,7 @@ import '../widgets.dart';
 class SettingsPage extends StatelessWidget {
   SettingsPage({Key? key}) : super(key: key);
 
-  final settingsItems = ['글루드 모드', '스텔스 모드', '스테어 모드'];
+  final settingsItems = ['글루드 모드'];
 
   @override
   Widget build(BuildContext context) {

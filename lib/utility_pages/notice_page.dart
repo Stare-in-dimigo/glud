@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // 상황에 따라 CustomContainer 위젯과 whitestyle을 정의해야 할 수 있습니다.
 import '../widgets.dart';
@@ -21,15 +22,11 @@ class _NoticePageState extends State<NoticePage> {
   List<bool> expanded = [false, false, false, false];
 
   final List<NoticeItem> faqItems = [
-    NoticeItem('8월 16일 글루드 서버점검 안내', '8월 16일 10시~16시'),
-    NoticeItem('8월 15일 글루드 서버점검 안내', '8월 15일 10시~16시'),
-    NoticeItem('8월 14일 글루드 서버점검 안내', '8월 14일 10시~16시'),
-    NoticeItem('8월 13일 글루드 서버점검 안내', '8월 13일 10시~16시'),
+    NoticeItem('글루드 출시!', '구름처럼 다양한 글! 글루드가 9월 x일 출시되었습니다!'),
   ];
 
   final List<NoticeItem> announcementItems = [
-    NoticeItem('글루드 업데이트 안내', '업데이트 안할거임'),
-    NoticeItem('개인정보 처리방침 변경 안내', '개인정보 공개 예정'),
+    NoticeItem('개인정보 처리방침 안내', 'www.google.com'),
   ];
 
   @override
@@ -50,29 +47,15 @@ class _NoticePageState extends State<NoticePage> {
 
   Widget _buildAnnouncementItem(NoticeItem item) {
     return GestureDetector(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            // 대화 상자(Dialog) 내용을 반환합니다.
-            return AlertDialog(
-              title: Text(item.question),
-              content: Text(item.answer),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // 대화 상자를 닫습니다.
-                  },
-                  child: Text('확인',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        color: Color(0xFF5E5E5E),
-                      )),
-                ),
-              ],
-            );
-          },
-        );
+      onTap: () async {
+        final url = Uri(scheme: 'https', host: item.answer);
+
+        if (!await launchUrl(
+          url,
+          mode: LaunchMode.externalApplication,
+        )) {
+          throw Exception('Could not launch $url');
+        }
       },
       child: Padding(
         padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),

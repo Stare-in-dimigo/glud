@@ -182,11 +182,38 @@ class _GludListPageState extends State<GludListPage> {
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
             child: ScrollConfiguration(
               behavior: MyBehavior(),
-              child: ListView.builder(
-                itemCount: gludList.length,
-                itemBuilder: (context, index) =>
-                    buildGludContainer(context, gludList[index]),
-              ),
+              child: gludList.length == 0
+                  ? Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.only(top:200),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 30.0, // 원하는 높이
+                            width: 30.0, // 원하는 너비
+                            child: CircularProgressIndicator(
+                              color: Color(0xFFC0CFDB),
+                              strokeWidth: 4.0,
+                            ),
+                          ),
+                          SizedBox(width: 20),
+                          Text(
+                            '로딩중...',
+                            style: TextStyle(
+                              color: Color(0xFF5E5E5E),
+                              fontSize: 20.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: gludList.length,
+                      itemBuilder: (context, index) =>
+                          buildGludContainer(context, gludList[index]),
+                    ),
             ),
           ),
           Align(

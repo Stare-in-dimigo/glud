@@ -103,6 +103,7 @@ class CustomLoading extends StatelessWidget {
           ],
         ),
       ),
+      elevation: 0,
     );
   }
 }

@@ -41,7 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         '혹시 장애를 갖고 계시거나\n타자를 치기 불편하신가요?',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            fontSize: 28.0,
+                            fontSize: 25.0,
                             fontWeight: FontWeight.bold,
                             color: Colors.black),
                       ),
