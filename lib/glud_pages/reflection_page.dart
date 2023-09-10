@@ -3,16 +3,16 @@ import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart'; // Firebase Realtime Database 라이브러리 추가
 import 'package:flutter/material.dart';
 import 'package:glud/glud_pages/finish_page.dart';
-import 'package:glud/login_pages/loginpage.dart' as user;
 import 'package:http/http.dart' as http;
 
 import '../main.dart';
 import '../widgets.dart';
+import '../login_pages/loginpage.dart';
 
-String content = "";
-String date = "";
 String place = "";
+String date = "";
 String relatedperson = "";
+String content = "";
 
 class ReflectionPage extends StatefulWidget {
   const ReflectionPage({Key? key}) : super(key: key);
@@ -22,38 +22,37 @@ class ReflectionPage extends StatefulWidget {
 }
 
 class _ReflectionPageState extends State<ReflectionPage> {
-  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _dateTimeController = TextEditingController();
   final TextEditingController _placeController = TextEditingController();
+  final TextEditingController _relatedpersonController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
-  final TextEditingController _relatedpersonController =
-      TextEditingController();
 
   bool _isFocused = false;
 
   @override
   void dispose() {
-    _dateController.dispose();
+    _dateTimeController.dispose();
     _placeController.dispose();
-    _contentController.dispose();
     _relatedpersonController.dispose();
+    _contentController.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    _contentController.addListener(_onContentChanged);
-    _dateController.addListener(_onContentChanged);
-    _placeController.addListener(_onContentChanged);
     _relatedpersonController.addListener(_onContentChanged);
+    _dateTimeController.addListener(_onContentChanged);
+    _placeController.addListener(_onContentChanged);
+    _contentController.addListener(_onContentChanged);
   }
 
   void _onContentChanged() {
     setState(() {
+      place = _relatedpersonController.text;
+      date = _dateTimeController.text;
+      relatedperson = _placeController.text;
       content = _contentController.text;
-      date = _dateController.text;
-      place = _placeController.text;
-      relatedperson = _relatedpersonController.text;
     });
   }
 
@@ -76,8 +75,8 @@ class _ReflectionPageState extends State<ReflectionPage> {
     );
     if (picked != null) {
       setState(() {
-        _dateController.text =
-            "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+        _dateTimeController.text =
+        "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
       });
     }
   }
@@ -103,7 +102,7 @@ class _ReflectionPageState extends State<ReflectionPage> {
                 _buildCustomContainer(
                   Icons.calendar_today,
                   '일시',
-                  _dateController,
+                  _dateTimeController,
                 ),
                 const SizedBox(height: 15),
                 _buildCustomContainer(
@@ -135,7 +134,8 @@ class _ReflectionPageState extends State<ReflectionPage> {
     );
   }
 
-  CustomContainer _buildCustomContainer(IconData? icon,
+  CustomContainer _buildCustomContainer(
+      IconData? icon,
       String hintText,
       TextEditingController controller, {
         bool centerAlign = false,
@@ -168,7 +168,7 @@ class _ReflectionPageState extends State<ReflectionPage> {
 
   TextField _buildDateTimeField() {
     return TextField(
-      controller: _dateController,
+      controller: _dateTimeController,
       decoration: const InputDecoration(
         hintText: '일시',
         hintStyle: TextStyle(
@@ -199,12 +199,12 @@ class _ReflectionPageState extends State<ReflectionPage> {
       },
       child: !_isFocused
           ? const Padding(
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-              key: ValueKey<int>(1),
-              child: CustomFloatingButton(
-                text: '반성문 생성하기',
-              ),
-            )
+        padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+        key: ValueKey<int>(1),
+        child: CustomFloatingButton(
+          text: '반성문 생성하기',
+        ),
+      )
           : const SizedBox.shrink(key: ValueKey<int>(2)),
     );
   }
@@ -291,26 +291,39 @@ class CustomFloatingButton extends StatelessWidget {
 
   Future<String> generateText(String prompt) async {
     final response = await http.post(
-      Uri.parse(apiUrl),
+      Uri.parse(apiUrl), // Ensure this URL points to v1/chat/completions
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $apiKey'
       },
       body: jsonEncode({
-        "model": "text-davinci-003",
-        'prompt': prompt,
-        'max_tokens': 1000,
-        'temperature': 0,
-        'top_p': 1,
-        'frequency_penalty': 0,
-        'presence_penalty': 0
+        "model": "gpt-3.5-turbo",
+        'messages': [
+          {"role": "system", "content": "You are a Korean student. You did something wrong."},
+          {"role": "user", "content": prompt}
+        ]
       }),
     );
 
-    Map<String, dynamic> newresponse =
-        jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      Map<String, dynamic> newresponse =
+      jsonDecode(utf8.decode(response.bodyBytes));
 
-    return newresponse['choices'][0]['text'];
+      if (newresponse != null &&
+          newresponse.containsKey('choices') &&
+          newresponse['choices'].isNotEmpty &&
+          newresponse['choices'][0].containsKey('message')) {
+        return newresponse['choices'][0]['message']['content'];
+      } else {
+        print("Response Body: ${response.body}");
+        throw Exception('Unexpected response structure from the API');
+      }
+    } else {
+      print("Response Status Code: ${response.statusCode}");
+      print("Response Body: ${response.body}");
+      // Use ScaffoldMessenger or another method to show an error message
+      throw Exception('Failed to load data from the API');
+    }
   }
 
   @override
@@ -321,44 +334,30 @@ class CustomFloatingButton extends StatelessWidget {
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
-            return Dialog(
-              shape: RoundedRectangleBorder(
-                // 모서리에 곡률을 줍니다
-                borderRadius: BorderRadius.circular(15), // 곡률의 정도를 조절합니다
-              ),
-              child: Container(
-                width: 200, // Dialog의 너비를 지정합니다
-                padding: const EdgeInsets.all(40),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 30.0, // 원하는 높이
-                      width: 30.0, // 원하는 너비
-                      child: CircularProgressIndicator(
-                        color: Color(0xFFC0CFDB),
-                        strokeWidth: 4.0,
-                      ),
-                    ),
-                    SizedBox(width: 20),
-                    Text(
-                      '로딩중...',
-                      style: TextStyle(
-                        color: Color(0xFF5E5E5E),
-                        fontSize: 20.0,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
+            return const CustomLoading();
           },
         );
 
+        final usersRef = FirebaseDatabase.instance.ref();
+        final snapshot =
+        await usersRef.child("users").child(usersUID).child("num").get();
+
+        int num = int.parse(snapshot.value.toString()) + 1;
+
+        final DatabaseReference userRef =
+        FirebaseDatabase.instance.ref().child('users').child(usersUID);
+
+        await userRef.child('num').set(num);
+        DatabaseReference newItemRef =
+        userRef.child('writing').child(num.toString());
+
         String prompt =
-            "일시 : $date, 장소 : $place, 사건 관련자 : $relatedperson, 주요 내용 : $content 다음 정보를 가지고 반성문 작성해줘";
+            'Write a Letter of apology based on the information: There was a $content event on $date with $relatedperson on $place. I am deeply reflecting on this.'
+            'The essential contents to include are the date, related person, place and a summary of the incident. Except for the title, write everything in a single paragraph.'
+            'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.';
         String contents = await generateText(prompt);
+        String titlePrompt = "Please write a Korean title for this content. $prompt.";
+        String title = await generateText(titlePrompt);
 
         Navigator.of(context).pop(); // 로딩 창 닫기
 
@@ -367,14 +366,16 @@ class CustomFloatingButton extends StatelessWidget {
         DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
         databaseReference
             .child("users")
-            .child(user.usersUID)
+            .child(usersUID)
             .child("writing")
-            .push()
+            .child(num.toString())
             .set({
+          "title": title,
           "content": contents,
-          "time": timestamp,
-          "type": "보도자료",
+          "date": timestamp,
+          "type": "반성문",
         });
+        databaseReference.child("users").child(usersUID).child("num").set(num);
 
         Navigator.pushReplacement(
           context,

@@ -3,16 +3,16 @@ import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart'; // Firebase Realtime Database 라이브러리 추가
 import 'package:flutter/material.dart';
 import 'package:glud/glud_pages/finish_page.dart';
-import 'package:glud/login_pages/loginpage.dart' as user;
 import 'package:http/http.dart' as http;
 
 import '../main.dart';
 import '../widgets.dart';
+import '../login_pages/loginpage.dart';
 
-String author = "";
+String writer = "";
 String date = "";
 String publisher = "";
-String title = "";
+String bookname = "";
 
 class BookreviewPage extends StatefulWidget {
   const BookreviewPage({Key? key}) : super(key: key);
@@ -22,37 +22,37 @@ class BookreviewPage extends StatefulWidget {
 }
 
 class _BookreviewPageState extends State<BookreviewPage> {
-  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _dateTimeController = TextEditingController();
   final TextEditingController _publisherController = TextEditingController();
-  final TextEditingController _authorController = TextEditingController();
-  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _writerController = TextEditingController();
+  final TextEditingController _booknameController = TextEditingController();
 
   bool _isFocused = false;
 
   @override
   void dispose() {
-    _dateController.dispose();
+    _dateTimeController.dispose();
     _publisherController.dispose();
-    _authorController.dispose();
-    _titleController.dispose();
+    _writerController.dispose();
+    _booknameController.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    _authorController.addListener(_onContentChanged);
-    _dateController.addListener(_onContentChanged);
+    _writerController.addListener(_onContentChanged);
+    _dateTimeController.addListener(_onContentChanged);
     _publisherController.addListener(_onContentChanged);
-    _titleController.addListener(_onContentChanged);
+    _booknameController.addListener(_onContentChanged);
   }
 
   void _onContentChanged() {
     setState(() {
-      author = _authorController.text;
-      date = _dateController.text;
+      writer = _writerController.text;
+      date = _dateTimeController.text;
       publisher = _publisherController.text;
-      title = _titleController.text;
+      bookname = _booknameController.text;
     });
   }
 
@@ -75,8 +75,8 @@ class _BookreviewPageState extends State<BookreviewPage> {
     );
     if (picked != null) {
       setState(() {
-        _dateController.text =
-            "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+        _dateTimeController.text =
+        "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
       });
     }
   }
@@ -102,7 +102,7 @@ class _BookreviewPageState extends State<BookreviewPage> {
                 _buildCustomContainer(
                   Icons.calendar_today,
                   '날짜',
-                  _dateController,
+                  _dateTimeController,
                 ),
                 const SizedBox(height: 15),
                 _buildCustomContainer(
@@ -114,13 +114,13 @@ class _BookreviewPageState extends State<BookreviewPage> {
                 _buildCustomContainer(
                   Icons.edit_outlined,
                   '작가명',
-                  _authorController,
+                  _writerController,
                 ),
                 const SizedBox(height: 15),
                 _buildCustomContainer(
                   Icons.book_outlined,
                   '책 제목',
-                  _titleController,
+                  _booknameController,
                 ),
                 const SizedBox(height: 85),
               ],
@@ -133,7 +133,8 @@ class _BookreviewPageState extends State<BookreviewPage> {
     );
   }
 
-  CustomContainer _buildCustomContainer(IconData? icon,
+  CustomContainer _buildCustomContainer(
+      IconData? icon,
       String hintText,
       TextEditingController controller, {
         bool centerAlign = false,
@@ -149,15 +150,15 @@ class _BookreviewPageState extends State<BookreviewPage> {
             child: hintText == '날짜'
                 ? _buildDateTimeField()
                 : CustomTextField(
-                    hintText: hintText,
-                    centerAlign: centerAlign,
-                    textEditingController: controller,
-                    onFocusChange: (bool focused) {
-                      setState(() {
-                        _isFocused = focused;
-                      });
-                    },
-                  ),
+              hintText: hintText,
+              centerAlign: centerAlign,
+              textEditingController: controller,
+              onFocusChange: (bool focused) {
+                setState(() {
+                  _isFocused = focused;
+                });
+              },
+            ),
           ),
         ],
       ),
@@ -166,7 +167,7 @@ class _BookreviewPageState extends State<BookreviewPage> {
 
   TextField _buildDateTimeField() {
     return TextField(
-      controller: _dateController,
+      controller: _dateTimeController,
       decoration: const InputDecoration(
         hintText: '날짜',
         hintStyle: TextStyle(
@@ -197,12 +198,12 @@ class _BookreviewPageState extends State<BookreviewPage> {
       },
       child: !_isFocused
           ? const Padding(
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-              key: ValueKey<int>(1),
-              child: CustomFloatingButton(
-                text: '독서록 생성하기',
-              ),
-            )
+        padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+        key: ValueKey<int>(1),
+        child: CustomFloatingButton(
+          text: '독서록 생성하기',
+        ),
+      )
           : const SizedBox.shrink(key: ValueKey<int>(2)),
     );
   }
@@ -289,26 +290,39 @@ class CustomFloatingButton extends StatelessWidget {
 
   Future<String> generateText(String prompt) async {
     final response = await http.post(
-      Uri.parse(apiUrl),
+      Uri.parse(apiUrl), // Ensure this URL points to v1/chat/completions
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $apiKey'
       },
       body: jsonEncode({
-        "model": "text-davinci-003",
-        'prompt': prompt,
-        'max_tokens': 1000,
-        'temperature': 0,
-        'top_p': 1,
-        'frequency_penalty': 0,
-        'presence_penalty': 0
+        "model": "gpt-3.5-turbo",
+        'messages': [
+          {"role": "system", "content": "You are a Korean student. You're going to write an bookreview"},
+          {"role": "user", "content": prompt}
+        ]
       }),
     );
 
-    Map<String, dynamic> newresponse =
-        jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      Map<String, dynamic> newresponse =
+      jsonDecode(utf8.decode(response.bodyBytes));
 
-    return newresponse['choices'][0]['text'];
+      if (newresponse != null &&
+          newresponse.containsKey('choices') &&
+          newresponse['choices'].isNotEmpty &&
+          newresponse['choices'][0].containsKey('message')) {
+        return newresponse['choices'][0]['message']['content'];
+      } else {
+        print("Response Body: ${response.body}");
+        throw Exception('Unexpected response structure from the API');
+      }
+    } else {
+      print("Response Status Code: ${response.statusCode}");
+      print("Response Body: ${response.body}");
+      // Use ScaffoldMessenger or another method to show an error message
+      throw Exception('Failed to load data from the API');
+    }
   }
 
   @override
@@ -323,9 +337,26 @@ class CustomFloatingButton extends StatelessWidget {
           },
         );
 
+        final usersRef = FirebaseDatabase.instance.ref();
+        final snapshot =
+        await usersRef.child("users").child(usersUID).child("num").get();
+
+        int num = int.parse(snapshot.value.toString()) + 1;
+
+        final DatabaseReference userRef =
+        FirebaseDatabase.instance.ref().child('users').child(usersUID);
+
+        await userRef.child('num').set(num);
+        DatabaseReference newItemRef =
+        userRef.child('writing').child(num.toString());
+
         String prompt =
-            "날짜 : $date, 출판사 : $publisher, 작가명 : $author, 책 제목 : $title 다음 정보를 가지고 독서록 작성해줘";
+            'Write a bookreview based on the information: date: $date, publisher: $publisher, writer: $writer, bookname: $bookname.'
+            'The essential contents to include are the title, date, a summary of the book, and your opinion. Except for the title, write everything in a single paragraph.'
+            'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.';
         String contents = await generateText(prompt);
+        String titlePrompt = "Please write a Korean title for this content. $prompt.";
+        String title = await generateText(titlePrompt);
 
         Navigator.of(context).pop(); // 로딩 창 닫기
 
@@ -334,14 +365,16 @@ class CustomFloatingButton extends StatelessWidget {
         DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
         databaseReference
             .child("users")
-            .child(user.usersUID)
+            .child(usersUID)
             .child("writing")
-            .push()
+            .child(num.toString())
             .set({
+          "title": title,
           "content": contents,
-          "time": timestamp,
+          "date": timestamp,
           "type": "독서록",
         });
+        databaseReference.child("users").child(usersUID).child("num").set(num);
 
         Navigator.pushReplacement(
           context,

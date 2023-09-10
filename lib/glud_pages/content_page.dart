@@ -62,6 +62,12 @@ class _ResultPageState extends State<ResultPage> {
     );
   }
 
+  void saveDocs() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("기능을 준비 중이에요!")),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -102,18 +108,21 @@ class _ResultPageState extends State<ResultPage> {
                         )),
                   ),
                   const SizedBox(height: 15),
-                  const CustomContainer(
-                      backgroundColor: Color(0xFF7EAAC9),
-                      child: Center(
-                        child: Text(
-                          'Docx 파일로 다운받기',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                  GestureDetector(
+                    onTap: saveDocs,
+                    child: const CustomContainer(
+                        backgroundColor: Color(0xFF7EAAC9),
+                        child: Center(
+                          child: Text(
+                            'Docx 파일로 다운받기',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                      )),
+                        )),
+                  ),
                   const SizedBox(height: 20),
                 ],
               ),

@@ -124,7 +124,8 @@ class _GludAppState extends State<GludApp> {
                       future: checkIsDisabled(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData && snapshot.data == true) {
-                          return VoiceMenu();
+                          // return VoiceMenu();
+                          return Menu();
                         } else {
                           return Menu();
                         }

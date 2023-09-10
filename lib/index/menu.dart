@@ -5,6 +5,7 @@ import '../glud_pages/litigationpage_page.dart';
 import '../glud_pages/reflection_page.dart';
 import '../glud_pages/report_page.dart';
 import '../glud_pages/voice_page.dart';
+import '../glud_pages/voice_page_teaser.dart';
 import '../widgets.dart';
 
 class Menu extends StatelessWidget {
@@ -86,7 +87,8 @@ class Menu extends StatelessWidget {
   void _onItemLongPress(BuildContext context, _GludItem item) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => VoicePage(),
+        // builder: (context) => VoicePage(),
+        builder: (context) => VoicePageTeaser(),
       ),
     );
   }

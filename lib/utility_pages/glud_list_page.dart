@@ -31,6 +31,7 @@ class _GludListPageState extends State<GludListPage> {
     int num = int.parse(snapshot.value.toString());
     String title;
     String type;
+    String imagePath;
     String content;
     String date;
 
@@ -75,19 +76,20 @@ class _GludListPageState extends State<GludListPage> {
         type = type_snapshot.value.toString();
         print("Load Success");
         if (type == "보도자료") {
-          type = 'assets/images/index/report.png';
+          imagePath = 'assets/images/index/report.png';
         } else if (type == "반성문") {
-          type = 'assets/images/index/reflection.png';
+          imagePath = 'assets/images/index/reflection.png';
         } else if (type == "독서록") {
-          type = 'assets/images/index/booklog.png';
+          imagePath = 'assets/images/index/booklog.png';
         } else {
-          type = 'assets/images/index/litigation.png';
+          imagePath = 'assets/images/index/litigation.png';
         }
         gludList.add(
           Glud(
             title: title,
             date: date,
-            imagePath: type,
+            imagePath: imagePath,
+            type: type,
             content: content,
             completed: true,
             route: const ResultPage(),
@@ -136,19 +138,20 @@ class _GludListPageState extends State<GludListPage> {
         type = type_snapshot.value.toString();
         print("Load Success");
         if (type == "보도자료") {
-          type = 'assets/images/index/report.png';
+          imagePath = 'assets/images/index/report.png';
         } else if (type == "반성문") {
-          type = 'assets/images/index/reflection.png';
+          imagePath = 'assets/images/index/reflection.png';
         } else if (type == "독서록") {
-          type = 'assets/images/index/booklog.png';
+          imagePath = 'assets/images/index/booklog.png';
         } else {
-          type = 'assets/images/index/litigation.png';
+          imagePath = 'assets/images/index/litigation.png';
         }
         gludList.add(
           Glud(
             title: title,
             date: date,
-            imagePath: type,
+            imagePath: imagePath,
+            type: type,
             content: content,
             completed: true,
             route: const ResultPage(),
@@ -286,18 +289,18 @@ class _GludListPageState extends State<GludListPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          glud.title,
+                          '#' + glud.index.toString() + ' ' + glud.type,
                           maxLines: 1,
                           style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 5),
                         Text(
-                          glud.content,
+                          glud.title,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                              fontSize: 15, color: Color(0xFF5E5E5E)),
+                              fontSize: 16, color: Color(0xFF5E5E5E)),
                         )
                       ],
                     ),
@@ -351,6 +354,7 @@ class Glud {
   final String title;
   final String date;
   final String imagePath;
+  final String type;
   final String content;
   final bool completed;
   final Widget route;
@@ -360,6 +364,7 @@ class Glud {
     required this.title,
     required this.date,
     required this.imagePath,
+    required this.type,
     required this.content,
     required this.completed,
     required this.route,

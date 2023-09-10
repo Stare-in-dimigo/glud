@@ -356,7 +356,7 @@ class CustomFloatingButton extends StatelessWidget {
             'The essential contents to include are the title, date, and a summary of the incident. Except for the title, write everything in a single paragraph.'
             'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.';
         String contents = await generateText(prompt);
-        String titlePrompt = "Please write a Korean title for the press release on this content. $prompt. Title contains spaces and up to 10 characters";
+        String titlePrompt = "Please write a Korean title for this content. $prompt.";
         String title = await generateText(titlePrompt);
 
         Navigator.of(context).pop(); // 로딩 창 닫기
