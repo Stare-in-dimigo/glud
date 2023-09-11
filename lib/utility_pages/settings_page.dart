@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -71,15 +73,16 @@ class SettingsPage extends StatelessWidget {
         onPressed: () async {
           await FirebaseAuth.instance.signOut();
           await GoogleSignIn().signOut();
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (context) => LoginPage(
-                      onLogin: () {
-                        isLoggedIn = false;
-                      },
-                    )),
-            (Route<dynamic> route) => false,
-          );
+          await exit(0);
+          // Navigator.of(context).pushAndRemoveUntil(
+          //   MaterialPageRoute(
+          //       builder: (context) => LoginPage(
+          //             onLogin: () {
+          //               isLoggedIn = false;
+          //             },
+          //           )),
+          //   (Route<dynamic> route) => false,
+          // );
         },
         child: Text('로그아웃', style: TextStyle(fontSize: 18.0)),
         style: ElevatedButton.styleFrom(

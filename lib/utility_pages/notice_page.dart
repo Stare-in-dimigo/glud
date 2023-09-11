@@ -22,11 +22,11 @@ class _NoticePageState extends State<NoticePage> {
   List<bool> expanded = [false, false, false, false];
 
   final List<NoticeItem> faqItems = [
-    NoticeItem('글루드 출시!', '구름처럼 다양한 글! 글루드가 9월 x일 출시되었습니다!'),
+    NoticeItem('글루드 베타 출시!', '글루드 베타가 9월 14일 출시되었습니다!'),
   ];
 
   final List<NoticeItem> announcementItems = [
-    NoticeItem('개인정보 처리방침 안내', 'www.google.com'),
+    NoticeItem('개인정보 처리방침 안내', 'glud.notion.site'),
   ];
 
   @override
