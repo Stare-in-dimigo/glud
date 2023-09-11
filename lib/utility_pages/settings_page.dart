@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter/services.dart';
 
 import '../login_pages/loginpage.dart';
 import '../main.dart';
@@ -80,6 +81,7 @@ class SettingsPage extends StatelessWidget {
                     )),
             (Route<dynamic> route) => false,
           );
+          SystemNavigator.pop();
         },
         child: Text('로그아웃', style: TextStyle(fontSize: 18.0)),
         style: ElevatedButton.styleFrom(

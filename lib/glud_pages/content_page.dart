@@ -56,7 +56,7 @@ class _ResultPageState extends State<ResultPage> {
   }
 
   void copyToClipboard() {
-    Clipboard.setData(ClipboardData(text: writingcontent));
+    Clipboard.setData(ClipboardData(text: writingcontents));
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("클립보드에 복사되었습니다.")),
     );
