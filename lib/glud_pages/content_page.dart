@@ -1,11 +1,10 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:glud/glud_pages/reflection_page.dart';
 import 'package:glud/login_pages/loginpage.dart' as user;
+import 'package:glud/utility_pages/glud_list_page.dart';
 
 import '../widgets.dart';
-import 'package:glud/utility_pages/glud_list_page.dart';
 
 String writingcontent = "";
 String writingcontents = "";
