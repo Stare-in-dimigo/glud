@@ -143,6 +143,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       }
       if (regist == 0) {
         // 이미 회원가입한 사용자라면 회원가입을 건너뜀
+        print("check widget");
         widget.onLogin();
       } else {
         Navigator.push(
@@ -150,6 +151,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
           MaterialPageRoute(builder: (context) => const RegisterPage()),
         ).then((value) {
           if (value == true) {
+            print("check widget");
             widget.onLogin();
           } else if (value == false) {
             widget.onLogin();

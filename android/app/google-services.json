@@ -15,27 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "434712487042-cllgvmi0qqs34cefijr8k5j0mos59249.apps.googleusercontent.com",
+          "client_id": "434712487042-qn99fe01265v1l8dm9qf9njmdtie5qoh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.glud.glud",
-            "certificate_hash": "508669693f8ba1956c061daee360f1067ba1e026"
-          }
-        },
-        {
-          "client_id": "434712487042-ml105d4hm0hr3o7gkgovc580aq94l6a7.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.glud.glud",
-            "certificate_hash": "193823218e1d5949e957bc43341ceff7e375cf6b"
-          }
-        },
-        {
-          "client_id": "434712487042-norpj7i8lnteja481ck4hqf1het2i4cr.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.glud.glud",
-            "certificate_hash": "05b807ccb810c554c56e4bcd973536a0e1a5550f"
+            "certificate_hash": "2d722d0e778be631e7859a28f88a6cc12ff13d64"
           }
         },
         {

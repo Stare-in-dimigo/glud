@@ -8,17 +8,19 @@ import '../glud_pages/voice_page.dart';
 import '../glud_pages/voice_page_teaser.dart';
 import '../widgets.dart';
 
+int globalwritingIndex = 0;
+
 class Menu extends StatelessWidget {
   Menu({Key? key}) : super(key: key);
 
   final List<_GludItem> _items = [
-    _GludItem('보도자료', '생생한', 'assets/images/index/report.png', ReportPage()),
+    _GludItem('보도자료', '생생한', 'assets/images/index/report.png', ReportPage(), 0),
     _GludItem(
-        '독서록', '동화같은', 'assets/images/index/booklog.png', BookreviewPage()),
-    _GludItem(
-        '반성문', '그럴듯한', 'assets/images/index/reflection.png', ReflectionPage()),
-    _GludItem(
-        '소송문', '백전백승', 'assets/images/index/litigation.png', LitigationPage()),
+        '독서록', '동화같은', 'assets/images/index/booklog.png', BookreviewPage(), 1),
+    _GludItem('반성문', '그럴듯한', 'assets/images/index/reflection.png',
+        ReflectionPage(), 2),
+    _GludItem('소송문', '전백승', 'assets/images/index/litigation.png',
+        LitigationPage(), 3),
   ];
 
   @override
@@ -87,8 +89,8 @@ class Menu extends StatelessWidget {
   void _onItemLongPress(BuildContext context, _GludItem item) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        // builder: (context) => VoicePage(),
-        builder: (context) => VoicePageTeaser(),
+        builder: (context) => VoicePage(),
+        //builder: (context) => VoicePageTeaser(),
       ),
     );
   }
@@ -99,6 +101,13 @@ class _GludItem {
   final String explain;
   final String image;
   final Widget page;
+  final int writingindex;
 
-  _GludItem(this.title, this.explain, this.image, this.page);
+  _GludItem(
+    this.title,
+    this.explain,
+    this.image,
+    this.page,
+    this.writingindex,
+  );
 }

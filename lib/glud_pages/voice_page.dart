@@ -1,7 +1,18 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:firebase_database/firebase_database.dart'; // Firebase Realtime Database 라이브러리 추가
+import 'package:flutter/material.dart';
+import 'package:glud/glud_pages/finish_page.dart';
+import 'package:http/http.dart' as http;
+
+import '../main.dart';
 import '../widgets.dart';
-import 'finish_page.dart';
+import '../login_pages/loginpage.dart';
+
+import 'package:speech_to_text/speech_to_text.dart' as stt;
+
+String content = "";
+List<String> contentList = ["1", "2", "3", "4"];
 
 class VoicePage extends StatefulWidget {
   const VoicePage({Key? key}) : super(key: key);
@@ -146,6 +157,10 @@ class PageWidget extends StatefulWidget {
 }
 
 class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
+  late stt.SpeechToText _speech;
+  bool _isListening = false;
+  String _text = 'Contents';
+  double _confidence = 1.0;
   bool _showButton = false;
   bool _isCircleClicked = false;
   late AnimationController _animationController;
@@ -154,6 +169,7 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    _speech = stt.SpeechToText();
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 800),
       vsync: this,
@@ -171,6 +187,7 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
   @override
   void dispose() {
     _animationController.dispose();
+    _speech = stt.SpeechToText();
     super.dispose();
   }
 
@@ -197,12 +214,18 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
                         onTap: () {
                           setState(() {
                             if (_isCircleClicked) {
+                              print(
+                                  "record finish\nindex : ${widget.pageIndex}");
+                              contentList[widget.pageIndex] = _text;
                               _showButton = true;
                               _animationController.forward();
                             } else {
+                              _listen();
+                              print("record start");
                               _isCircleClicked = true;
                             }
                           });
+                          print(_text);
                         },
                         child: CustomCircle(
                           isActive: _isCircleClicked,
@@ -222,7 +245,8 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
                     ? NavigationButton(
                         label: widget.pageIndex == 3 ? '완료' : '다음',
                         action: widget.pageIndex == 3
-                            ? () {
+                            ? () async {
+                                await write();
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
@@ -284,6 +308,129 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
     );
   }
 
+  void _listen() async {
+    if (_isListening) return;
+    if (!_isListening) {
+      bool available = await _speech.initialize(
+        onStatus: (val) => print('onStatus: $val'),
+        onError: (val) => print('onError: $val'),
+      );
+      if (available) {
+        setState(() => _isListening = true);
+        _speech.listen(
+          onResult: (val) => setState(() {
+            _text = val.recognizedWords;
+            if (val.hasConfidenceRating && val.confidence > 0) {
+              _confidence = val.confidence;
+            }
+          }),
+        );
+      }
+    } else {
+      setState(() => _isListening = false);
+      _speech.stop();
+    }
+  }
+
+  Future<String> generateText(String prompt) async {
+    final response = await http.post(
+      Uri.parse(apiUrl), // Ensure this URL points to v1/chat/completions
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $apiKey'
+      },
+      body: jsonEncode({
+        "model": "gpt-3.5-turbo",
+        'messages': [
+          {
+            "role": "system",
+            "content":
+                "You are a Korean reporter. You're going to write an article and a title"
+          },
+          {"role": "user", "content": prompt}
+        ]
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> newresponse =
+          jsonDecode(utf8.decode(response.bodyBytes));
+
+      if (newresponse != null &&
+          newresponse.containsKey('choices') &&
+          newresponse['choices'].isNotEmpty &&
+          newresponse['choices'][0].containsKey('message')) {
+        return newresponse['choices'][0]['message']['content'];
+      } else {
+        print("Response Body: ${response.body}");
+        throw Exception('Unexpected response structure from the API');
+      }
+    } else {
+      print("Response Status Code: ${response.statusCode}");
+      print("Response Body: ${response.body}");
+      // Use ScaffoldMessenger or another method to show an error message
+      throw Exception('Failed to load data from the API');
+    }
+  }
+
+  Future<void> likeasy() {
+    return _wait();
+  }
+
+  Future<void> _wait() async {
+    await write();
+  }
+
+  Future write() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const CustomLoading();
+      },
+    );
+
+    final usersRef = FirebaseDatabase.instance.ref();
+    final snapshot =
+        await usersRef.child("users").child(usersUID).child("num").get();
+
+    int num = int.parse(snapshot.value.toString()) + 1;
+
+    final DatabaseReference userRef =
+        FirebaseDatabase.instance.ref().child('users').child(usersUID);
+
+    await userRef.child('num').set(num);
+    DatabaseReference newItemRef =
+        userRef.child('writing').child(num.toString());
+
+    String prompt =
+        'Write a press release based on the information: An incident took place at ${contentList[0]} on ${contentList[1]} where ${contentList[2]}. The key figure of the event said, "${contentList[3]}".'
+        'The essential contents to include are the title, date, and a summary of the incident. Except for the title, write everything in a single paragraph.'
+        'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.';
+    String contents = await generateText(prompt);
+    String titlePrompt =
+        "Please write a Korean title for this content. $prompt.";
+    String title = await generateText(titlePrompt);
+
+    Navigator.of(context).pop(); // 로딩 창 닫기
+
+    DateTime now = DateTime.now();
+    String timestamp = now.toString();
+    DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
+    databaseReference
+        .child("users")
+        .child(usersUID)
+        .child("writing")
+        .child(num.toString())
+        .set({
+      "title": title,
+      "content": contents,
+      "date": timestamp,
+      "type": "보도자료",
+    });
+    databaseReference.child("users").child(usersUID).child("num").set(num);
+  }
+
   String getPageHintText(int pageIndex) {
     switch (pageIndex) {
       case 0:
@@ -326,7 +473,7 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
           ), // Adjust the size as needed
           const SizedBox(height: 15), // Add some spacing
           Text(
-            text,
+            _text,
             style: TextStyle(
               color: const Color(0xFF5E5E5E),
               fontSize: 20.0,
@@ -345,7 +492,7 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
         return iconAndText('안산시 단원구\n사세충열로 94', Icons.place_outlined);
       case 2:
         return Text(
-          '주요내용\n주요내용\n주요내용\n주요내용\n주요내용',
+          '주요내용주요내용주요내용주요내용주요내용',
           style: TextStyle(
             color: const Color(0xFF5E5E5E),
             fontSize: 20.0,

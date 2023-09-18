@@ -26,7 +26,7 @@ class _FinishPageState extends State<FinishPage> {
                 children: [
                   const Center(
                     child: Text(
-                      '글루드가 쓴\n 생생한 보도자료를\n 확인해 보세요!',
+                      '글루드가 쓴\n 생생한 글을\n 확인해 보세요!',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 25.0,

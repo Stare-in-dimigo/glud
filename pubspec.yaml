@@ -51,6 +51,9 @@ dependencies:
 
   pdf: ^3.10.4
   printing: ^5.11.0
+  speech_to_text: ^6.3.0
+  googleapis: ^11.4.0
+  googleapis_auth: ^1.4.1
 
 dev_dependencies:
   flutter_test:
