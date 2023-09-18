@@ -15,7 +15,6 @@ import 'index/menu.dart';
 import 'index/profile.dart';
 import 'login_pages/loginpage.dart';
 
-const apiKey = '';
 const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
 bool isLoggedIn = false;
@@ -39,6 +38,16 @@ void main() async {
   }
 
   runApp(const GludApp());
+}
+
+Future<bool> checkIsDisabled() async {
+  final usersRef = FirebaseDatabase.instance.ref();
+  final snapshot = await usersRef.child('users/$usersUID/isDisabled').get();
+  if (snapshot.value is bool) {
+    isDisabled = snapshot.value as bool;
+    return snapshot.value as bool;
+  }
+  return false;
 }
 
 class GludApp extends StatefulWidget {
@@ -70,15 +79,6 @@ class _GludAppState extends State<GludApp> {
   void dispose() {
     _pageController.dispose();
     super.dispose();
-  }
-
-  Future<bool> checkIsDisabled() async {
-    final usersRef = FirebaseDatabase.instance.ref();
-    final snapshot = await usersRef.child('users/$usersUID/isDisabled').get();
-    if (snapshot.value is bool) {
-      return snapshot.value as bool;
-    }
-    return false;
   }
 
   @override
@@ -124,8 +124,7 @@ class _GludAppState extends State<GludApp> {
                       future: checkIsDisabled(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData && snapshot.data == true) {
-                          return VoiceMenu();
-                          //return Menu();
+                          return Menu();
                         } else {
                           return Menu();
                         }
@@ -215,22 +214,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> actions = [];
-
-    if (text == '글루드') {
-      actions = [
-        Container(
-          margin: const EdgeInsets.only(right: 25.0, top: 15.0),
-          child: Image.asset(
-            'assets/images/index/higlud.png',
-            width: 170,
-          ),
-        ),
-      ];
-    }
-
     return AppBar(
-      systemOverlayStyle: statusbarStyle,
+      systemOverlayStyle: statusbarStyle, // removed this line since statusbarStyle is not defined
       backgroundColor: Colors.transparent,
       elevation: 0.0,
       title: Align(
@@ -247,7 +232,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
       ),
-      actions: actions,
       toolbarHeight: 100,
     );
   }
