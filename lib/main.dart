@@ -15,7 +15,7 @@ import 'index/menu.dart';
 import 'index/profile.dart';
 import 'login_pages/loginpage.dart';
 
-const apiKey = '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';
+const apiKey = '';
 const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
 bool isLoggedIn = false;
@@ -124,8 +124,8 @@ class _GludAppState extends State<GludApp> {
                       future: checkIsDisabled(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData && snapshot.data == true) {
-                          // return VoiceMenu();
-                          return Menu();
+                          return VoiceMenu();
+                          //return Menu();
                         } else {
                           return Menu();
                         }
