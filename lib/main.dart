@@ -214,26 +214,43 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      systemOverlayStyle: statusbarStyle, // removed this line since statusbarStyle is not defined
-      backgroundColor: Colors.transparent,
-      elevation: 0.0,
-      title: Align(
-        alignment: Alignment.centerLeft,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 10.0),
-          child: Text(
-            text,
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
+    return FutureBuilder<bool>(
+        future: checkIsDisabled(),
+        builder: (context, snapshot) {
+          List<Widget> actions = [];
+          if (text == '글루드' && !isDisabled) {
+            actions = [
+              Container(
+                margin: const EdgeInsets.only(right: 25.0, top: 15.0),
+                child: Image.asset(
+                  'assets/images/index/higlud.png',
+                  width: 170,
+                ),
+              ),
+            ];
+          }
+
+          return AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0.0,
+            title: Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Text(
+                  text,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
-      toolbarHeight: 100,
-    );
+            actions: actions,
+            toolbarHeight: 100,
+          );
+        });
   }
 
   @override
