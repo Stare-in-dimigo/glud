@@ -13,26 +13,6 @@ import '../widgets.dart';
 
 String content = "";
 List<String> contentList = ["1", "2", "3", "4"];
-List<String> writingPrompt = [
-  'Write a press release based on the information: An incident took place at ${contentList[1]} on ${contentList[0]} where ${contentList[2]}. The key figure of the event said, "${contentList[3]}".'
-      'The essential contents to include are the title, date, and a summary of the incident. Except for the title, write everything in a single paragraph.'
-      'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.',
-  'Write a bookreview based on the information: date: ${contentList[0]}, publisher: ${contentList[1]}, writer: ${contentList[2]}, bookname: ${contentList[3]}.'
-      'The essential contents to include are the title, date, a summary of the book, and your opinion. Except for the title, write everything in a single paragraph.'
-      'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.',
-  'Write a Letter of apology based on the information: There was a ${contentList[3]} event on ${contentList[0]} with ${contentList[2]} on ${contentList[1]}. I am deeply reflecting on this.'
-      'The essential contents to include are the date, related person, place and a summary of the incident. Except for the title, write everything in a single paragraph.'
-      'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.',
-  'Please write a lawsuit about the ${contentList[1]} case that happened on ${contentList[0]}. The purpose of the claim is ${contentList[2]} and the cause of the claim is ${contentList[3]}.'
-      'The essential contents to include are the title, date, incident, Purpose of claim, cause of claim.'
-      'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.'
-];
-List<String> rolePrompt = [
-  'You are a Korean reporter. You are going to write an article.',
-  'You are a Korean student. You are going to write an bookreview',
-  'You are a Korean student. You did something wrong.'
-      'You are a Korean lawyer. Now you are gonna fill out a lawsuit for me',
-];
 
 String type = "";
 
@@ -355,6 +335,12 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
   }
 
   Future<String> generateText(String prompt) async {
+    List<String> rolePrompt = [
+      'You are a Korean reporter. You are going to write an article.',
+      'You are a Korean student. You are going to write an bookreview',
+      'You are a Korean student. You did something wrong.'
+          'You are a Korean lawyer. Now you are gonna fill out a lawsuit for me',
+    ];
     final response = await http.post(
       Uri.parse(apiUrl), // Ensure this URL points to v1/chat/completions
       headers: {
@@ -403,6 +389,20 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
   }
 
   Future write() async {
+    List<String> writingPrompt = [
+      'Write a press release based on the information: An incident took place at ${contentList[1]} on ${contentList[0]} where ${contentList[2]}. The key figure of the event said, "${contentList[3]}".'
+          'The essential contents to include are the title, date, and a summary of the incident. Except for the title, write everything in a single paragraph.'
+          'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.',
+      'Write a bookreview based on the information: date: ${contentList[0]}, publisher: ${contentList[1]}, writer: ${contentList[2]}, bookname: ${contentList[3]}.'
+          'The essential contents to include are the title, date, a summary of the book, and your opinion. Except for the title, write everything in a single paragraph.'
+          'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.',
+      'Write a Letter of apology based on the information: There was a ${contentList[3]} event on ${contentList[0]} with ${contentList[2]} on ${contentList[1]}. I am deeply reflecting on this.'
+          'The essential contents to include are the date, related person, place and a summary of the incident. Except for the title, write everything in a single paragraph.'
+          'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.',
+      'Please write a lawsuit about the ${contentList[1]} case that happened on ${contentList[0]}. The purpose of the claim is ${contentList[2]} and the cause of the claim is ${contentList[3]}.'
+          'The essential contents to include are the title, date, incident, Purpose of claim, cause of claim.'
+          'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.'
+    ];
     showDialog(
       context: context,
       barrierDismissible: false,

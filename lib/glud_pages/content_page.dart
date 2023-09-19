@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:glud/login_pages/loginpage.dart' as user;
 import 'package:glud/utility_pages/glud_list_page.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 import '../widgets.dart';
 
@@ -76,6 +77,28 @@ class _ResultPageState extends State<ResultPage> {
     );
   }
 
+  int checkspeaking = 0;
+  void startspeaking() {
+    final FlutterTts tts = FlutterTts();
+    final TextEditingController controller =
+        TextEditingController(text: writingcontents);
+    if (checkspeaking == 0) {
+      checkspeaking = 1;
+      tts.setLanguage('kor');
+      tts.setSpeechRate(0.4);
+      tts.speak(controller.text);
+    } else {
+      checkspeaking = 0;
+      tts.stop();
+    }
+  }
+
+  void stopspeaking() {
+    final FlutterTts tts = FlutterTts();
+    checkspeaking = 0;
+    tts.stop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -117,12 +140,12 @@ class _ResultPageState extends State<ResultPage> {
                   ),
                   const SizedBox(height: 15),
                   GestureDetector(
-                    onTap: saveDocs,
+                    onTap: startspeaking,
                     child: const CustomContainer(
                         backgroundColor: Color(0xFF7EAAC9),
                         child: Center(
                           child: Text(
-                            'Docx 파일로 다운받기',
+                            '글루드가 읽어주기',
                             style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
@@ -145,10 +168,13 @@ class _ResultPageState extends State<ResultPage> {
     return AppBar(
       systemOverlayStyle: statusbarStyle,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
-        iconSize: 20,
-        onPressed: () => Navigator.of(context).pop(),
-      ),
+          icon:
+              const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
+          iconSize: 20,
+          onPressed: () {
+            stopspeaking();
+            Navigator.of(context).pop();
+          }),
       backgroundColor: Colors.transparent,
       elevation: 0.0,
       title: const Align(
