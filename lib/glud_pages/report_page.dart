@@ -113,9 +113,8 @@ class _ReportPageState extends State<ReportPage> {
                 const SizedBox(height: 15),
                 _buildCustomContainer(
                   null,
-                  '\n\n주요 내용\n\n',
+                  '주요 내용\n\n\n\n',
                   _contentController,
-                  centerAlign: true,
                 ),
                 const SizedBox(height: 15),
                 _buildCustomContainer(
@@ -291,7 +290,7 @@ class CustomFloatingButton extends StatelessWidget {
 
   Future<String> generateText(String prompt) async {
     final response = await http.post(
-      Uri.parse(apiUrl), // Ensure this URL points to v1/chat/completions
+      Uri.parse(apiUrl), // v1/chat/completions
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $apiKey'

@@ -119,9 +119,8 @@ class _ReflectionPageState extends State<ReflectionPage> {
                 const SizedBox(height: 15),
                 _buildCustomContainer(
                   null,
-                  '\n\n주요 내용\n\n',
+                  '주요 내용\n\n\n\n',
                   _contentController,
-                  centerAlign: true,
                 ),
                 const SizedBox(height: 85),
               ],
