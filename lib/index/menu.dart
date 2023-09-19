@@ -80,8 +80,8 @@ class Menu extends StatelessWidget {
     );
   }
 
-
   void _onItemTap(BuildContext context, _GludItem item) {
+    globalwritingIndex = item.writingindex;
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => isDisabled ? VoicePage() : item.page,
@@ -90,6 +90,7 @@ class Menu extends StatelessWidget {
   }
 
   void _onItemLongPress(BuildContext context, _GludItem item) {
+    globalwritingIndex = item.writingindex;
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => VoicePage(),

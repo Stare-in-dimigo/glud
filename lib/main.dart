@@ -15,11 +15,11 @@ import 'index/menu.dart';
 import 'index/profile.dart';
 import 'login_pages/loginpage.dart';
 
+const apiKey = "";
 const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
 bool isLoggedIn = false;
 bool isDisabled = false;
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -40,14 +40,19 @@ void main() async {
   runApp(const GludApp());
 }
 
+bool _isCheckIsDisabledCalled = false;
+
 Future<bool> checkIsDisabled() async {
-  final usersRef = FirebaseDatabase.instance.ref();
-  final snapshot = await usersRef.child('users/$usersUID/isDisabled').get();
-  if (snapshot.value is bool) {
-    isDisabled = snapshot.value as bool;
-    return snapshot.value as bool;
+  if (!_isCheckIsDisabledCalled) {
+    final usersRef = FirebaseDatabase.instance.ref();
+    final snapshot = await usersRef.child('users/$usersUID/isDisabled').get();
+    if (snapshot.value is bool) {
+      isDisabled = snapshot.value as bool;
+      _isCheckIsDisabledCalled = true;
+      return snapshot.value as bool;
+    }
   }
-  return false;
+  return isDisabled;
 }
 
 class GludApp extends StatefulWidget {

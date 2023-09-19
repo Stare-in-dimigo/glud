@@ -19,6 +19,7 @@ class ResultPage extends StatefulWidget {
 
 class _ResultPageState extends State<ResultPage> {
   final usersRef = FirebaseDatabase.instance.ref();
+  String type = "";
 
   @override
   void initState() {
@@ -33,8 +34,16 @@ class _ResultPageState extends State<ResultPage> {
         .child(globalIndex.toString())
         .child("content")
         .get();
+    final typesnapshot = await usersRef
+        .child("users")
+        .child(user.usersUID)
+        .child("writing")
+        .child(globalIndex.toString())
+        .child("type")
+        .get();
     writingcontent = snapshot.value.toString();
     writingcontents = snapshot.value.toString();
+    type = typesnapshot.value.toString();
     String pattern = r"content:([^}]+)";
     RegExp regExp = RegExp(pattern);
     Match? match = regExp.firstMatch(writingcontent);
@@ -145,7 +154,7 @@ class _ResultPageState extends State<ResultPage> {
       title: const Align(
         alignment: Alignment.centerLeft,
         child: Text(
-          '보도자료',
+          "내가 작성한 글",
           style: TextStyle(
             color: Colors.black,
             fontSize: 25.0,

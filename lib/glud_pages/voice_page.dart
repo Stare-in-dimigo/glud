@@ -4,7 +4,7 @@ import 'package:firebase_database/firebase_database.dart'; // Firebase Realtime 
 import 'package:flutter/material.dart';
 import 'package:glud/glud_pages/finish_page.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:glud/index/menu.dart';
 import '../main.dart';
 import '../widgets.dart';
 import '../login_pages/loginpage.dart';
@@ -13,6 +13,18 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 String content = "";
 List<String> contentList = ["1", "2", "3", "4"];
+List<String> writingPrompt = [
+  'Write a press release based on the information: An incident took place at ${contentList[0]} on ${contentList[1]} where ${contentList[2]}. The key figure of the event said, "${contentList[3]}".'
+      'The essential contents to include are the title, date, and a summary of the incident. Except for the title, write everything in a single paragraph.'
+      'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.',
+  'Write a bookreview based on the information: date: ${contentList[0]}, publisher: ${contentList[1]}, writer: ${contentList[2]}, bookname: ${contentList[3]}.'
+      'The essential contents to include are the title, date, a summary of the book, and your opinion. Except for the title, write everything in a single paragraph.'
+      'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.',
+  'Write a Letter of apology based on the information: There was a ${contentList[0]} event on ${contentList[1]} with ${contentList[2]} on ${contentList[3]}. I am deeply reflecting on this.'
+      'The essential contents to include are the date, related person, place and a summary of the incident. Except for the title, write everything in a single paragraph.'
+      'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.',
+  "4"
+];
 
 class VoicePage extends StatefulWidget {
   const VoicePage({Key? key}) : super(key: key);
@@ -402,14 +414,17 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
     await userRef.child('num').set(num);
     DatabaseReference newItemRef =
         userRef.child('writing').child(num.toString());
-
-    String prompt =
-        'Write a press release based on the information: An incident took place at ${contentList[0]} on ${contentList[1]} where ${contentList[2]}. The key figure of the event said, "${contentList[3]}".'
-        'The essential contents to include are the title, date, and a summary of the incident. Except for the title, write everything in a single paragraph.'
-        'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.';
-    String contents = await generateText(prompt);
+    String type = "";
+    if (globalwritingIndex == 0) {
+      type = "보도자료";
+    } else if (globalwritingIndex == 1) {
+      type = "독서록";
+    } else if (globalwritingIndex == 2) {
+      type = "반성문";
+    } else {}
+    String contents = await generateText(writingPrompt[globalwritingIndex]);
     String titlePrompt =
-        "Please write a Korean title for this content. $prompt.";
+        "Please write a Korean title for this content. ${writingPrompt[globalwritingIndex]}.";
     String title = await generateText(titlePrompt);
 
     Navigator.of(context).pop(); // 로딩 창 닫기
@@ -426,7 +441,7 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
       "title": title,
       "content": contents,
       "date": timestamp,
-      "type": "보도자료",
+      "type": type,
     });
     databaseReference.child("users").child(usersUID).child("num").set(num);
   }
@@ -492,7 +507,7 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
         return iconAndText('안산시 단원구\n사세충열로 94', Icons.place_outlined);
       case 2:
         return Text(
-          '주요내용주요내용주요내용주요내용주요내용',
+          _text,
           style: TextStyle(
             color: const Color(0xFF5E5E5E),
             fontSize: 20.0,
