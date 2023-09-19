@@ -524,7 +524,7 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
           case 1:
             return const EdgeInsets.symmetric(horizontal: 100);
           case 2:
-            return const EdgeInsets.symmetric(horizontal: 60);
+            return const EdgeInsets.symmetric(horizontal: 50);
           case 3:
             return const EdgeInsets.symmetric(horizontal: 100);
           default:
@@ -552,7 +552,7 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
           case 2:
             return const EdgeInsets.symmetric(horizontal: 100);
           case 3:
-            return const EdgeInsets.symmetric(horizontal: 60);
+            return const EdgeInsets.symmetric(horizontal: 50);
           default:
             return const EdgeInsets.all(0);
         }
@@ -563,13 +563,14 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
           case 1:
             return const EdgeInsets.symmetric(horizontal: 100);
           case 2:
-            return const EdgeInsets.symmetric(horizontal: 60);
+            return const EdgeInsets.symmetric(horizontal: 50);
           case 3:
-            return const EdgeInsets.symmetric(horizontal: 60);
+            return const EdgeInsets.symmetric(horizontal: 50);
           default:
             return const EdgeInsets.all(0);
         }
     }
+    return const EdgeInsets.all(0);
   }
 
   Widget getPageContentText(int pageIndex) {
