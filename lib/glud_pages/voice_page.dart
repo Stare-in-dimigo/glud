@@ -3,28 +3,38 @@ import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart'; // Firebase Realtime Database 라이브러리 추가
 import 'package:flutter/material.dart';
 import 'package:glud/glud_pages/finish_page.dart';
-import 'package:http/http.dart' as http;
 import 'package:glud/index/menu.dart';
+import 'package:http/http.dart' as http;
+import 'package:speech_to_text/speech_to_text.dart' as stt;
+
+import '../login_pages/loginpage.dart';
 import '../main.dart';
 import '../widgets.dart';
-import '../login_pages/loginpage.dart';
-
-import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 String content = "";
 List<String> contentList = ["1", "2", "3", "4"];
 List<String> writingPrompt = [
-  'Write a press release based on the information: An incident took place at ${contentList[0]} on ${contentList[1]} where ${contentList[2]}. The key figure of the event said, "${contentList[3]}".'
+  'Write a press release based on the information: An incident took place at ${contentList[1]} on ${contentList[0]} where ${contentList[2]}. The key figure of the event said, "${contentList[3]}".'
       'The essential contents to include are the title, date, and a summary of the incident. Except for the title, write everything in a single paragraph.'
       'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.',
   'Write a bookreview based on the information: date: ${contentList[0]}, publisher: ${contentList[1]}, writer: ${contentList[2]}, bookname: ${contentList[3]}.'
       'The essential contents to include are the title, date, a summary of the book, and your opinion. Except for the title, write everything in a single paragraph.'
       'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.',
-  'Write a Letter of apology based on the information: There was a ${contentList[0]} event on ${contentList[1]} with ${contentList[2]} on ${contentList[3]}. I am deeply reflecting on this.'
+  'Write a Letter of apology based on the information: There was a ${contentList[3]} event on ${contentList[0]} with ${contentList[2]} on ${contentList[1]}. I am deeply reflecting on this.'
       'The essential contents to include are the date, related person, place and a summary of the incident. Except for the title, write everything in a single paragraph.'
       'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.',
-  "4"
+  'Please write a lawsuit about the ${contentList[1]} case that happened on ${contentList[0]}. The purpose of the claim is ${contentList[2]} and the cause of the claim is ${contentList[3]}.'
+      'The essential contents to include are the title, date, incident, Purpose of claim, cause of claim.'
+      'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.'
 ];
+List<String> rolePrompt = [
+  'You are a Korean reporter. You are going to write an article.',
+  'You are a Korean student. You are going to write an bookreview',
+  'You are a Korean student. You did something wrong.'
+      'You are a Korean lawyer. Now you are gonna fill out a lawsuit for me',
+];
+
+String type = "";
 
 class VoicePage extends StatefulWidget {
   const VoicePage({Key? key}) : super(key: key);
@@ -283,7 +293,7 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
                   Text(
                     !_showButton
                         ? '위 버튼을 눌러서\n음성으로 입력할 수 있어요'
-                        : "올바르게 입력되었다면\n${widget.pageIndex == 3 ? "'완료'" : "'다음'이"}라고 말해주세요",
+                        : "올바르게 입력되었다면\n${widget.pageIndex == 3 ? "'완료'를" : "'다음'을"} 눌러주세요",
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 25.0,
@@ -295,7 +305,7 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
                   Text(
                     !_showButton
                         ? getPageHintText(widget.pageIndex)
-                        : "잘못된 내용이 있다면 '돌아가기'라고 말해주세요",
+                        : "글루드가 멋진 글을 완성할거예요",
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 15.0,
@@ -356,8 +366,7 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
         'messages': [
           {
             "role": "system",
-            "content":
-                "You are a Korean reporter. You're going to write an article and a title"
+            "content": rolePrompt[globalwritingIndex],
           },
           {"role": "user", "content": prompt}
         ]
@@ -414,14 +423,15 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
     await userRef.child('num').set(num);
     DatabaseReference newItemRef =
         userRef.child('writing').child(num.toString());
-    String type = "";
     if (globalwritingIndex == 0) {
       type = "보도자료";
     } else if (globalwritingIndex == 1) {
       type = "독서록";
     } else if (globalwritingIndex == 2) {
       type = "반성문";
-    } else {}
+    } else if (globalwritingIndex == 3) {
+      type = "소송문";
+    }
     String contents = await generateText(writingPrompt[globalwritingIndex]);
     String titlePrompt =
         "Please write a Korean title for this content. ${writingPrompt[globalwritingIndex]}.";
@@ -447,32 +457,118 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
   }
 
   String getPageHintText(int pageIndex) {
-    switch (pageIndex) {
+    switch (globalwritingIndex) {
       case 0:
-        return '2023년 O월 O일 이라고 말해보세요';
+        switch (pageIndex) {
+          case 0:
+            return '"2023년 9월 14일"이라고 말해보세요';
+          case 1:
+            return '"안산시 단원구 사세충열로 94" 라고 말해보세요';
+          case 2:
+            return '"중요한 시험이 얼마 남지 않아\n수면시간 관리가 필요한 시기다"이라고 말해보세요';
+          case 3:
+            return '"금일 생활관 마지막 방송" 이라고 말해보세요';
+          default:
+            return '';
+        }
       case 1:
-        return '안산시 단원구 사세충열로 94 라고 말해보세요';
+        switch (pageIndex) {
+          case 0:
+            return '2023년 9월 14일 이라고 말해보세요';
+          case 1:
+            return '"성지출판"라고 말해보세요';
+          case 2:
+            return '"홍성대"라고 말해보세요';
+          case 3:
+            return '"수학의 정석"이라고 말해보세요';
+          default:
+            return '';
+        }
       case 2:
-        return '주요 내용을 말해보세요';
+        switch (pageIndex) {
+          case 0:
+            return '"2023년 9월 14일"이라고 말해보세요';
+          case 1:
+            return '"한국디지털미디어고등학교 학봉관" 라고 말해보세요';
+          case 2:
+            return '"나, 너, 쟤"이라고 말해보세요';
+          case 3:
+            return '"호실에서 라면을 먹었다"라고 말해보세요';
+          default:
+            return '';
+        }
       case 3:
-        return '"금일 생활관 마지막 방송" 이라고 말해보세요';
-      default:
-        return '';
+        switch (pageIndex) {
+          case 0:
+            return '"2023년 9월 14일"이라고 말해보세요';
+          case 1:
+            return '"레미제라블 빵도둑 사건"이라고 말해보세요';
+          case 2:
+            return '"빵 돌려받기"라고 말해보세요';
+          case 3:
+            return '"장발장이 빵을 도둑질"이라고 말해보세요';
+          default:
+            return '';
+        }
     }
+
+    return 'error';
   }
 
   EdgeInsets getPagePadding(int pageIndex) {
-    switch (pageIndex) {
+    switch (globalwritingIndex) {
       case 0:
-        return const EdgeInsets.symmetric(horizontal: 130);
+        switch (pageIndex) {
+          case 0:
+            return const EdgeInsets.symmetric(horizontal: 100);
+          case 1:
+            return const EdgeInsets.symmetric(horizontal: 100);
+          case 2:
+            return const EdgeInsets.symmetric(horizontal: 60);
+          case 3:
+            return const EdgeInsets.symmetric(horizontal: 100);
+          default:
+            return const EdgeInsets.all(0);
+        }
       case 1:
-        return const EdgeInsets.symmetric(horizontal: 120);
+        switch (pageIndex) {
+          case 0:
+            return const EdgeInsets.symmetric(horizontal: 100);
+          case 1:
+            return const EdgeInsets.symmetric(horizontal: 100);
+          case 2:
+            return const EdgeInsets.symmetric(horizontal: 100);
+          case 3:
+            return const EdgeInsets.symmetric(horizontal: 100);
+          default:
+            return const EdgeInsets.all(0);
+        }
       case 2:
-        return const EdgeInsets.symmetric(horizontal: 60);
+        switch (pageIndex) {
+          case 0:
+            return const EdgeInsets.symmetric(horizontal: 100);
+          case 1:
+            return const EdgeInsets.symmetric(horizontal: 100);
+          case 2:
+            return const EdgeInsets.symmetric(horizontal: 100);
+          case 3:
+            return const EdgeInsets.symmetric(horizontal: 60);
+          default:
+            return const EdgeInsets.all(0);
+        }
       case 3:
-        return const EdgeInsets.symmetric(horizontal: 110);
-      default:
-        return const EdgeInsets.all(0);
+        switch (pageIndex) {
+          case 0:
+            return const EdgeInsets.symmetric(horizontal: 100);
+          case 1:
+            return const EdgeInsets.symmetric(horizontal: 100);
+          case 2:
+            return const EdgeInsets.symmetric(horizontal: 60);
+          case 3:
+            return const EdgeInsets.symmetric(horizontal: 60);
+          default:
+            return const EdgeInsets.all(0);
+        }
     }
   }
 
@@ -500,25 +596,82 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
       );
     }
 
+    Widget result;
+
     switch (pageIndex) {
       case 0:
-        return iconAndText('2023. 6. 6', Icons.calendar_today);
       case 1:
-        return iconAndText('안산시 단원구\n사세충열로 94', Icons.place_outlined);
+        switch (globalwritingIndex) {
+          case 0:
+          case 1:
+          case 2:
+          case 3:
+            result = iconAndText('', Icons.calendar_today);
+            break;
+          default:
+            result = const SizedBox();
+            break;
+        }
+        break;
       case 2:
-        return Text(
-          _text,
-          style: TextStyle(
-            color: const Color(0xFF5E5E5E),
-            fontSize: 20.0,
-            fontWeight: _showButton ? FontWeight.bold : FontWeight.normal,
-          ),
-        );
+        switch (globalwritingIndex) {
+          case 0:
+            result = Text(
+              _text,
+              style: TextStyle(
+                color: const Color(0xFF5E5E5E),
+                fontSize: 20.0,
+                fontWeight: _showButton ? FontWeight.bold : FontWeight.normal,
+              ),
+            );
+            break;
+          case 1:
+          case 2:
+            result = iconAndText('', Icons.calendar_today);
+            break;
+          case 3:
+            result = Text(
+              _text,
+              style: TextStyle(
+                color: const Color(0xFF5E5E5E),
+                fontSize: 20.0,
+                fontWeight: _showButton ? FontWeight.bold : FontWeight.normal,
+              ),
+            );
+            break;
+          default:
+            result = const SizedBox();
+            break;
+        }
+        break;
       case 3:
-        return iconAndText('"금일 마지막 방송"', Icons.format_quote_outlined);
+        switch (globalwritingIndex) {
+          case 0:
+          case 1:
+            result = iconAndText('', Icons.calendar_today);
+            break;
+          case 2:
+          case 3:
+            result = Text(
+              _text,
+              style: TextStyle(
+                color: const Color(0xFF5E5E5E),
+                fontSize: 20.0,
+                fontWeight: _showButton ? FontWeight.bold : FontWeight.normal,
+              ),
+            );
+            break;
+          default:
+            result = const SizedBox();
+            break;
+        }
+        break;
       default:
-        return const SizedBox();
+        result = const SizedBox();
+        break;
     }
+
+    return result;
   }
 }
 

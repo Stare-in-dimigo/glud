@@ -298,7 +298,7 @@ class CustomFloatingButton extends StatelessWidget {
       body: jsonEncode({
         "model": "gpt-3.5-turbo",
         'messages': [
-          {"role": "system", "content": "You are a Korean reporter. You're going to write an article and a title"},
+          {"role": "system", "content": "You are a Korean reporter. You're going to write an article."},
           {"role": "user", "content": prompt}
         ]
       }),
