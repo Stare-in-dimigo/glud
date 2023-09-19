@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
-import 'package:glud/index/voice_menu.dart';
 import 'package:glud/widgets.dart';
 
 import 'firebase_options.dart';
@@ -122,26 +121,29 @@ class _GludAppState extends State<GludApp> {
             appBar: CustomAppBar(text: appBarTitle),
             body: Stack(
               children: [
-                PageView(
-                  controller: _pageController,
-                  children: <Widget>[
-                    FutureBuilder<bool>(
-                      future: checkIsDisabled(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData && snapshot.data == true) {
-                          return Menu();
-                        } else {
-                          return Menu();
-                        }
-                      },
-                    ),
-                    Profile(),
-                  ],
-                  onPageChanged: (index) {
-                    setState(() {
-                      _selectedIndex = index;
-                    });
-                  },
+                ScrollConfiguration(
+                  behavior: MyBehavior(),
+                  child: PageView(
+                    controller: _pageController,
+                    children: <Widget>[
+                      FutureBuilder<bool>(
+                        future: checkIsDisabled(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData && snapshot.data == true) {
+                            return Menu();
+                          } else {
+                            return Menu();
+                          }
+                        },
+                      ),
+                      Profile(),
+                    ],
+                    onPageChanged: (index) {
+                      setState(() {
+                        _selectedIndex = index;
+                      });
+                    },
+                  ),
                 ),
                 Positioned(
                   bottom: 0,
@@ -236,6 +238,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           }
 
           return AppBar(
+            systemOverlayStyle: statusbarStyle,
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             title: Align(

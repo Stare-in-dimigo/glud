@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:glud/glud_pages/finish_page.dart';
 import 'package:http/http.dart' as http;
 
+import '../login_pages/loginpage.dart';
 import '../main.dart';
 import '../widgets.dart';
-import '../login_pages/loginpage.dart';
 
 String place = "";
 String date = "";
