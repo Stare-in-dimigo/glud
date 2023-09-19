@@ -461,52 +461,52 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
       case 0:
         switch (pageIndex) {
           case 0:
-            return '"2023년 9월 14일"이라고 말해보세요';
+            return '날짜를 말해보세요';
           case 1:
-            return '"안산시 단원구 사세충열로 94" 라고 말해보세요';
+            return '장소를 말해보세요';
           case 2:
-            return '"중요한 시험이 얼마 남지 않아\n수면시간 관리가 필요한 시기다"이라고 말해보세요';
+            return '주요내용을 말해보세요';
           case 3:
-            return '"금일 생활관 마지막 방송" 이라고 말해보세요';
+            return '인용문을 말해보세요';
           default:
             return '';
         }
       case 1:
         switch (pageIndex) {
           case 0:
-            return '2023년 9월 14일 이라고 말해보세요';
+            return '날짜를 말해보세요';
           case 1:
-            return '"성지출판"라고 말해보세요';
+            return '출판사를 말해보세요';
           case 2:
-            return '"홍성대"라고 말해보세요';
+            return '작가명을 말해보세요';
           case 3:
-            return '"수학의 정석"이라고 말해보세요';
+            return '책 제목을 말해보세요';
           default:
             return '';
         }
       case 2:
         switch (pageIndex) {
           case 0:
-            return '"2023년 9월 14일"이라고 말해보세요';
+            return '날짜를 말해보세요';
           case 1:
-            return '"한국디지털미디어고등학교 학봉관" 라고 말해보세요';
+            return '장소를 말해보세요';
           case 2:
-            return '"나, 너, 쟤"이라고 말해보세요';
+            return '사건 관련자를 말해보세요';
           case 3:
-            return '"호실에서 라면을 먹었다"라고 말해보세요';
+            return '주요내용을 말해보세요';
           default:
             return '';
         }
       case 3:
         switch (pageIndex) {
           case 0:
-            return '"2023년 9월 14일"이라고 말해보세요';
+            return '날짜를 말해보세요';
           case 1:
-            return '"레미제라블 빵도둑 사건"이라고 말해보세요';
+            return '사건명을 말해보세요';
           case 2:
-            return '"빵 돌려받기"라고 말해보세요';
+            return '청구 취지를 말해보세요';
           case 3:
-            return '"장발장이 빵을 도둑질"이라고 말해보세요';
+            return '청구 원인을 말해보세요';
           default:
             return '';
         }
@@ -520,37 +520,37 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
       case 0:
         switch (pageIndex) {
           case 0:
-            return const EdgeInsets.symmetric(horizontal: 100);
+            return const EdgeInsets.symmetric(horizontal: 120);
           case 1:
-            return const EdgeInsets.symmetric(horizontal: 100);
+            return const EdgeInsets.symmetric(horizontal: 120);
           case 2:
             return const EdgeInsets.symmetric(horizontal: 50);
           case 3:
-            return const EdgeInsets.symmetric(horizontal: 100);
+            return const EdgeInsets.symmetric(horizontal: 120);
           default:
             return const EdgeInsets.all(0);
         }
       case 1:
         switch (pageIndex) {
           case 0:
-            return const EdgeInsets.symmetric(horizontal: 100);
+            return const EdgeInsets.symmetric(horizontal: 120);
           case 1:
-            return const EdgeInsets.symmetric(horizontal: 100);
+            return const EdgeInsets.symmetric(horizontal: 120);
           case 2:
-            return const EdgeInsets.symmetric(horizontal: 100);
+            return const EdgeInsets.symmetric(horizontal: 120);
           case 3:
-            return const EdgeInsets.symmetric(horizontal: 100);
+            return const EdgeInsets.symmetric(horizontal: 120);
           default:
             return const EdgeInsets.all(0);
         }
       case 2:
         switch (pageIndex) {
           case 0:
-            return const EdgeInsets.symmetric(horizontal: 100);
+            return const EdgeInsets.symmetric(horizontal: 120);
           case 1:
-            return const EdgeInsets.symmetric(horizontal: 100);
+            return const EdgeInsets.symmetric(horizontal: 120);
           case 2:
-            return const EdgeInsets.symmetric(horizontal: 100);
+            return const EdgeInsets.symmetric(horizontal: 120);
           case 3:
             return const EdgeInsets.symmetric(horizontal: 50);
           default:
@@ -559,9 +559,9 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
       case 3:
         switch (pageIndex) {
           case 0:
-            return const EdgeInsets.symmetric(horizontal: 100);
+            return const EdgeInsets.symmetric(horizontal: 120);
           case 1:
-            return const EdgeInsets.symmetric(horizontal: 100);
+            return const EdgeInsets.symmetric(horizontal: 120);
           case 2:
             return const EdgeInsets.symmetric(horizontal: 50);
           case 3:
@@ -601,13 +601,21 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
 
     switch (pageIndex) {
       case 0:
+        result = iconAndText('', Icons.calendar_today);
+        break;
       case 1:
         switch (globalwritingIndex) {
           case 0:
+            result = iconAndText('', Icons.place_outlined);
+            break;
           case 1:
+            result = iconAndText('', Icons.account_balance_outlined);
+            break;
           case 2:
+            result = iconAndText('', Icons.place_outlined);
+            break;
           case 3:
-            result = iconAndText('', Icons.calendar_today);
+            result = iconAndText('', Icons.search_outlined);
             break;
           default:
             result = const SizedBox();
@@ -627,8 +635,10 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
             );
             break;
           case 1:
+            result = iconAndText('', Icons.edit_outlined);
+            break;
           case 2:
-            result = iconAndText('', Icons.calendar_today);
+            result = iconAndText('', Icons.people_alt_outlined);
             break;
           case 3:
             result = Text(
@@ -648,8 +658,10 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
       case 3:
         switch (globalwritingIndex) {
           case 0:
+            result = iconAndText('', Icons.format_quote_outlined);
+            break;
           case 1:
-            result = iconAndText('', Icons.calendar_today);
+            result = iconAndText('', Icons.book_outlined);
             break;
           case 2:
           case 3:
