@@ -1,16 +1,15 @@
-# glud
+<div align="center">
 
-Project Glud
+# 글루드 - Glud
 
-## Getting Started
+</br>
 
-This project is a starting point for a Flutter application.
+<img src="https://i.ibb.co/CzMkbSf/icon.png" alt="icon" border="0" width="40%">
 
-A few resources to get you started if this is your first Flutter project:
+<p align="center"><em>구름처럼 다양한 글, 글루드</em></p>
+</br>
+</br>
+</br>
+<p align="center">글루드는 프롬프트 엔지니어링 없이 모두가 생성형 AI의 이점을 활용할 수 있도록 돕는 모바일 앱입니다.</p>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+</div>
