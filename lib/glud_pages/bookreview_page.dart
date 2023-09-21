@@ -101,7 +101,7 @@ class _BookreviewPageState extends State<BookreviewPage> {
               children: [
                 _buildCustomContainer(
                   Icons.calendar_today,
-                  '날짜',
+                  '작성일',
                   _dateTimeController,
                 ),
                 const SizedBox(height: 15),
