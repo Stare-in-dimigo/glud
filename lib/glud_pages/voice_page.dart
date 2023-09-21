@@ -474,7 +474,7 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
       case 1:
         switch (pageIndex) {
           case 0:
-            return '날짜를 말해보세요';
+            return '작성일를 말해보세요';
           case 1:
             return '출판사를 말해보세요';
           case 2:

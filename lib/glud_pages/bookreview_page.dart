@@ -147,7 +147,7 @@ class _BookreviewPageState extends State<BookreviewPage> {
             Icon(icon, color: const Color(0xFFC0CFDB), size: 30.0),
           if (icon != null) const SizedBox(width: 15),
           Expanded(
-            child: hintText == '날짜'
+            child: hintText == '작성일'
                 ? _buildDateTimeField()
                 : CustomTextField(
               hintText: hintText,
@@ -169,7 +169,7 @@ class _BookreviewPageState extends State<BookreviewPage> {
     return TextField(
       controller: _dateTimeController,
       decoration: const InputDecoration(
-        hintText: '날짜',
+        hintText: '작성일',
         hintStyle: TextStyle(
           color: Color(0xFF5E5E5E),
           fontSize: 20.0,

@@ -22,6 +22,7 @@ class _NoticePageState extends State<NoticePage> {
   List<bool> expanded = [false, false, false, false];
 
   final List<NoticeItem> faqItems = [
+    NoticeItem('글루드 출시!', '글루드가 9월 21일 정식으로 출시되었습니다!'),
     NoticeItem('글루드 베타 출시!', '글루드 베타가 9월 14일 출시되었습니다!'),
   ];
 

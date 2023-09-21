@@ -85,7 +85,7 @@ class _ResultPageState extends State<ResultPage> {
     if (checkspeaking == 0) {
       checkspeaking = 1;
       tts.setLanguage('kor');
-      tts.setSpeechRate(0.4);
+      tts.setSpeechRate(0.6);
       tts.speak(controller.text);
     } else {
       checkspeaking = 0;
