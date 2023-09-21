@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:glud/main.dart';
 
 import '../glud_pages/bookreview_page.dart';
 import '../glud_pages/litigationpage_page.dart';
 import '../glud_pages/reflection_page.dart';
 import '../glud_pages/report_page.dart';
 import '../glud_pages/voice_page.dart';
-import '../glud_pages/voice_page_teaser.dart';
 import '../widgets.dart';
-import 'package:glud/main.dart';
 
 int globalwritingIndex = 0;
 
@@ -94,7 +93,6 @@ class Menu extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => VoicePage(),
-        //builder: (context) => VoicePageTeaser(),
       ),
     );
   }

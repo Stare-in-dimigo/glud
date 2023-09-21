@@ -2,13 +2,13 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:glud/login_pages/loginpage.dart';
 
-import '../utility_pages/glud_list_page.dart';
-import '../widgets.dart';
-import '../utility_pages/settings_page.dart';
-import '../utility_pages/notice_page.dart';
-import '../utility_pages/faq_page.dart';
 import '../utility_pages/contact_page.dart';
+import '../utility_pages/faq_page.dart';
+import '../utility_pages/glud_list_page.dart';
 import '../utility_pages/laboratory_page.dart';
+import '../utility_pages/notice_page.dart';
+import '../utility_pages/settings_page.dart';
+import '../widgets.dart';
 
 int globalUserType = -1;
 
@@ -18,8 +18,7 @@ class Profile extends StatelessWidget {
   final List<_MypageItem> _items = [
     _MypageItem(
         '내가 작성한 글', 'assets/images/mypage/recent.png', const GludListPage()),
-    _MypageItem(
-        '자주 찾는 질문', 'assets/images/mypage/faq.png', const FaqPage()),
+    _MypageItem('자주 찾는 질문', 'assets/images/mypage/faq.png', const FaqPage()),
     _MypageItem(
         '고객센터', 'assets/images/mypage/contact.png', const ContactPage()),
     _MypageItem(

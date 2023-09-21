@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:firebase_database/firebase_database.dart'; // Firebase Realtime Database 라이브러리 추가
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:glud/glud_pages/finish_page.dart';
 import 'package:http/http.dart' as http;
@@ -290,7 +290,7 @@ class CustomFloatingButton extends StatelessWidget {
 
   Future<String> generateText(String prompt) async {
     final response = await http.post(
-      Uri.parse(apiUrl), // Ensure this URL points to v1/chat/completions
+      Uri.parse(apiUrl),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $apiKey'
@@ -320,7 +320,6 @@ class CustomFloatingButton extends StatelessWidget {
     } else {
       print("Response Status Code: ${response.statusCode}");
       print("Response Body: ${response.body}");
-      // Use ScaffoldMessenger or another method to show an error message
       throw Exception('Failed to load data from the API');
     }
   }
@@ -358,7 +357,7 @@ class CustomFloatingButton extends StatelessWidget {
         String titlePrompt = "Please write a Korean title for this content. $prompt.";
         String title = await generateText(titlePrompt);
 
-        Navigator.of(context).pop(); // 로딩 창 닫기
+        Navigator.of(context).pop();
 
         DateTime now = DateTime.now();
         String timestamp = now.toString();

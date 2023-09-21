@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter/services.dart';
 
 import '../login_pages/loginpage.dart';
 import '../main.dart';
@@ -113,17 +112,17 @@ class _SettingsPageState extends State<SettingsPage> {
           await GoogleSignIn().signOut();
           usersUID = "";
           usersEmail = "";
-          await exit(0);
+          exit(0);
         },
-        child: Text('앱 종료 및 로그아웃', style: TextStyle(fontSize: 18.0)),
         style: ElevatedButton.styleFrom(
           primary: Colors.red,
           onPrimary: Colors.white,
-          padding: EdgeInsets.symmetric(vertical: 12.0),
+          padding: const EdgeInsets.symmetric(vertical: 12.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
         ),
+        child: const Text('앱 종료 및 로그아웃', style: TextStyle(fontSize: 18.0)),
       ),
     );
   }

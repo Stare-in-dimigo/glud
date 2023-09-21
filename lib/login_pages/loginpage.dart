@@ -9,7 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../firebase_options.dart';
 import 'registerpage.dart';
 
-String usersUID = ""; // 현재 로그인한 사용자의 UID를 대입
+String usersUID = "";
 String usersEmail = "";
 
 class LoginPage extends StatefulWidget {
@@ -122,7 +122,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
           await _auth.signInWithCredential(credential);
       final User? user = userCredential.user;
 
-      //이메일과 UID 가져오기
       final String userEmail = user?.email ?? '';
       final String userUID = user?.uid ?? '';
       usersUID = user?.uid ?? '';
@@ -133,7 +132,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       final DataSnapshot snapshot =
           await userRef.once().then((event) => event.snapshot);
       if (!snapshot.exists) {
-        // 데이터베이스에 사용자 UID가 없으면 저장
         regist = 1;
         await userRef.child('email').set(userEmail);
         await userRef.child('userType').set(userType);
@@ -142,7 +140,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         await userRef.child('writing').set("");
       }
       if (regist == 0) {
-        // 이미 회원가입한 사용자라면 회원가입을 건너뜀
         print("check widget");
         widget.onLogin();
       } else {
@@ -161,7 +158,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         });
       }
     } catch (e) {
-      // 로그인 실패 시 예외 처리
       print('Google Sign-In Error: $e');
     }
   }
@@ -205,7 +201,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Image.asset('assets/images/loginpage/google.png',
-                                  width: 20.0), // Image Widget
+                                  width: 20.0),
                               const SizedBox(width: 10.0),
                               const Text(
                                 '구글로 시작하기',

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:firebase_database/firebase_database.dart'; // Firebase Realtime Database 라이브러리 추가
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:glud/glud_pages/finish_page.dart';
 import 'package:glud/index/menu.dart';
@@ -55,7 +55,7 @@ class _VoicePageState extends State<VoicePage> {
                 },
                 physics: const NeverScrollableScrollPhysics(),
                 children: <Widget>[
-                  for (int i = 0; i < 4; i++) // Assuming 4 pages
+                  for (int i = 0; i < 4; i++)
                     buildPageWidget(i),
                 ],
               ),
@@ -97,7 +97,7 @@ class _VoicePageState extends State<VoicePage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        for (int i = 0; i < 4; i++) // Assuming 4 pages
+        for (int i = 0; i < 4; i++)
           _buildPageDot(i == currentPage),
       ],
     );
@@ -342,7 +342,7 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
           'You are a Korean lawyer. Now you are gonna fill out a lawsuit for me',
     ];
     final response = await http.post(
-      Uri.parse(apiUrl), // Ensure this URL points to v1/chat/completions
+      Uri.parse(apiUrl),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $apiKey'
@@ -375,7 +375,6 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
     } else {
       print("Response Status Code: ${response.statusCode}");
       print("Response Body: ${response.body}");
-      // Use ScaffoldMessenger or another method to show an error message
       throw Exception('Failed to load data from the API');
     }
   }
@@ -437,7 +436,7 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
         "Please write a Korean title for this content. ${writingPrompt[globalwritingIndex]}.";
     String title = await generateText(titlePrompt);
 
-    Navigator.of(context).pop(); // 로딩 창 닫기
+    Navigator.of(context).pop();
 
     DateTime now = DateTime.now();
     String timestamp = now.toString();
@@ -582,8 +581,8 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
             icon,
             color: const Color(0xFFC0CFDB),
             size: 35,
-          ), // Adjust the size as needed
-          const SizedBox(height: 15), // Add some spacing
+          ),
+          const SizedBox(height: 15),
           Text(
             _text,
             style: TextStyle(

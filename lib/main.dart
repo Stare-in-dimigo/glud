@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
 import 'package:glud/widgets.dart';
 
@@ -14,13 +15,15 @@ import 'index/menu.dart';
 import 'index/profile.dart';
 import 'login_pages/loginpage.dart';
 
-const apiKey = '';
+String apiKey = dotenv.env['API_KEY']!;
 const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
 bool isLoggedIn = false;
 bool isDisabled = false;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -102,9 +105,9 @@ class _GludAppState extends State<GludApp> {
           );
         },
         clipBehavior: Clip.hardEdge,
-        maximumSize: Size(475.0, 812.0),
+        maximumSize: const Size(475.0, 812.0),
         enabled: kIsWeb,
-        backgroundColor: Color(0xFF7EAAC9),
+        backgroundColor: const Color(0xFF7EAAC9),
       );
     }
 
@@ -160,7 +163,7 @@ class _GludAppState extends State<GludApp> {
                         topLeft: Radius.circular(30.0),
                         topRight: Radius.circular(30.0),
                       ),
-                      color: const Color(0xFF92B4CD),
+                      color: Color(0xFF92B4CD),
                     ),
                     child: Padding(
                       padding:
@@ -207,9 +210,9 @@ class _GludAppState extends State<GludApp> {
         );
       },
       clipBehavior: Clip.hardEdge,
-      maximumSize: Size(475.0, 812.0),
+      maximumSize: const Size(475.0, 812.0),
       enabled: kIsWeb,
-      backgroundColor: Color(0xFF7EAAC9),
+      backgroundColor: const Color(0xFF7EAAC9),
     );
   }
 }

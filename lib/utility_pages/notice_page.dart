@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-// 상황에 따라 CustomContainer 위젯과 whitestyle을 정의해야 할 수 있습니다.
 import '../widgets.dart';
 
 class NoticeItem {
@@ -67,7 +66,7 @@ class _NoticePageState extends State<NoticePage> {
               Image.asset('assets/images/notice_icon.png', width: 25),
               const SizedBox(width: 10),
               Text(item.question,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16.0,
                     color: Color(0xFF5E5E5E),
                   )),
@@ -135,7 +134,6 @@ class _NoticePageState extends State<NoticePage> {
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
       systemOverlayStyle: statusbarStyle,
-      // 정의되어 있어야 합니다.
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
         iconSize: 20,

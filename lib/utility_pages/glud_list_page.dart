@@ -1,14 +1,13 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets.dart';
 import '../glud_pages/content_page.dart';
-import 'package:firebase_database/firebase_database.dart';
 import '../login_pages/loginpage.dart';
+import '../widgets.dart';
 
 int globalIndex = 0;
 
 String convertDateFormat(String originalDate) {
-  // Extract the date part from the original date string
   String formattedDate = originalDate.split(' ')[0];
   return formattedDate;
 }
@@ -26,7 +25,7 @@ class _GludListPageState extends State<GludListPage> {
   Future<void> fillwrite() async {
     final usersRef = FirebaseDatabase.instance.ref();
     final snapshot =
-        await usersRef.child("users").child(usersUID).child("num").get();
+    await usersRef.child("users").child(usersUID).child("num").get();
 
     int num = int.parse(snapshot.value.toString());
     String title;
@@ -42,38 +41,38 @@ class _GludListPageState extends State<GludListPage> {
         final contentRef = FirebaseDatabase.instance.ref();
         final typeRef = FirebaseDatabase.instance.ref();
 
-        final title_snapshot = await titleRef
+        final titleSnapshot = await titleRef
             .child("users")
             .child(usersUID)
             .child("writing")
             .child(i.toString())
             .child("title")
             .get();
-        final date_snapshot = await dateRef
+        final dateSnapshot = await dateRef
             .child("users")
             .child(usersUID)
             .child("writing")
             .child(i.toString())
             .child("date")
             .get();
-        final content_snapshot = await contentRef
+        final contentSnapshot = await contentRef
             .child("users")
             .child(usersUID)
             .child("writing")
             .child(i.toString())
             .child("content")
             .get();
-        final type_snapshot = await typeRef
+        final typeSnapshot = await typeRef
             .child("users")
             .child(usersUID)
             .child("writing")
             .child(i.toString())
             .child("type")
             .get();
-        title = title_snapshot.value.toString();
-        content = content_snapshot.value.toString();
-        date = convertDateFormat(date_snapshot.value.toString());
-        type = type_snapshot.value.toString();
+        title = titleSnapshot.value.toString();
+        content = contentSnapshot.value.toString();
+        date = convertDateFormat(dateSnapshot.value.toString());
+        type = typeSnapshot.value.toString();
         print("Load Success");
         if (type == "보도자료") {
           imagePath = 'assets/images/index/report.png';
@@ -104,38 +103,38 @@ class _GludListPageState extends State<GludListPage> {
         final contentRef = FirebaseDatabase.instance.ref();
         final typeRef = FirebaseDatabase.instance.ref();
 
-        final title_snapshot = await titleRef
+        final titleSnapshot = await titleRef
             .child("users")
             .child(usersUID)
             .child("writing")
             .child(i.toString())
             .child("title")
             .get();
-        final date_snapshot = await dateRef
+        final dateSnapshot = await dateRef
             .child("users")
             .child(usersUID)
             .child("writing")
             .child(i.toString())
             .child("date")
             .get();
-        final content_snapshot = await contentRef
+        final contentSnapshot = await contentRef
             .child("users")
             .child(usersUID)
             .child("writing")
             .child(i.toString())
             .child("content")
             .get();
-        final type_snapshot = await typeRef
+        final typeSnapshot = await typeRef
             .child("users")
             .child(usersUID)
             .child("writing")
             .child(i.toString())
             .child("type")
             .get();
-        title = title_snapshot.value.toString();
-        content = content_snapshot.value.toString();
-        date = convertDateFormat(date_snapshot.value.toString());
-        type = type_snapshot.value.toString();
+        title = titleSnapshot.value.toString();
+        content = contentSnapshot.value.toString();
+        date = convertDateFormat(dateSnapshot.value.toString());
+        type = typeSnapshot.value.toString();
         print("Load Success");
         if (type == "보도자료") {
           imagePath = 'assets/images/index/report.png';
@@ -170,9 +169,6 @@ class _GludListPageState extends State<GludListPage> {
 
   Future<void> initializeData() async {
     await fillwrite();
-    setState(() {
-      // This will trigger a rebuild of the widget with the loaded data.
-    });
   }
 
   Widget build(BuildContext context) {
@@ -185,38 +181,38 @@ class _GludListPageState extends State<GludListPage> {
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
             child: ScrollConfiguration(
               behavior: MyBehavior(),
-              child: gludList.length == 0
+              child: gludList.isEmpty
                   ? Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.only(top:200),
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 30.0, // 원하는 높이
-                            width: 30.0, // 원하는 너비
-                            child: CircularProgressIndicator(
-                              color: Color(0xFFC0CFDB),
-                              strokeWidth: 4.0,
-                            ),
-                          ),
-                          SizedBox(width: 20),
-                          Text(
-                            '로딩중...',
-                            style: TextStyle(
-                              color: Color(0xFF5E5E5E),
-                              fontSize: 20.0,
-                            ),
-                          ),
-                        ],
+                width: double.infinity,
+                padding: const EdgeInsets.only(top:200),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 30.0,
+                      width: 30.0,
+                      child: CircularProgressIndicator(
+                        color: Color(0xFFC0CFDB),
+                        strokeWidth: 4.0,
                       ),
-                    )
-                  : ListView.builder(
-                      itemCount: gludList.length,
-                      itemBuilder: (context, index) =>
-                          buildGludContainer(context, gludList[index]),
                     ),
+                    SizedBox(width: 20),
+                    Text(
+                      '로딩중...',
+                      style: TextStyle(
+                        color: Color(0xFF5E5E5E),
+                        fontSize: 20.0,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+                  : ListView.builder(
+                itemCount: gludList.length,
+                itemBuilder: (context, index) =>
+                    buildGludContainer(context, gludList[index]),
+              ),
             ),
           ),
           Align(
@@ -289,7 +285,7 @@ class _GludListPageState extends State<GludListPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          '#' + glud.index.toString() + ' ' + glud.type,
+                          '#${glud.index} ${glud.type}',
                           maxLines: 1,
                           style: const TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),

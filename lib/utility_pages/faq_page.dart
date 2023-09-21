@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// 상황에 따라 CustomContainer 위젯과 whitestyle을 정의해야 할 수 있습니다.
 import '../widgets.dart';
 
 class FaqItem {
@@ -107,7 +106,7 @@ class _FaqPageState extends State<FaqPage> {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      systemOverlayStyle: statusbarStyle, // 정의되어 있어야 합니다.
+      systemOverlayStyle: statusbarStyle,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
         iconSize: 20,
