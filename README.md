@@ -4,7 +4,7 @@
 
 </br>
 
-<img src="https://i.ibb.co/CzMkbSf/icon.png" alt="icon" border="0" width="40%">
+<img src="/assets/images/icon.png" alt="icon" border="0" width="40%">
 
 <p align="center"><em>구름처럼 다양한 글, 글루드</em></p>
 </br>
