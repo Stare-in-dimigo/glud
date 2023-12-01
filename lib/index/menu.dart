@@ -8,7 +8,7 @@ import '../glud_pages/report_page.dart';
 import '../glud_pages/voice_page.dart';
 import '../widgets.dart';
 
-int globalwritingIndex = 0;
+int globalIndex = 0;
 
 class Menu extends StatelessWidget {
   Menu({Key? key}) : super(key: key);
@@ -28,6 +28,7 @@ class Menu extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
       child: GridView.count(
+        physics: const BouncingScrollPhysics(),
         crossAxisCount: isDisabled ? 1 : 2,
         childAspectRatio: 4 / 5,
         crossAxisSpacing: 20,
@@ -80,7 +81,7 @@ class Menu extends StatelessWidget {
   }
 
   void _onItemTap(BuildContext context, _GludItem item) {
-    globalwritingIndex = item.writingindex;
+    globalIndex = item.writingindex;
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => isDisabled ? VoicePage() : item.page,
@@ -89,7 +90,7 @@ class Menu extends StatelessWidget {
   }
 
   void _onItemLongPress(BuildContext context, _GludItem item) {
-    globalwritingIndex = item.writingindex;
+    globalIndex = item.writingindex;
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => VoicePage(),

@@ -352,7 +352,7 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
         'messages': [
           {
             "role": "system",
-            "content": rolePrompt[globalwritingIndex],
+            "content": rolePrompt[globalIndex],
           },
           {"role": "user", "content": prompt}
         ]
@@ -422,18 +422,18 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
     await userRef.child('num').set(num);
     DatabaseReference newItemRef =
         userRef.child('writing').child(num.toString());
-    if (globalwritingIndex == 0) {
+    if (globalIndex == 0) {
       type = "보도자료";
-    } else if (globalwritingIndex == 1) {
+    } else if (globalIndex == 1) {
       type = "독서록";
-    } else if (globalwritingIndex == 2) {
+    } else if (globalIndex == 2) {
       type = "반성문";
-    } else if (globalwritingIndex == 3) {
+    } else if (globalIndex == 3) {
       type = "소송문";
     }
-    String contents = await generateText(writingPrompt[globalwritingIndex]);
+    String contents = await generateText(writingPrompt[globalIndex]);
     String titlePrompt =
-        "Please write a Korean title for this content. ${writingPrompt[globalwritingIndex]}.";
+        "Please write a Korean title for this content. ${writingPrompt[globalIndex]}.";
     String title = await generateText(titlePrompt);
 
     Navigator.of(context).pop();
@@ -456,7 +456,7 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
   }
 
   String getPageHintText(int pageIndex) {
-    switch (globalwritingIndex) {
+    switch (globalIndex) {
       case 0:
         switch (pageIndex) {
           case 0:
@@ -515,7 +515,7 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
   }
 
   EdgeInsets getPagePadding(int pageIndex) {
-    switch (globalwritingIndex) {
+    switch (globalIndex) {
       case 0:
         switch (pageIndex) {
           case 0:
@@ -603,7 +603,7 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
         result = iconAndText('', Icons.calendar_today);
         break;
       case 1:
-        switch (globalwritingIndex) {
+        switch (globalIndex) {
           case 0:
             result = iconAndText('', Icons.place_outlined);
             break;
@@ -622,7 +622,7 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
         }
         break;
       case 2:
-        switch (globalwritingIndex) {
+        switch (globalIndex) {
           case 0:
             result = Text(
               _text,
@@ -655,7 +655,7 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
         }
         break;
       case 3:
-        switch (globalwritingIndex) {
+        switch (globalIndex) {
           case 0:
             result = iconAndText('', Icons.format_quote_outlined);
             break;

@@ -1,4 +1,7 @@
 .env
+google-services.json
+firebase_options.dart
+upload_certificate.pem
 
 # Miscellaneous
 *.class

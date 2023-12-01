@@ -100,6 +100,7 @@ class _GludAppState extends State<GludApp> {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               fontFamily: 'Pretendard',
+              useMaterial3: false,
             ),
             home: LoginPage(onLogin: login),
           );
@@ -118,6 +119,7 @@ class _GludAppState extends State<GludApp> {
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
             fontFamily: 'Pretendard',
+            useMaterial3: false,
           ),
           home: Scaffold(
             backgroundColor: Colors.white,

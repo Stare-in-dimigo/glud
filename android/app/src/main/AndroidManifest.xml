@@ -46,6 +46,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data
+            android:name="io.flutter.embedding.android.EnableImpeller"
+            android:value="true" />
     </application>
 
     <!-- Provide required visibility configuration for API level 30 and above -->
