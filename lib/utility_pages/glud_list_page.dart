@@ -1,7 +1,7 @@
-import 'dart:math';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../glud_pages/content_page.dart';
 import '../login_pages/loginpage.dart';
 import '../widgets.dart';
@@ -67,7 +67,6 @@ class _GludListPageState extends State<GludListPage> {
     String imagePath = getImagePathForType(type);
 
     Glud glud = Glud(
-      title: title,
       date: date,
       imagePath: imagePath,
       type: type,
@@ -189,7 +188,7 @@ class _GludListPageState extends State<GludListPage> {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          glud.title,
+                          glud.content,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -259,7 +258,7 @@ class _GludListPageState extends State<GludListPage> {
         ),
         const SizedBox(height: 5),
         Text(
-          glud.title,
+          glud.content,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(fontSize: 16, color: Color(0xFF5E5E5E)),
@@ -298,7 +297,6 @@ class _GludListPageState extends State<GludListPage> {
 }
 
 class Glud {
-  final String title;
   final String date;
   final String imagePath;
   final String type;
@@ -308,7 +306,6 @@ class Glud {
   final int index;
 
   Glud({
-    required this.title,
     required this.date,
     required this.imagePath,
     required this.type,

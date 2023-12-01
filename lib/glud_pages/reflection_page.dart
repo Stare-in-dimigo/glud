@@ -24,7 +24,8 @@ class ReflectionPage extends StatefulWidget {
 class _ReflectionPageState extends State<ReflectionPage> {
   final TextEditingController _dateTimeController = TextEditingController();
   final TextEditingController _placeController = TextEditingController();
-  final TextEditingController _relatedpersonController = TextEditingController();
+  final TextEditingController _relatedpersonController =
+      TextEditingController();
   final TextEditingController _contentController = TextEditingController();
 
   bool _isFocused = false;
@@ -76,7 +77,7 @@ class _ReflectionPageState extends State<ReflectionPage> {
     if (picked != null) {
       setState(() {
         _dateTimeController.text =
-        "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+            "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
       });
     }
   }
@@ -134,11 +135,11 @@ class _ReflectionPageState extends State<ReflectionPage> {
   }
 
   CustomContainer _buildCustomContainer(
-      IconData? icon,
-      String hintText,
-      TextEditingController controller, {
-        bool centerAlign = false,
-      }) {
+    IconData? icon,
+    String hintText,
+    TextEditingController controller, {
+    bool centerAlign = false,
+  }) {
     return CustomContainer(
       padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
       child: Row(
@@ -150,15 +151,15 @@ class _ReflectionPageState extends State<ReflectionPage> {
             child: hintText == '일시'
                 ? _buildDateTimeField()
                 : CustomTextField(
-              hintText: hintText,
-              centerAlign: centerAlign,
-              textEditingController: controller,
-              onFocusChange: (bool focused) {
-                setState(() {
-                  _isFocused = focused;
-                });
-              },
-            ),
+                    hintText: hintText,
+                    centerAlign: centerAlign,
+                    textEditingController: controller,
+                    onFocusChange: (bool focused) {
+                      setState(() {
+                        _isFocused = focused;
+                      });
+                    },
+                  ),
           ),
         ],
       ),
@@ -198,12 +199,12 @@ class _ReflectionPageState extends State<ReflectionPage> {
       },
       child: !_isFocused
           ? const Padding(
-        padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-        key: ValueKey<int>(1),
-        child: CustomFloatingButton(
-          text: '반성문 생성하기',
-        ),
-      )
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+              key: ValueKey<int>(1),
+              child: CustomFloatingButton(
+                text: '반성문 생성하기',
+              ),
+            )
           : const SizedBox.shrink(key: ValueKey<int>(2)),
     );
   }
@@ -298,7 +299,10 @@ class CustomFloatingButton extends StatelessWidget {
       body: jsonEncode({
         "model": "gpt-3.5-turbo",
         'messages': [
-          {"role": "system", "content": "You are a Korean student. You did something wrong."},
+          {
+            "role": "system",
+            "content": "You are a Korean student who has made a mistake."
+          },
           {"role": "user", "content": prompt}
         ]
       }),
@@ -306,7 +310,7 @@ class CustomFloatingButton extends StatelessWidget {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> newresponse =
-      jsonDecode(utf8.decode(response.bodyBytes));
+          jsonDecode(utf8.decode(response.bodyBytes));
 
       if (newresponse != null &&
           newresponse.containsKey('choices') &&
@@ -338,23 +342,24 @@ class CustomFloatingButton extends StatelessWidget {
 
         final usersRef = FirebaseDatabase.instance.ref();
         final snapshot =
-        await usersRef.child("users").child(usersUID).child("num").get();
+            await usersRef.child("users").child(usersUID).child("num").get();
 
         int num = int.parse(snapshot.value.toString()) + 1;
 
         final DatabaseReference userRef =
-        FirebaseDatabase.instance.ref().child('users').child(usersUID);
+            FirebaseDatabase.instance.ref().child('users').child(usersUID);
 
         await userRef.child('num').set(num);
         DatabaseReference newItemRef =
-        userRef.child('writing').child(num.toString());
+            userRef.child('writing').child(num.toString());
 
         String prompt =
-            'Write a Letter of apology based on the information: There was a $content event on $date with $relatedperson on $place. I am deeply reflecting on this.'
-            'The essential contents to include are the date, related person, place and a summary of the incident. Except for the title, write everything in a single paragraph.'
-            'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.';
+            'Compose a letter of apology in Korean, addressing an event described as $content that occurred on $date with $relatedperson at $place. Express deep reflection over the incident. '
+            'Include in the letter the date, the person involved, the location, and a brief summary of what happened. All information, except for the title, should be written in a single paragraph. '
+            'While you may intensify the provided details, refrain from adding any new elements not implied in the original information.';
         String contents = await generateText(prompt);
-        String titlePrompt = "Please write a Korean title for this content. $prompt.";
+        String titlePrompt =
+            "Please write a Korean title for this content. $prompt.";
         String title = await generateText(titlePrompt);
 
         Navigator.of(context).pop();

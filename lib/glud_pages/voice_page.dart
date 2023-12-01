@@ -336,10 +336,10 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
 
   Future<String> generateText(String prompt) async {
     List<String> rolePrompt = [
-      'You are a Korean reporter. You are going to write an article.',
-      'You are a Korean student. You are going to write an bookreview',
-      'You are a Korean student. You did something wrong.'
-          'You are a Korean lawyer. Now you are gonna fill out a lawsuit for me',
+      'You are a Korean journalist tasked with writing an article.',
+      'You are a Korean student tasked with writing a book review.',
+      'You are a Korean student who has made a mistake.'
+          'You are a Korean attorney preparing to draft a lawsuit.',
     ];
     final response = await http.post(
       Uri.parse(apiUrl),
@@ -389,18 +389,18 @@ class _PageWidgetState extends State<PageWidget> with TickerProviderStateMixin {
 
   Future write() async {
     List<String> writingPrompt = [
-      'Write a press release based on the information: An incident took place at ${contentList[1]} on ${contentList[0]} where ${contentList[2]}. The key figure of the event said, "${contentList[3]}".'
-          'The essential contents to include are the title, date, and a summary of the incident. Except for the title, write everything in a single paragraph.'
-          'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.',
-      'Write a bookreview based on the information: date: ${contentList[0]}, publisher: ${contentList[1]}, writer: ${contentList[2]}, bookname: ${contentList[3]}.'
-          'The essential contents to include are the title, date, a summary of the book, and your opinion. Except for the title, write everything in a single paragraph.'
-          'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.',
-      'Write a Letter of apology based on the information: There was a ${contentList[3]} event on ${contentList[0]} with ${contentList[2]} on ${contentList[1]}. I am deeply reflecting on this.'
-          'The essential contents to include are the date, related person, place and a summary of the incident. Except for the title, write everything in a single paragraph.'
-          'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.',
-      'Please write a lawsuit about the ${contentList[1]} case that happened on ${contentList[0]}. The purpose of the claim is ${contentList[2]} and the cause of the claim is ${contentList[3]}.'
-          'The essential contents to include are the title, date, incident, Purpose of claim, cause of claim.'
-          'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.'
+      'Create a article in Korean based on the following details: An incident occurred at ${contentList[1]} on ${contentList[0]}, involving ${contentList[2]}.'
+          'A pivotal figure in the event stated, "${contentList[3]}". The press release should include a headline, the date, and a concise paragraph summarizing the incident.'
+          'While you may enhance the given information for dramatic effect, do not introduce any new details beyond what is inferred from the provided information.',
+      'Compose a book review in Korean, incorporating the following details: date of publication: ${contentList[0]}, publisher: ${contentList[1]}, author: ${contentList[2]}, and title of the book: ${contentList[3]}.'
+          'Your review should include a headline, the publication date, a summary of the book&apos;s content, and your personal opinion. Write all the information, except the headline, in a single paragraph.'
+          'Feel free to embellish the provided information for impact, but do not introduce any new elements not implied by the original details.',
+      'Compose a letter of apology in Korean, addressing an event described as ${contentList[3]} that occurred on ${contentList[0]} with ${contentList[2]} at ${contentList[1]}. Express deep reflection over the incident. '
+          'Include in the letter the date, the person involved, the location, and a brief summary of what happened. All information, except for the title, should be written in a single paragraph. '
+          'While you may intensify the provided details, refrain from adding any new elements not implied in the original information.',
+      'Draft a legal complaint in Korean regarding the ${contentList[1]} that occurred on ${contentList[0]}. The lawsuit aims to achieve ${contentList[2]} and is based on the cause: ${contentList[3]}.'
+          'Key elements to include are the title, date of the incident, a brief description of the incident, the objective of the lawsuit, and the underlying cause. '
+          'While you may amplify the given information, refrain from introducing any new details not suggested by the original information provided.',
     ];
     showDialog(
       context: context,

@@ -298,7 +298,11 @@ class CustomFloatingButton extends StatelessWidget {
       body: jsonEncode({
         "model": "gpt-3.5-turbo",
         'messages': [
-          {"role": "system", "content": "You are a Korean reporter. You're going to write an article."},
+          {
+            "role": "system",
+            "content":
+                "You are a Korean journalist tasked with writing an article."
+          },
           {"role": "user", "content": prompt}
         ]
       }),
@@ -350,12 +354,10 @@ class CustomFloatingButton extends StatelessWidget {
             userRef.child('writing').child(num.toString());
 
         String prompt =
-            'Write a press release based on the information: An incident took place at $place on $date where $content. The key figure of the event said, "$quote".'
-            'The essential contents to include are the title, date, and a summary of the incident. Except for the title, write everything in a single paragraph.'
-            'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.';
+            'Create a article in Korean based on the following details: An incident occurred at $place on $date, involving $content.'
+            'A pivotal figure in the event stated, "$quote". The press release should include a headline, the date, and a concise paragraph summarizing the incident.'
+            'While you may enhance the given information for dramatic effect, do not introduce any new details beyond what is inferred from the provided information.';
         String contents = await generateText(prompt);
-        String titlePrompt = "Please write a Korean title for this content. $prompt.";
-        String title = await generateText(titlePrompt);
 
         Navigator.of(context).pop();
 
@@ -368,7 +370,6 @@ class CustomFloatingButton extends StatelessWidget {
             .child("writing")
             .child(num.toString())
             .set({
-          "title": title,
           "content": contents,
           "date": timestamp,
           "type": "보도자료",

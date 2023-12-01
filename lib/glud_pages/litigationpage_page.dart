@@ -298,7 +298,10 @@ class CustomFloatingButton extends StatelessWidget {
       body: jsonEncode({
         "model": "gpt-3.5-turbo",
         'messages': [
-          {"role": "system", "content": "You are a Korean lawyer. Now you're gonna fill out a lawsuit for me"},
+          {
+            "role": "system",
+            "content": "You are a Korean attorney preparing to draft a lawsuit."
+          },
           {"role": "user", "content": prompt}
         ]
       }),
@@ -338,23 +341,25 @@ class CustomFloatingButton extends StatelessWidget {
 
         final usersRef = FirebaseDatabase.instance.ref();
         final snapshot =
-        await usersRef.child("users").child(usersUID).child("num").get();
+            await usersRef.child("users").child(usersUID).child("num").get();
 
         int num = int.parse(snapshot.value.toString()) + 1;
 
         final DatabaseReference userRef =
-        FirebaseDatabase.instance.ref().child('users').child(usersUID);
+            FirebaseDatabase.instance.ref().child('users').child(usersUID);
 
         await userRef.child('num').set(num);
         DatabaseReference newItemRef =
-        userRef.child('writing').child(num.toString());
+            userRef.child('writing').child(num.toString());
 
         String prompt =
-            'Please write a lawsuit about the $incident case that happened on $date. The purpose of the claim is $purpose and the cause of the claim is $cause.'
-            'The essential contents to include are the title, date, incident, Purpose of claim, cause of claim.'
-            'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.';
+            'Draft a legal complaint in Korean regarding the $incident that occurred on $date. The lawsuit aims to achieve $purpose and is based on the cause: $cause.'
+            'Key elements to include are the title, date of the incident, a brief description of the incident, the objective of the lawsuit, and the underlying cause. '
+            'While you may amplify the given information, refrain from introducing any new details not suggested by the original information provided.';
         String contents = await generateText(prompt);
-        String titlePrompt = "Please write a Korean title for this content. $prompt.";
+
+        String titlePrompt =
+            "Please write a Korean title for this content. $prompt.";
         String title = await generateText(titlePrompt);
 
         Navigator.of(context).pop();

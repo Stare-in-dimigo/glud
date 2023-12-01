@@ -298,7 +298,11 @@ class CustomFloatingButton extends StatelessWidget {
       body: jsonEncode({
         "model": "gpt-3.5-turbo",
         'messages': [
-          {"role": "system", "content": "You are a Korean student. You're going to write an bookreview"},
+          {
+            "role": "system",
+            "content":
+                "You are a Korean student tasked with writing a book review."
+          },
           {"role": "user", "content": prompt}
         ]
       }),
@@ -338,23 +342,24 @@ class CustomFloatingButton extends StatelessWidget {
 
         final usersRef = FirebaseDatabase.instance.ref();
         final snapshot =
-        await usersRef.child("users").child(usersUID).child("num").get();
+            await usersRef.child("users").child(usersUID).child("num").get();
 
         int num = int.parse(snapshot.value.toString()) + 1;
 
         final DatabaseReference userRef =
-        FirebaseDatabase.instance.ref().child('users').child(usersUID);
+            FirebaseDatabase.instance.ref().child('users').child(usersUID);
 
         await userRef.child('num').set(num);
         DatabaseReference newItemRef =
-        userRef.child('writing').child(num.toString());
+            userRef.child('writing').child(num.toString());
 
         String prompt =
-            'Write a bookreview based on the information: date: $date, publisher: $publisher, writer: $writer, bookname: $bookname.'
-            'The essential contents to include are the title, date, a summary of the book, and your opinion. Except for the title, write everything in a single paragraph.'
-            'You can exaggerate the information I provided, but never add details not inferred from the information given. Please write in Korean.';
+            'Compose a book review in Korean, incorporating the following details: date of publication: $date, publisher: $publisher, author: $writer, and title of the book: $bookname.'
+            'Your review should include a headline, the publication date, a summary of the book&apos;s content, and your personal opinion. Write all the information, except the headline, in a single paragraph.'
+            'Feel free to embellish the provided information for impact, but do not introduce any new elements not implied by the original details.';
         String contents = await generateText(prompt);
-        String titlePrompt = "Please write a Korean title for this content. $prompt.";
+        String titlePrompt =
+            "Please write a Korean title for this content. $prompt.";
         String title = await generateText(titlePrompt);
 
         Navigator.of(context).pop();
